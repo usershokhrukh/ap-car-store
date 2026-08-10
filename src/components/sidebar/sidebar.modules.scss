@@ -1,0 +1,12 @@
+@use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
+
+.sidebar {
+  grid-row: 1/2;
+  grid-column: 1/2;
+  height: 100vh;
+  position: sticky;
+  top: 0px;
+  width: 300px;
+  width: 100%;
+}

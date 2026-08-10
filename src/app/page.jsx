@@ -1,8 +1,9 @@
+import Dashboard from '@/components/dashboard/Dashboard'
 import React from 'react'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <><Dashboard/></>
   )
 }
 
