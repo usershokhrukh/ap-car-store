@@ -78,6 +78,8 @@ const Login = () => {
       }, 500);
     }
   }, [data]);
+
+  const [passwordType, setPasswordType] = useState(false);
   return (
     <div className="login">
       <form onSubmit={handleSubmit} className="login__form">
@@ -116,12 +118,12 @@ const Login = () => {
               ref={refPassword}
               value={input.password}
               onChange={handleChange}
-              type="text"
+              type={passwordType ? 'text' : 'password'}
               name="password"
               id="password"
               className="login__f-input"
             />
-            <span className="login__f-svg">
+            <span onClick={() => setPasswordType(!passwordType)} className="login__f-svg">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
