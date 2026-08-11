@@ -6,6 +6,7 @@ import Image from "next/image";
 import backImg from "../../public/images/image.png";
 import ProtectedImage from "@/components/Image";
 import AppLayout from "@/components/AppLayout";
+import NotificationCustom from "./NotificationCustom";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,9 +27,9 @@ export default function RootLayout({children}) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <AppLayout>
-          {children}
-        </AppLayout>
+        <NotificationCustom>
+          <AppLayout>{children}</AppLayout>
+        </NotificationCustom>
         <ProtectedImage />
       </body>
     </html>
