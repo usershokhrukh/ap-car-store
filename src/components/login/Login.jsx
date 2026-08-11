@@ -1,42 +1,99 @@
 "use client";
-import React, { useRef, useState } from "react";
-import "./login.modules.scss"
+import React, {useEffect, useRef, useState} from "react";
+import "./login.modules.scss";
+import {useNotify} from "@/hooks/useNotify";
+import axios from "axios";
+import {PostLogin} from "@/hooks/login/PostLogin";
+import {usePathname, useRouter} from "next/navigation";
 
 const Login = () => {
+  const route = useRouter();
   const [input, setInput] = useState({
-    username: "",
+    login: "",
     password: "",
   });
+  const {notice} = useNotify();
   const handleChange = (e) => {
     setInput({
       ...input,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
   const refUsername = useRef(null);
   const refPassword = useRef(null);
+  const {mutate, data, error, isPending} = PostLogin();
 
-  const handleSubmit =(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!input.password && !input.username) return
-    if(!input.password && input.username) return refPassword.current.focus();
-    if(input.password && !input.username) return refUsername.current.focus();
-    console.log(input);
-  } 
+    if (!input.password && !input.login)
+      return notice({
+        text: "Fill all inputs!",
+        status: "error",
+        time: 3000,
+      });
+    if (!input.password && input.login) {
+      refPassword.current.focus();
+      return notice({
+        text: "Filling password is necessary!",
+        status: "info",
+        time: 3000,
+      });
+    }
+    if (input.password && !input.login) {
+      refUsername.current.focus();
+      return notice({
+        text: "Filling username is necessary!",
+        status: "info",
+        time: 3000,
+      });
+    }
+    notice({text: "Pending...", status: "info", time: "infinite"});
+    mutate(input);
+  };
+
+  useEffect(() => {
+    if (error?.message) {
+      notice({text: error?.message, time: 3000, status: "error"});
+    }
+  }, [error]);
+  const timeoutSuccess = useRef(null);
+  useEffect(() => {
+    if (data && !error?.message && !isPending) {
+      notice({
+        text: data?.message || "Tizimga kirildi!",
+        time: 3000,
+        status: "success",
+      });
+      route.refresh();
+      if (timeoutSuccess.current) clearTimeout(timeoutSuccess.current);
+      timeoutSuccess.current = setTimeout(() => {
+        const currentPath = window.location.pathname;
+        if (currentPath.startsWith("/login")) {
+          notice({
+            text: "Page loading...",
+            time: "infinite",
+            status: "info",
+          });
+        }
+      }, 500);
+    }
+  }, [data]);
   return (
     <div className="login">
       <form onSubmit={handleSubmit} className="login__form">
         <h1 className="login__title">Welcome Back!</h1>
         <div className="login__f-box">
-          <label className="login__f-label" htmlFor="username">Username</label>
-          <div  className="login__f-box-bottom">
+          <label className="login__f-label" htmlFor="login">
+            Username
+          </label>
+          <div className="login__f-box-bottom">
             <input
-            ref={refUsername}
-            onChange={handleChange}
-            value={input.username}
+              ref={refUsername}
+              onChange={handleChange}
+              value={input.username}
               type="text"
-              name="username"
-              id="username"
+              name="login"
+              id="login"
               className="login__f-input"
             />
             {/* <span className="login__f-svg">
@@ -51,12 +108,14 @@ const Login = () => {
           </div>
         </div>
         <div className="login__f-box">
-          <label className="login__f-label" htmlFor="password">Password</label>
+          <label className="login__f-label" htmlFor="password">
+            Password
+          </label>
           <div className="login__f-box-bottom">
             <input
-            ref={refPassword}
-            value={input.password}
-            onChange={handleChange}
+              ref={refPassword}
+              value={input.password}
+              onChange={handleChange}
               type="text"
               name="password"
               id="password"
@@ -73,7 +132,9 @@ const Login = () => {
             </span>
           </div>
         </div>
-        <button type="submit" className="login__f-submit">Sign in</button>
+        <button type="submit" className="login__f-submit">
+          Sign in
+        </button>
       </form>
     </div>
   );
