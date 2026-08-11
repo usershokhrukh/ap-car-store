@@ -5,6 +5,7 @@ import Header from "@/components/header/Header";
 import Image from "next/image";
 import backImg from "../../public/images/image.png";
 import ProtectedImage from "@/components/Image";
+import AppLayout from "@/components/AppLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +26,9 @@ export default function RootLayout({children}) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <div className="global">
-          <Sidebar />
-          <main className="global__main">
-            <Header />
-            {children}
-          </main>
-        </div>
+        <AppLayout>
+          {children}
+        </AppLayout>
         <ProtectedImage />
       </body>
     </html>
