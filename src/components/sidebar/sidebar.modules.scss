@@ -2,11 +2,135 @@
 @use "../../style/var.scss" as *;
 
 .sidebar {
+  @include display();
+  @include paddingLargeBoxes();
   grid-row: 1/2;
   grid-column: 1/2;
   height: 100vh;
   position: sticky;
   top: 0px;
-  width: 300px;
-  width: 100%;
+  min-width: 280px;
+  width: 280px;
+  background-color: rgb(from var(--app-sidebar) r g b / 0.4);
+  backdrop-filter: blur(5px);
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 25px;
+  border-right: 1px solid var(--app-border);
+  overflow-y: auto;
+  transition: all 0.15s linear;
+
+  &__top {
+    @include display();
+    width: 100%;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  &__li-span-side {
+    color: var(--secondary-text);
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-sidebar) r g b / 1);
+        color: var(--app-neon-cyan) !important;
+      }
+    }
+    cursor: pointer;
+
+
+    @include display();
+    padding: 8px;
+    border-radius: 10px;
+    width: 100%;
+
+  }
+
+  &__title {
+    @include inter();
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--app-text);
+  }
+
+  &__tit-span {
+    color: var(--app-neon-cyan);
+    margin-right: 2px;
+    background: -webkit-linear-gradient(
+      var(--app-neon-cyan),
+      var(--app-purple)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  &__bottom {
+    @include display();
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    flex-grow: 1;
+    gap: 10px;
+  }
+
+  &__ul {
+    @include display();
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    gap: 5px;
+  }
+
+  &__link {
+    width: 100%;
+    text-decoration: none;
+  }
+
+  &__list {
+    @include display();
+    @include inter();
+    font-weight: 300;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 10px;
+    // background-color: var(--app-sidebar);
+    width: 100%;
+    justify-content: start;
+    gap: 10px;
+    color: var(--secondary-text);
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-sidebar) r g b / 0.6);
+        color: var(--app-neon-cyan) !important;
+      }
+    }
+  }
+
+  &__li-span {
+    width: 20px;
+    height: 20px;
+  }
+
+  &__list-logout {
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-hot-pink) r g b / 0.1);
+        color: var(--status-error) !important;
+      }
+    }
+  }
+
+  &__close {
+    min-width: 0px !important;
+    width: fit-content !important;
+    & .sidebar__li-txt {
+      display: none;
+    }
+  }
 }
