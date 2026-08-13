@@ -3,9 +3,14 @@
 import React, {useEffect, useState} from "react";
 import "./sidebar.modules.scss";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useNotify } from "@/hooks/useNotify";
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
   const [windowWidth, setWindowWidth] = useState(1200);
+  const {notice} = useNotify();
+  const route = useRouter();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -19,6 +24,19 @@ const Sidebar = () => {
         );
     }
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      const res = await axios.post("/api/auth/logout");
+      route.refresh();
+    } catch (error) {
+      notice({
+        text: "Something went wrong!",
+        time: 3000,
+        status: "error"
+      })
+    }
+  };
   return (
     <div
       className={`sidebar ${open ? "" : "sidebar__close"} ${windowWidth >= 1000 ? "" : "sidebar__close"}`}
@@ -119,7 +137,7 @@ const Sidebar = () => {
               <p className="sidebar__li-txt">Settings</p>
             </li>
           </Link>
-          <Link className="sidebar__link" href={"/"}>
+          <span onClick={handleLogout} className="sidebar__link">
             <li className="sidebar__list sidebar__list-logout">
               <span className="sidebar__li-span">
                 <svg
@@ -132,7 +150,7 @@ const Sidebar = () => {
               </span>
               <p className="sidebar__li-txt">Logout</p>
             </li>
-          </Link>
+          </span>
         </ul>
       </div>
     </div>
