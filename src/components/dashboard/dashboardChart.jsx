@@ -1,20 +1,44 @@
 "use client";
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {PieChart, Pie, Cell, ResponsiveContainer} from "recharts";
 
-const data = [
-  {name: "Krossover va SUV", value: 16, color: "var(--app-purple)"},
-  {name: "Lyuks va premium", value: 16, color: "var(--app-pink)"},
-  {name: "Sedan  sport", value: 14, color: "var(--app-text)"},
-  {name: "Seda", value: 13, color: "var(--app-light-blue)"},
-  {name: "Sport avtomobil", value: 13, color: "var(--app-orange)"},
-  {name: "Pikap va yuk", value: 8, color: "var(--app-hot-pink)"},
-  {name: "Xetchbek", value: 8, color: "var(--app-yellow)"},
-  {name: "Minivan", value: 4, color: "var(--app-neon-cyan)"},
+const dataColor = [
+  "var(--app-purple)",
+  "var(--app-pink)",
+  "var(--app-text)",
+  "var(--app-light-blue)",
+  "var(--app-orange)",
+  "var(--app-hot-pink)",
+  "var(--app-yellow)",
+  "var(--app-neon-cyan)",
 ];
 
-export default function BookingDistribution() {
+export default function BookingDistribution({data}) {
+  const [dataResult, setDataResult] = useState(null);
+  useEffect(() => {
+    if (data?.length) {
+      const result = data?.map((item, index) => {
+        if (dataColor[index]) {
+          return {
+            name: item?.name,
+            value: item?.totalStock,
+            color: dataColor[index],
+          };
+        } else {
+          const randomHue = (index * 137.5) % 360;
+          const backgroundColor = `hsl(${randomHue}, 70%, 50%)`;
+          return {
+            name: item?.name,
+            value: item?.totalStock,
+            color: backgroundColor,
+          };
+        }
+      });
+      setDataResult(result);
+    }
+  }, [data]);
+
   return (
     <div className="dashboard__chart">
       <div className="dashboard__chart-top">
@@ -26,7 +50,7 @@ export default function BookingDistribution() {
           <ResponsiveContainer width="100%" aspect={1}>
             <PieChart>
               <Pie
-                data={data}
+                data={dataResult}
                 cx="50%"
                 cy="50%"
                 innerRadius="60%" // Using percentages instead of fixed integers allows the ring thickness to scale
@@ -36,7 +60,7 @@ export default function BookingDistribution() {
                 startAngle={90}
                 endAngle={-270}
               >
-                {data.map((entry, index) => (
+                {dataResult?.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={entry.color}
@@ -53,7 +77,7 @@ export default function BookingDistribution() {
             Vehicle Categories
           </span>
           <div className="dashboard__chart-right-list">
-            {data.map((item, index) => (
+            {dataResult?.map((item, index) => (
               <div key={index} className="dashboard__chart-card">
                 <div className="dashboard__chart-item-left">
                   <span
@@ -65,7 +89,7 @@ export default function BookingDistribution() {
                   </span>
                 </div>
                 <span className="dashboard__chart-right-value">
-                  {item.value}%
+                  {item.value}
                 </span>
               </div>
             ))}
