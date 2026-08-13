@@ -5,14 +5,19 @@ import "./sidebar.modules.scss";
 import Link from "next/link";
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
-  const [windowWidth, setWindowWith] = useState();
-
-  window.addEventListener("resize", () => {
-    setWindowWith(window.innerWidth);
-  });
+  const [windowWidth, setWindowWidth] = useState(1200);
 
   useEffect(() => {
-    setWindowWith(window.innerWidth);
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+      window.addEventListener("resize", () =>
+        setWindowWidth(window.innerWidth),
+      );
+      return () =>
+        window.removeEventListener("resize", () =>
+          setWindowWidth(window.innerWidth),
+        );
+    }
   }, []);
   return (
     <div
