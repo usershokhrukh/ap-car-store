@@ -125,7 +125,7 @@ const Login = () => {
             </span>
           </div>
         </div>
-        <button disabled={!isPending} type="submit" className="login__f-submit">
+        <button disabled={isPending} type="submit" className="login__f-submit">
           Sign in
         </button>
       </form>
