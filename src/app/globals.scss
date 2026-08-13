@@ -165,8 +165,10 @@
 .global {
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: auto;
   position: relative;
+  min-height: 100vh;
+  // overflow: auto;
 
   &__back-img {
     position: fixed;
@@ -182,11 +184,18 @@
 
   &__main {
     @include display;
-    flex-grow: 1;
-    height: 200vh;
+    flex-direction: column;
+    justify-content: start;
+    // flex-grow: 1;
+    // height: 200vh;
     width: 100%;
     grid-row: 1/2;
     grid-column: 2/3;
+    // min-width: 100vh;
+  }
+
+  .container {
+    max-width: 2000px;
   }
 }
 

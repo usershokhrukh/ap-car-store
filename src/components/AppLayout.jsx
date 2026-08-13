@@ -3,8 +3,6 @@ import React from "react";
 import Sidebar from "./sidebar/Sidebar";
 import Header from "./header/Header";
 import {usePathname} from "next/navigation";
-import Login from "./login/Login";
-
 const AppLayout = ({children}) => {
   const pathname = usePathname();
   if (pathname === "/login") {
