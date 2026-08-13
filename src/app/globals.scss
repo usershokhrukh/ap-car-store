@@ -86,11 +86,11 @@
 
 @keyframes notify-close {
   0% {
-    transform: translateY(0px);
-    visibility: visible;
+    transform: translateY(-100px);
+    visibility: hidden;
   }
   100% {
-    transform: translateY(-100px) scale(0.8) rotateX(0.8turn);
+    transform: translateY(-100px);
     visibility: hidden;
   }
 }
@@ -188,4 +188,9 @@
     grid-row: 1/2;
     grid-column: 2/3;
   }
+}
+
+
+li {
+  list-style: none;
 }
