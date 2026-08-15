@@ -18,13 +18,13 @@ const Dashboard = () => {
     isPending: categoryPending,
   } = useGetDashboardCategoriesStats();
 
-  const [pieData, setPieData] = useState({})
+  const [pieData, setPieData] = useState({});
 
   useEffect(() => {
-    if(categoryStats) {
-      setPieData(categoryStats?.data)
+    if (categoryStats) {
+      setPieData(categoryStats?.data);
     }
-  }, [categoryStats])
+  }, [categoryStats]);
   useEffect(() => {
     if (error?.message || categoryError?.message) {
       notice({
@@ -40,10 +40,10 @@ const Dashboard = () => {
       stop: "true",
     });
   }, []);
-  
+
   return (
     <div className="dashboard container">
-      {(data && categoryStats) && (!isPending && !categoryPending) ? (
+      {data && categoryStats && !isPending && !categoryPending ? (
         <>
           <div className="dashboard__top">
             <h2 className="dashboard__title">Welcome To Car Service</h2>
@@ -52,29 +52,41 @@ const Dashboard = () => {
             </p>
           </div>
           <div className="dashboard__center">
+            <BookingDistribution data={pieData} />
+
             <div className="dashboard__cen-stats">
               <div className="dashboard__cen-stats-items">
                 <p className="dashboard__censts-title">Products</p>
                 <ul className="dashboard__censts-ul">
                   <li className="dashboard__censts-list">
                     Total:
-                    <span className="dashboard__censts-span">{data?.data?.products?.total || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.products?.total || 0}
+                    </span>
                   </li>
                   <li className="dashboard__censts-list">
                     Active:
-                    <span className="dashboard__censts-span">{data?.data?.products?.active || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.products?.active || 0}
+                    </span>
                   </li>
                   <li className="dashboard__censts-list">
                     Inactive:
-                    <span className="dashboard__censts-span">{data?.data?.products?.inActive || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.products?.inActive || 0}
+                    </span>
                   </li>
                   <li className="dashboard__censts-list">
                     Out of stock:
-                    <span className="dashboard__censts-span">{data?.data?.products?.outOfStock || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.products?.outOfStock || 0}
+                    </span>
                   </li>
                   <li className="dashboard__censts-list">
                     Low stock:
-                    <span className="dashboard__censts-span">{data?.data?.products?.lowStock || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.products?.lowStock || 0}
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -83,19 +95,27 @@ const Dashboard = () => {
                 <ul className="dashboard__censts-ul">
                   <li className="dashboard__censts-list">
                     Total:
-                    <span className="dashboard__censts-span">{data?.data?.categories?.total || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.categories?.total || 0}
+                    </span>
                   </li>
                   <li className="dashboard__censts-list">
                     Active:
-                    <span className="dashboard__censts-span">{data?.data?.categories?.active || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.categories?.active || 0}
+                    </span>
                   </li>
                   <li className="dashboard__censts-list">
                     Inactive:
-                    <span className="dashboard__censts-span">{data?.data?.categories?.inActive || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.categories?.inActive || 0}
+                    </span>
                   </li>
                   <li className="dashboard__censts-list">
                     Empty:
-                    <span className="dashboard__censts-span">{data?.data?.categories?.empty || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.categories?.empty || 0}
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -104,7 +124,9 @@ const Dashboard = () => {
                 <ul className="dashboard__censts-ul">
                   <li className="dashboard__censts-list">
                     Total items:
-                    <span className="dashboard__censts-span">{data?.data?.stock?.totalItems || 0}</span>
+                    <span className="dashboard__censts-span">
+                      {data?.data?.stock?.totalItems || 0}
+                    </span>
                   </li>
                   <li className="dashboard__censts-list">
                     Total value:
@@ -121,12 +143,13 @@ const Dashboard = () => {
                 </ul>
               </div>
             </div>
-            <BookingDistribution data={pieData} />
           </div>
         </>
-      ) : (isPending || categoryPending) || (!data || !categoryStats) ? (
+      ) : isPending || categoryPending || !data || !categoryStats ? (
         <CarServiceSkeleton />
-      ) : <NotFound/>}
+      ) : (
+        <NotFound />
+      )}
     </div>
   );
 };

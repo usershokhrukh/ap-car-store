@@ -5,12 +5,14 @@
   @include display();
   @include paddingLargeBoxes();
   flex-direction: column;
-  align-items: start;
+  align-items: center;
   flex-grow: 1;
   width: 100%;
   justify-content: start;
   gap: 10px;
-  height: fit-content;
+  // height: fit-content;
+  // overflow: auto;s
+  // background-color: red;
 
   &__top {
     @include display();
@@ -41,6 +43,7 @@
     align-items: start;
     gap: 10px;
     flex-wrap: wrap;
+    // background-color: red;
   }
   &__cen-stats {
     display: grid;
@@ -48,6 +51,8 @@
     grid-template-rows: auto auto;
     gap: 10px;
     flex-grow: 1;
+    width: 100%;
+    // background-color: red;
   }
 
   &__cen-stats-items:nth-child(1) {
@@ -138,11 +143,11 @@
     justify-content: start;
     background-color: var(--app-sidebar);
     flex-grow: 1;
-    height: 100%;
+    min-height: fit-content;
+    height: 300px;
     border-radius: 10px;
     padding: 20px;
-    max-height: fit-content;
-
+    // max-height: fit-content;
     background: #d23a7a;
     background: linear-gradient(
       90deg,
@@ -249,11 +254,9 @@
   }
 }
 
-// Locally scoped skeleton pulse variables matching your dark palette
 $skeleton-base: #252936;
 $skeleton-animation: #353a4a;
 
-// Reusable micro-shimmer class for content text block replacement
 .skeleton-box {
   background: linear-gradient(
     90deg,
@@ -268,7 +271,6 @@ $skeleton-animation: #353a4a;
 
 .dashboard-skeleton {
   @include display();
-  @include paddingLargeBoxes();
   flex-direction: column;
   align-items: start;
   flex-grow: 1;
@@ -300,6 +302,7 @@ $skeleton-animation: #353a4a;
     @include display();
     width: 100%;
     justify-content: space-between;
+    flex-direction: column-reverse;
     align-items: start;
     gap: 10px;
     flex-wrap: wrap;
@@ -311,6 +314,7 @@ $skeleton-animation: #353a4a;
     grid-template-rows: auto auto;
     gap: 10px;
     flex-grow: 1;
+    width: 100%;
   }
 
   &__cen-stats-items {
@@ -383,6 +387,7 @@ $skeleton-animation: #353a4a;
     );
     gap: 10px;
     box-sizing: border-box;
+    width: 100%;
   }
 
   &__chart-title {

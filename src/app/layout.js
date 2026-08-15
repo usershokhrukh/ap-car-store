@@ -1,9 +1,5 @@
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.scss";
-import Sidebar from "@/components/sidebar/Sidebar";
-import Header from "@/components/header/Header";
-import Image from "next/image";
-import backImg from "../../public/images/image.png";
 import ProtectedImage from "@/components/Image";
 import AppLayout from "@/components/AppLayout";
 import NotificationCustom from "./NotificationCustom";

@@ -163,12 +163,16 @@
 }
 
 .global {
+  // @include display();
+  // align-items: start;
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto;
   position: relative;
-  min-height: 100vh;
+  // min-height: fit-content;
   // overflow: auto;
+  // background-color: rgb(124, 16, 16);
+  // height: 100vh;
 
   &__back-img {
     position: fixed;
@@ -195,7 +199,12 @@
   }
 
   .container {
-    max-width: 2000px;
+    max-width: 1500px;
+    // overflow-y: auto;
+
+    // &::-webkit-scrollbar {
+    //   display: none;
+    // }
   }
 }
 
