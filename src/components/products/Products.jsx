@@ -131,7 +131,6 @@ const Products = () => {
   };
   const [page, setPage] = useState(1);
   const handleSearchChange = (e) => {
-    console.log(e.target.value);
     const value = e.target.value.trim();
     if (value) {
       setSearch(value);
@@ -192,7 +191,6 @@ const Products = () => {
 
   useEffect(() => {
     if (data?.data?.meta) {
-      console.log(data?.data?.meta);
       const {totalPages, page, limit, total} = data?.data?.meta;
       setHasNextPage(page < totalPages);
       setHasPrevPage(page > 1);
