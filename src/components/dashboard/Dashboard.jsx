@@ -8,10 +8,12 @@ import {useGetDashboardStats} from "@/hooks/dashboard/GetDashboardStats";
 import {useGetDashboardCategoriesStats} from "@/hooks/dashboard/GetDashboardCategoriesStats";
 import CarServiceSkeleton from "./DashboardLoading";
 import NotFound from "../notfound/NotFound";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   const {notice} = useNotify();
   const {data, error, isPending} = useGetDashboardStats();
+  const route = useRouter();
   const {
     data: categoryStats,
     error: categoryError,
@@ -32,6 +34,7 @@ const Dashboard = () => {
         status: "error",
         time: 5000,
       });
+      route.refresh();
     }
   }, [error, categoryError]);
 

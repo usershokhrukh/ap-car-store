@@ -21,6 +21,8 @@
   svg {
     width: 20px;
     height: 20px;
+    min-width: 20px;
+    min-height: 20px;
   }
 
   .error__close {
@@ -33,10 +35,13 @@
     svg {
       width: 23px;
       height: 23px;
+      min-width: 23px;
+      min-height: 23px;
     }
     border-radius: 50px;
     background-color: transparent;
     color: transparent;
+    cursor: pointer;
     // visibility: hidden;
     @media (hover: hover) {
       &:hover {
@@ -63,10 +68,12 @@
     width: 100%;
     position: fixed;
     flex-direction: column;
+    padding: 0px 30px;
   }
 
   &-text {
     @include inter();
+    max-width: 400px;
   }
 }
 
@@ -200,14 +207,8 @@
 
   .container {
     max-width: 1500px;
-    // overflow-y: auto;
-
-    // &::-webkit-scrollbar {
-    //   display: none;
-    // }
   }
 }
-
 
 li {
   list-style: none;
