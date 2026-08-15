@@ -236,16 +236,22 @@
     @include display();
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   &__b-pag-left {
     @include display();
     gap: 10px;
+    flex-wrap: wrap;
+    justify-content: start
   }
 
   &__b-pag-right {
     @include display();
     gap: 10px;
+    flex-wrap: wrap;
+    justify-content: start
   }
 
   &__b-pag-search {
