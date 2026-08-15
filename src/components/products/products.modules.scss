@@ -236,16 +236,25 @@
     @include display();
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: start
   }
 
   &__b-pag-left {
     @include display();
     gap: 10px;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: start
   }
 
   &__b-pag-right {
     @include display();
     gap: 10px;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: start
   }
 
   &__b-pag-search {
@@ -256,6 +265,9 @@
     border-radius: 10px;
     border: none;
     outline: none;
+    flex-grow: 1;
+    max-width: 200px;
+    width: 100%;
     background-color: rgb(from var(--app-sidebar) r g b / 1);
     border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
     color: var(--app-text);
@@ -264,7 +276,7 @@
 
   &__b-pag-limit {
     @include display();
-    position: relative;
+    // position: relative;
     flex-direction: column;
     justify-content: start;
     align-items: start;
@@ -303,11 +315,21 @@
     }
   }
 
+  &__b-pag-rbuttons-disable {
+    opacity: 0.8;
+    color: var(--secondary-text);
+    border: 1px solid transparent;
+  }
+
   &__b-pag-page {
     svg {
       width: 15px;
       height: 15px;
     }
+  }
+
+  &__b-pag-page-active {
+    background-color: var(--app-light-blue)
   }
 
   &__b-pag-pages {
@@ -321,9 +343,8 @@
     flex-direction: column;
     background-color: rgb(from var(--app-sidebar) r g b / 1);
     border-radius: 10px;
-    width: 100%;
     border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
-    // overflow: hidden
+    z-index: 10;
   }
 
   &__b-pag-lselect {
@@ -333,7 +354,7 @@
     flex-grow: 1;
     font-size: 14px;
     font-weight: 400;
-    padding: 5px;
+    padding: 5px 20px;
     color: var(--app-text);
     cursor: pointer;
 
@@ -369,7 +390,7 @@
   &__b-pag-filter-lselect {
     gap: 10px;
     justify-content: space-between;
-    align-items: start;
+    // align-items: start;
     padding: 5px 10px;
     flex-wrap: wrap;
     cursor: alias;
@@ -377,6 +398,10 @@
       &:hover {
         background-color: transparent !important;
       }
+    }
+
+    &:active {
+      background-color: transparent;
     }
   }
 
@@ -428,7 +453,6 @@
     position: absolute;
     top: 40px;
     z-index: 10;
-    background-color: red;
     width: 100%;
 
     min-width: fit-content;
@@ -437,6 +461,7 @@
     background-color: rgb(from var(--app-sidebar) r g b / 1);
     border-radius: 10px;
     width: 100%;
+    max-width: fit-content;
     border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
   }
 
@@ -471,6 +496,41 @@
 
     white-space: nowrap;
     padding: 5px 10px !important;
+  }
+
+  &__b-pag-lselbutton-box {
+    @include display();
+    justify-content: end;
+    width: 100%;
+  }
+
+  &__b-pag-lselect-button {
+    @include inter();
+    padding: 3px 10px;
+    height: 35px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    width: 100%;
+    max-width: 100px;
+    background-color: rgb(from var(--app-light-blue) r g b / 1);
+    color: var(--app-text);
+    cursor: pointer;
+  }
+
+  &__b-pag-span-close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 5px;
+    right: 5px;
+    padding: 3px;
+    color: var(--app-text)
+  }
+
+  &__b-pag-lfilter-wrap {
+    position: relative;
+    padding: 25px 10px 10px 10px;
   }
 }
 
@@ -660,5 +720,27 @@ $skeleton-animation: #2d3242;
   }
   100% {
     background-position: -200% 0;
+  }
+}
+
+
+
+.products__dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+  background-color: transparent;
+}
+
+.products__filter-dropdown-portal {
+  @media (max-width: 480px) {
+    position: fixed !important; 
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+    width: 90% !important;
   }
 }
