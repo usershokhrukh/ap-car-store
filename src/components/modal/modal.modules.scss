@@ -1,0 +1,30 @@
+@use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
+
+.modal {
+  @include display();
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 110;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.253);
+
+  &__center {
+    padding: 30px;
+    position: relative;
+    background-color: var(--app-sidebar);
+    border-radius: 10px;
+  }
+
+  &__cn-span{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    color: var(--app-text)
+  }
+}

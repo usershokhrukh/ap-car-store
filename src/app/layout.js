@@ -3,6 +3,7 @@ import "./globals.scss";
 import ProtectedImage from "@/components/Image";
 import AppLayout from "@/components/AppLayout";
 import NotificationCustom from "./NotificationCustom";
+import GeneralModalProvide from "@/components/modal/GeneralModalProvide";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,10 +24,12 @@ export default function RootLayout({children}) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <NotificationCustom>
-          <AppLayout>{children}</AppLayout>
-        </NotificationCustom>
-        <ProtectedImage />
+        <GeneralModalProvide>
+          <NotificationCustom>
+            <AppLayout>{children}</AppLayout>
+          </NotificationCustom>
+          <ProtectedImage />
+        </GeneralModalProvide>
       </body>
     </html>
   );

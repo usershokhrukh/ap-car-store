@@ -1,5 +1,5 @@
 "use client";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import CarProductsTable from "./ProductsTable";
 import {useGetProducts} from "@/hooks/products/GetProducts";
 import "./products.modules.scss";
@@ -8,6 +8,8 @@ import ProductsSkeleton from "./ProductsLoading";
 import NotFound from "../notfound/NotFound";
 import {useRouter} from "next/navigation";
 import {createPortal} from "react-dom"; // Native React module feature
+import { GeneralModal } from "@/context/GeneralModal";
+import NewProductsModal from "../modal/products/NewProductsModal";
 
 const Products = () => {
   const [limit, setLimit] = useState({
@@ -207,6 +209,9 @@ const Products = () => {
     }
   }, [page]);
 
+  const {setCloseModal, setCompModal} = useContext(GeneralModal);
+
+
   return (
     <div className="products container">
       {!isPending && data && loaded ? (
@@ -216,7 +221,10 @@ const Products = () => {
               <h2 className="products__title">Products</h2>
               <p className="products__tit-sub">Avtomobillar ro'yxati</p>
             </div>
-            <button className="products__top-submit">+ Add New Car</button>
+            <button  onClick={() => {
+              setCloseModal(true);
+              setCompModal(<NewProductsModal/>)
+            }} className="products__top-submit">+ Add New Car</button>
           </div>
           <div className="products__bottom">
             <div className="products__b-pag">
