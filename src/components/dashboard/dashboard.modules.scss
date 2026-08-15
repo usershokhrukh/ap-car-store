@@ -364,9 +364,18 @@ $skeleton-animation: #353a4a;
     border-top: 1px solid rgb(from var(--app-border) r g b / 0.3);
     padding: 6px 0px;
 
-    .sk-label { height: 14px; width: 70px; }
-    .sk-val { height: 16px; width: 40px; }
-    .sk-val-large { height: 20px; width: 110px; }
+    .sk-label {
+      height: 14px;
+      width: 70px;
+    }
+    .sk-val {
+      height: 16px;
+      width: 40px;
+    }
+    .sk-val-large {
+      height: 20px;
+      width: 110px;
+    }
   }
 
   &__chart {
@@ -408,8 +417,12 @@ $skeleton-animation: #353a4a;
   }
 
   &__chart-left {
-    width: 200px;
-    height: 200px;
+    // width: 100% !important;
+    // height: 100% !important;
+    min-width: 170px;
+    min-height: 170px;
+    // max-width: 150px !important;
+    // max-height: 150px !important;
     border-radius: 50%;
     border: 14px solid $skeleton-base;
     box-sizing: border-box;
@@ -490,12 +503,17 @@ $skeleton-animation: #353a4a;
       width: 100px;
       height: 100px;
       border-width: 8px;
+      min-width: 0px;
+      min-height: 0px;
     }
   }
 }
 
 @keyframes skeleton-pulse-wave {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
-
