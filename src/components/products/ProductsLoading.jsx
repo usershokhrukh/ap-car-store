@@ -1,12 +1,44 @@
-import React from 'react';
+import React from "react";
 
 export default function ProductsSkeleton() {
   return (
     <div className="products-skeleton">
       <header className="products-skeleton__header">
-        <div className="skeleton-box products-skeleton__title" />
-        <div className="skeleton-box products-skeleton__subtitle" />
+        <div className="products-skeleton__header-top">
+          <div className="skeleton-box products-skeleton__title" />
+          <div className="skeleton-box products-skeleton__subtitle" />
+        </div>
+        <div className="skeleton-box products-skeleton__top-button"></div>
       </header>
+
+      <div className="products-skeleton__action-bar">
+      
+      {/* Left Side: Controls (Search Input, Per-Page Dropdown, Filter Button) */}
+      <div className="products-skeleton__controls">
+        <div className="skeleton-box products-skeleton__search-input" />
+        <div className="skeleton-box products-skeleton__per-page-select" />
+        <div className="skeleton-box products-skeleton__filter-trigger" />
+      </div>
+
+      {/* Right Side: Pagination Blocks */}
+      <div className="products-skeleton__pagination">
+        {/* Prev Navigation Trigger */}
+        <div className="skeleton-box products-skeleton__pag-nav" />
+        
+        {/* Numbered Page List Badges */}
+        <div className="products-skeleton__pag-numbers">
+          <div className="skeleton-box products-skeleton__pag-num products-skeleton__pag-num--active" />
+          <div className="skeleton-box products-skeleton__pag-num" />
+          <div className="skeleton-box products-skeleton__pag-num" />
+          <div className="skeleton-box products-skeleton__pag-ellipsis" />
+          <div className="skeleton-box products-skeleton__pag-num" />
+        </div>
+
+        {/* Next Navigation Trigger */}
+        <div className="skeleton-box products-skeleton__pag-nav" />
+      </div>
+
+    </div>
 
       <div className="products-skeleton__table-wrapper">
         <div className="products-skeleton__table">

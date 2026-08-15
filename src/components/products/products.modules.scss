@@ -7,14 +7,40 @@
   @include paddingLargeBoxes();
   width: 100%;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 
   &__top {
     @include display();
-    flex-direction: column;
-    align-items: start;
+    // flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     gap: 10px;
+  }
+
+  &__top-left {
+    @include display();
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+  }
+
+  &__top-submit {
+    @include display();
+    font-size: 14px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: none;
+    color: var(--app-text);
+    outline: none;
+    cursor: pointer;
+
+    background: #d23a7a;
+    background: linear-gradient(
+      90deg,
+      rgba(210, 58, 122, 1) 0%,
+      rgba(126, 58, 242, 1) 100%
+    );
   }
 
   &__title {
@@ -556,20 +582,45 @@ $skeleton-animation: #2d3242;
   );
   background-size: 200% 100%;
   animation: skeleton-pulse-wave 1.5s infinite ease-in-out;
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 .products-skeleton {
   @include inter();
+  @include display();
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
   padding: 24px;
   box-sizing: border-box;
 
   &__header {
-    margin-bottom: 24px;
     display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    // flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    flex-grow: 1;
+  }
+
+  &__header-top {
+    @include display();
     flex-direction: column;
     gap: 8px;
+    align-items: start;
+  }
+
+  &__top-button {
+    width: 115px;
+    height: 32px;
+
+    background: #d23a7a;
+    background: linear-gradient(
+      90deg,
+      rgba(210, 58, 122, 1) 0%,
+      rgba(126, 58, 242, 1) 100%
+    );
   }
 
   &__title {
@@ -587,6 +638,7 @@ $skeleton-animation: #2d3242;
     border: 1px solid var(--app-border);
     border-radius: 8px;
     overflow: hidden;
+    width: 100%;
   }
 
   &__table {
@@ -673,7 +725,100 @@ $skeleton-animation: #2d3242;
     border-radius: 12px;
   }
 
-  // --- RESPONSIVE MOBILE SKELETON OVERRIDES ---
+  &__action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-radius: 8px;
+    box-sizing: border-box;
+    gap: 16px;
+  }
+
+  /* --- LEFT CONTROLS GROUP --- */
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+  }
+
+  &__search-input {
+    width: 160px;
+    height: 38px;
+    // border-radius: 8px;
+  }
+
+  &__per-page-select {
+    width: 60px;
+    height: 38px;
+    // border-radius: 8px;
+  }
+
+  &__filter-trigger {
+    width: 60px;
+    height: 38px;
+    // border-radius: 8px;
+  }
+
+  /* --- RIGHT PAGINATION GROUP --- */
+  &__pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__pag-nav {
+    width: 72px;
+    height: 36px;
+    // border-radius: 6px;
+  }
+
+  &__pag-numbers {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__pag-num {
+    width: 32px;
+    height: 36px;
+    // border-radius: 6px;
+  }
+
+  &__pag-ellipsis {
+    width: 28px;
+    height: 36px;
+    // border-radius: 6px;
+  }
+
+  @media (max-width: 768px) {
+    &__action-bar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+      padding: 16px;
+    }
+
+    &__controls {
+      width: 100%;
+    }
+
+    &__search-input {
+      flex-grow: 1; // Expands search input box gracefully on mobile screens
+    }
+
+    &__pagination {
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    &__pag-numbers {
+      justify-content: center;
+      flex-grow: 1;
+    }
+  }
+
   @media (max-width: 768px) {
     padding: 16px;
 

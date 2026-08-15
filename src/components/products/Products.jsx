@@ -138,7 +138,7 @@ const Products = () => {
       setLimit({
         ...limit,
         search: "",
-        page
+        page,
       });
       setSearch(value);
     }
@@ -212,8 +212,11 @@ const Products = () => {
       {!isPending && data && loaded ? (
         <>
           <div className="products__top">
-            <h2 className="products__title">Products</h2>
-            <p className="products__tit-sub">Avtomobillar ro'yxati</p>
+            <div className="products__top-left">
+              <h2 className="products__title">Products</h2>
+              <p className="products__tit-sub">Avtomobillar ro'yxati</p>
+            </div>
+            <button className="products__top-submit">+ Add New Car</button>
           </div>
           <div className="products__bottom">
             <div className="products__b-pag">
@@ -584,7 +587,7 @@ const Products = () => {
               </div>
               <div className="products__b-pag-right">
                 <button
-                 onClick={() => setPage(page - 1)}
+                  onClick={() => setPage(page - 1)}
                   disabled={!hasPrevPage}
                   className={`products__b-pag-rbuttons ${hasPrevPage ? "" : "products__b-pag-rbuttons-disable"}`}
                 >
@@ -604,19 +607,19 @@ const Products = () => {
                     <>
                       <button
                         onClick={() => setPage(1)}
-                        className={`products__b-pag-page ${page == 1 ? "products__b-pag-page-active" : ""}`}
+                        className={`products__b-pag-page ${data?.data?.meta?.page == 1 ? "products__b-pag-page-active" : ""}`}
                       >
                         1
                       </button>
                       <button
                         onClick={() => setPage(2)}
-                        className={`products__b-pag-page ${page == 2 ? "products__b-pag-page-active" : ""}`}
+                        className={`products__b-pag-page ${data?.data?.meta?.page == 2 ? "products__b-pag-page-active" : ""}`}
                       >
                         2
                       </button>
                       <button
                         onClick={() => setPage(3)}
-                        className={`products__b-pag-page ${page == 3 ? "products__b-pag-page-active" : ""}`}
+                        className={`products__b-pag-page ${data?.data?.meta?.page == 3 ? "products__b-pag-page-active" : ""}`}
                       >
                         3
                       </button>
@@ -706,7 +709,7 @@ const Products = () => {
                       )}
                       <button
                         onClick={() => setPage(totalPages)}
-                        className={`products__b-pag-page ${page == totalPages ? "products__b-pag-page-active" : ""}`}
+                        className={`products__b-pag-page ${data?.data?.meta?.page == totalPages ? "products__b-pag-page-active" : ""}`}
                       >
                         {totalPages}
                       </button>
@@ -716,7 +719,7 @@ const Products = () => {
                       {[...Array(totalPages)]?.map((_, index) => (
                         <button
                           onClick={() => setPage(index + 1)}
-                          className={`products__b-pag-page ${page == index + 1 ? "products__b-pag-page-active" : ""}`}
+                          className={`products__b-pag-page ${data?.data?.meta?.page == index + 1 ? "products__b-pag-page-active" : ""}`}
                         >
                           {index + 1}
                         </button>
@@ -727,7 +730,7 @@ const Products = () => {
                       {[...Array(3)]?.map((_, index) => (
                         <button
                           onClick={() => setPage(index + 1)}
-                          className={`products__b-pag-page ${page == index + 1 ? "products__b-pag-page-active" : ""}`}
+                          className={`products__b-pag-page ${data?.data?.meta?.page == index + 1 ? "products__b-pag-page-active" : ""}`}
                         >
                           {index + 1}
                         </button>
@@ -736,7 +739,7 @@ const Products = () => {
                   )}
                 </div>
                 <button
-                onClick={() => setPage(page + 1)}
+                  onClick={() => setPage(page + 1)}
                   disabled={!hasNextPage}
                   className={`products__b-pag-rbuttons ${hasNextPage ? "" : "products__b-pag-rbuttons-disable"}`}
                 >
@@ -757,7 +760,7 @@ const Products = () => {
               <CarProductsTable cars={data} />
             ) : (
               <span className="products__tit-sub">
-                There are not product for this filter
+                There are not products for this filter
               </span>
             )}
           </div>
