@@ -31,6 +31,10 @@
   }
 
   &__bottom {
+    @include display();
+
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
   }
 
@@ -227,6 +231,247 @@
       border-radius: 10px;
     }
   }
+
+  &__b-pag {
+    @include display();
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  &__b-pag-left {
+    @include display();
+    gap: 10px;
+  }
+
+  &__b-pag-right {
+    @include display();
+    gap: 10px;
+  }
+
+  &__b-pag-search {
+    @include inter();
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    color: var(--app-text);
+    height: 35px;
+  }
+
+  &__b-pag-limit {
+    @include display();
+    position: relative;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    height: 35px;
+    gap: 10px;
+  }
+
+  &__b-pag-lbutton,
+  &__b-pag-rbuttons,
+  &__b-pag-page {
+    @include display();
+    @include inter();
+    gap: 8px;
+    height: 35px;
+
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    color: var(--app-text);
+
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+    }
+  }
+
+  &__b-pag-page {
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  &__b-pag-pages {
+    @include display();
+    height: 35px;
+    gap: 10px;
+  }
+
+  &__b-pag-limits {
+    @include display();
+    flex-direction: column;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border-radius: 10px;
+    width: 100%;
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    // overflow: hidden
+  }
+
+  &__b-pag-lselect {
+    @include display();
+    @include inter();
+    width: 100%;
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 5px;
+    color: var(--app-text);
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+    }
+
+    &:first-child {
+      border-radius: 9px 9px 0px 0px;
+    }
+
+    &:last-child {
+      border-radius: 0px 0px 9px 9px;
+    }
+  }
+
+  &__b-pag-span {
+    width: 25px;
+    height: 25px;
+
+    &-mini {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__b-pag-filter-lselect {
+    gap: 10px;
+    justify-content: space-between;
+    align-items: start;
+    padding: 5px 10px;
+    flex-wrap: wrap;
+    cursor: alias;
+    @media (hover: hover) {
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+  }
+
+  &__b-pag-filter-select {
+    @include display();
+    position: relative;
+    flex-direction: column;
+    // height: 35px;
+    justify-content: start;
+    align-items: end;
+    gap: 10px;
+    // background-color: red;
+  }
+
+  &__b-pag-filter-choosed {
+    padding: 8px;
+    @include display();
+    @include inter();
+    gap: 8px;
+    height: 35px;
+
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    color: var(--app-text);
+
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+    }
+  }
+
+  &__b-pag-filter-options {
+    @include display();
+    flex-direction: column;
+    position: absolute;
+    top: 40px;
+    z-index: 10;
+    background-color: red;
+    width: 100%;
+
+    min-width: fit-content;
+    @include display();
+    flex-direction: column;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border-radius: 10px;
+    width: 100%;
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+  }
+
+  &__b-pag-filter-option {
+    @include display();
+    @include inter();
+    width: 100%;
+    // flex-grow: 1;
+    font-size: 14px;
+    font-weight: 400;
+    // padding: 5px;
+    color: var(--app-text);
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+    }
+
+    &:first-child {
+      border-radius: 9px 9px 0px 0px;
+    }
+
+    &:last-child {
+      border-radius: 0px 0px 9px 9px;
+    }
+
+    white-space: nowrap;
+    padding: 5px 10px !important;
+  }
 }
 
 $skeleton-base: #252936;
@@ -380,7 +625,7 @@ $skeleton-animation: #2d3242;
 
       // Mock mobile attribute labels matching the actual dataset viewports
       &::before {
-        content: '';
+        content: "";
         display: block;
         height: 12px;
         width: 60px;
@@ -410,6 +655,10 @@ $skeleton-animation: #2d3242;
 }
 
 @keyframes skeleton-pulse-wave {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
