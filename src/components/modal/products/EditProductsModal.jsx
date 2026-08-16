@@ -5,6 +5,7 @@ import {useNotify} from "@/hooks/useNotify";
 import {GeneralModal} from "@/context/GeneralModal";
 import {useGetOneProduct} from "@/hooks/products/GetOneProduct";
 import {useEditProducts} from "@/hooks/products/EditProduct";
+import ProductFormSkeleton from "../ModalLoading";
 
 const EditProductsModal = ({id: productId}) => {
   const {data, isPending, error} = useGetCategories();
@@ -15,8 +16,6 @@ const EditProductsModal = ({id: productId}) => {
     error: oneProductError,
     isPending: oneProductPending,
   } = useGetOneProduct(productId);
-  // console.log(oneProductData);
-
   const route = useRouter();
   const {notice} = useNotify();
   const [input, setInput] = useState({
@@ -38,7 +37,7 @@ const EditProductsModal = ({id: productId}) => {
         stock: oneProductData?.data?.stock,
         image: oneProductData?.data?.image,
       });
-      setCategoryValue(oneProductData?.data?.category?.name)
+      setCategoryValue(oneProductData?.data?.category?.name);
     }
   }, [oneProductData]);
 
@@ -130,8 +129,6 @@ const EditProductsModal = ({id: productId}) => {
         status: "info",
         time: "infinite",
       });
-      console.log(input);
-      
       mutate([productId, input]);
     } catch (error) {
       route.refresh();
@@ -163,106 +160,126 @@ const EditProductsModal = ({id: productId}) => {
   }, [postData, postError, postPending]);
 
   return (
-    <form onSubmit={handleSubmit} className="modal__form">
-      <input
-        onChange={handleInput}
-        className="modal__inputs"
-        placeholder="Name"
-        name="name"
-        type="text"
-        value={input?.name}
-      />
-      <textarea
-        onChange={handleInput}
-        className="modal__inputs modal__textarea"
-        placeholder="Description"
-        name="description"
-        id=""
-        value={input?.description}
-
-      ></textarea>
-      <input
-        onChange={handleInput}
-        className="modal__inputs"
-        placeholder="Price"
-        name="price"
-        type="number"
-        value={input?.price}
-
-      />
-      <input
-        onChange={handleInput}
-        className="modal__inputs"
-        placeholder="Stock"
-        name="stock"
-        type="number"
-        value={input?.stock}
-      />
-      <input
-        onChange={handleInput}
-        className="modal__inputs"
-        placeholder="Image"
-        name="image"
-        type="url"
-        required
-        value={input?.image}
-      />
-      <span className="products__b-pag-lselect products__b-pag-filter-lselect modal__select">
-        <span>Category: </span>
-        <span className="products__b-pag-filter-select modal__select-wrap">
-          <span
-            ref={dropRef}
-            onClick={() => setOpenCategory(!openCategory)}
-            className="products__b-pag-filter-choosed modal__select-choosed"
-          >
-            {categoryValue || "--"}
-            <span className="products__b-pag-span">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 14L8 10H16L12 14Z"></path>
-              </svg>
-            </span>
-          </span>
-          {openCategory ? (
-            <>
-              <span
-                ref={dropHeightRef}
-                className={`products__b-pag-filter-options modal__options modal__options-${dropDownPosition}`}
-              >
-                {data?.data?.items?.map(({id, name}) => (
-                  <span
-                    key={id}
-                    onClick={() => {
-                      setInput({
-                        ...input,
-                        categoryId: id,
-                      });
-                      setCategoryValue(name);
-                    }}
-                    className="products__b-pag-filter-option"
-                  >
-                    {name}
+    <>
+      {data && !isPending ? (
+        <>
+          <form onSubmit={handleSubmit} className="modal__form">
+            <input
+              onChange={handleInput}
+              className="modal__inputs"
+              placeholder="Name"
+              name="name"
+              type="text"
+              value={input?.name}
+            />
+            <textarea
+              onChange={handleInput}
+              className="modal__inputs modal__textarea"
+              placeholder="Description"
+              name="description"
+              id=""
+              value={input?.description}
+            ></textarea>
+            <input
+              onChange={handleInput}
+              className="modal__inputs"
+              placeholder="Price"
+              name="price"
+              type="number"
+              value={input?.price}
+            />
+            <input
+              onChange={handleInput}
+              className="modal__inputs"
+              placeholder="Stock"
+              name="stock"
+              type="number"
+              value={input?.stock}
+            />
+            <input
+              onChange={handleInput}
+              className="modal__inputs"
+              placeholder="Image"
+              name="image"
+              type="url"
+              required
+              value={input?.image}
+            />
+            <span className="products__b-pag-lselect products__b-pag-filter-lselect modal__select">
+              <span>Category: </span>
+              <span className="products__b-pag-filter-select modal__select-wrap">
+                <span
+                  ref={dropRef}
+                  onClick={() => setOpenCategory(!openCategory)}
+                  className="products__b-pag-filter-choosed modal__select-choosed"
+                >
+                  {categoryValue || "--"}
+                  <span className="products__b-pag-span">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M12 14L8 10H16L12 14Z"></path>
+                    </svg>
                   </span>
-                ))}
+                </span>
+                {openCategory ? (
+                  <>
+                    <span
+                      ref={dropHeightRef}
+                      className={`products__b-pag-filter-options modal__options modal__options-${dropDownPosition}`}
+                    >
+                      {data?.data?.items?.map(({id, name}) => (
+                        <span
+                          key={id}
+                          onClick={() => {
+                            setInput({
+                              ...input,
+                              categoryId: id,
+                            });
+                            setCategoryValue(name);
+                          }}
+                          className="products__b-pag-filter-option"
+                        >
+                          {name}
+                        </span>
+                      ))}
+                    </span>
+                  </>
+                ) : null}
               </span>
-            </>
-          ) : null}
-        </span>
-      </span>
-      <button
-        style={{
-          opacity: `${postPending ? "0.5" : "1"}`,
-        }}
-        disabled={postPending}
-        className="modal__submit"
-        type="submit"
-      >
-        Submit
-      </button>
-    </form>
+            </span>
+            <button
+              style={{
+                opacity: `${postPending ? "0.5" : "1"}`,
+              }}
+              disabled={postPending}
+              className="modal__submit"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        </>
+      ) : isPending ? (
+        <form className="modal__form">
+          <ProductFormSkeleton />
+        </form>
+      ) : (
+        <>
+          <form className="modal__form">
+            <p className="modal__title">Can not be found!</p>
+            <button
+              className="modal__submit"
+              onClick={() => route.push("/products")}
+            >
+              Back to products
+            </button>
+          </form>
+        </>
+      )}
+    </>
   );
 };
 

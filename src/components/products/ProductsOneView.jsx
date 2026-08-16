@@ -16,6 +16,7 @@ import {GeneralModal} from "@/context/GeneralModal";
 import ProductDeleteConfirm from "./ProductDeleteConfirm";
 import EditProductsModal from "../modal/products/EditProductsModal";
 import {usePatchStatusCategories} from "@/hooks/category/PatchCategoriesStatus";
+import CarDetailsSkeleton from "./ProductsOneLoading";
 
 const ProductsOneView = () => {
   const {id} = useParams();
@@ -345,7 +346,7 @@ const ProductsOneView = () => {
           </div>
         </>
       ) : isPending ? (
-        <>Loading...</>
+        <><CarDetailsSkeleton/></>
       ) : (
         <NotFound />
       )}

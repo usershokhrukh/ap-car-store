@@ -587,8 +587,9 @@
   }
 }
 
+
 $skeleton-base: #252936;
-$skeleton-animation: #2d3242;
+$skeleton-animation: #353a4a;
 
 .skeleton-box {
   background: linear-gradient(
@@ -601,7 +602,6 @@ $skeleton-animation: #2d3242;
   animation: skeleton-pulse-wave 1.5s infinite ease-in-out;
   border-radius: 10px;
 }
-
 .products-skeleton {
   @include inter();
   @include display();

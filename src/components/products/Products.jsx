@@ -20,7 +20,7 @@ import NewProductsModal from "../modal/products/NewProductsModal";
 const Products = () => {
   const [limit, setLimit] = useState({
     search: "",
-    limit: 4,
+    limit: 8,
     page: 1,
     categoryId: "",
     isActive: "",
@@ -91,7 +91,9 @@ const Products = () => {
     setLimit({
       ...limit,
       limit: e.target?.id || 4,
+      page: 1
     });
+    setPage(1)
     setOpenLimit(false);
   };
 

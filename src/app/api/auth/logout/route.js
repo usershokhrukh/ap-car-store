@@ -5,9 +5,7 @@ export async function POST(request) {
     const cookieStore = await cookies();
     cookieStore.delete("accessToken", {path: "/"});
     return Response.json({message: "Successfully logged out", success: true});
-  } catch (error) {
-    console.log(error);
-    
+  } catch (error) {    
     return Response.json({error}, {status: 500});
   }
 }

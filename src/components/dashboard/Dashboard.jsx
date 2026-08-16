@@ -8,7 +8,10 @@ import {useGetDashboardStats} from "@/hooks/dashboard/GetDashboardStats";
 import {useGetDashboardCategoriesStats} from "@/hooks/dashboard/GetDashboardCategoriesStats";
 import CarServiceSkeleton from "./DashboardLoading";
 import NotFound from "../notfound/NotFound";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
+import ProductsTable from "../products/ProductsTable";
+import {useGetDashboardLowStock} from "@/hooks/dashboard/GetDashboardCategoriesLowStock";
+import "../products/products.modules.scss";
 
 const Dashboard = () => {
   const {notice} = useNotify();
@@ -44,9 +47,35 @@ const Dashboard = () => {
     });
   }, []);
 
+  const {
+    data: lowStockData,
+    isPending: lowStockPending,
+    error: lowStockError,
+  } = useGetDashboardLowStock();
+  const [dataTable, setDataTable] = useState(null);
+
+  useEffect(() => {
+    setDataTable({
+      data: {
+        items: lowStockData?.data,
+      },
+    });
+  }, [lowStockData]);
+
+  useEffect(() => {
+    if (lowStockError?.message) {
+      notice({
+        text: `${lowStockError?.message}`,
+        status: "error",
+        time: 5000,
+      });
+      route.refresh();
+    }
+  }, [lowStockError]);
+
   return (
     <div className="dashboard container">
-      {data && categoryStats && !isPending && !categoryPending ? (
+      {data && categoryStats && !isPending && !categoryPending && dataTable ? (
         <>
           <div className="dashboard__top">
             <h2 className="dashboard__title">Welcome To Car Service</h2>
@@ -147,8 +176,16 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+          <p className="dashboard__tit-sub">
+            {lowStockData?.message}:
+          </p>
+          <ProductsTable cars={dataTable} />
         </>
-      ) : isPending || categoryPending || !data || !categoryStats ? (
+      ) : isPending ||
+        categoryPending ||
+        !data ||
+        !categoryStats ||
+        !lowStockPending ? (
         <CarServiceSkeleton />
       ) : (
         <NotFound />

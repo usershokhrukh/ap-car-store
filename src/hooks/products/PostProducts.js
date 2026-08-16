@@ -18,6 +18,7 @@ export const usePostProducts = () => {
     mutationFn: request,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["products"]})
+      queryClient.invalidateQueries({queryKey: ["dashboard-low-stock"]})
     }
   })
 }

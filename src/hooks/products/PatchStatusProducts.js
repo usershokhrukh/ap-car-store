@@ -19,6 +19,7 @@ export const usePatchStatusProducts = () => {
     mutationFn: request,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["products"]});
+      queryClient.invalidateQueries({queryKey: ["dashboard-low-stock"]})
     },
   });
 };

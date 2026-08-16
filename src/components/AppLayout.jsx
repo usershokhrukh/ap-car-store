@@ -1,12 +1,23 @@
 "use client";
-import React, {Suspense, useContext} from "react";
+import React, {Suspense, useContext, useEffect} from "react";
 import Sidebar from "./sidebar/Sidebar";
 import {usePathname} from "next/navigation";
 import { GeneralModal } from "@/context/GeneralModal";
 import GeneralModalUI from "./modal/GeneralModalUI";
 const AppLayout = ({children}) => {
   const pathname = usePathname();
-  const {closeModal} = useContext(GeneralModal)    
+  const {closeModal, setCloseModal} = useContext(GeneralModal);
+  useEffect(() => {
+    const handleKey = (e) => {
+      if(e.key == "Escape") {
+        setCloseModal(false)
+      }
+    }
+    window.addEventListener("keydown", handleKey)
+    return () => {
+      window.addEventListener("keydown", handleKey)
+    } 
+  }, []) 
   return (
     <div className="global">
       {pathname === "/login" ? (
