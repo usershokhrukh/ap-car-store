@@ -6,8 +6,9 @@ import React, { useState } from 'react'
 const GeneralModalProvide = ({children}) => {
   const [closeModal, setCloseModal] = useState(false)
   const [compModal, setCompModal] = useState(null)
+  const [closeSpan, setCloseSpan] = useState(true)
   return (
-    <GeneralModal.Provider value={{closeModal, setCloseModal, compModal, setCompModal}}>{children}</GeneralModal.Provider>
+    <GeneralModal.Provider value={{closeModal, setCloseModal, compModal, setCompModal, closeSpan, setCloseSpan}}>{children}</GeneralModal.Provider>
   )
 }
 

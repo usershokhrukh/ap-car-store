@@ -113,7 +113,6 @@ const NewProductsModal = () => {
 
   useEffect(() => {
     if(postData?.success && !postError?.message && !postPending) {
-      console.log(postData);
       notice({
         text: postData?.message || "Qo'shildi",
         time: 5000,

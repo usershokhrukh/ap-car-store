@@ -107,4 +107,14 @@
     );
     color: var(--app-text);
   }
+
+  &__f-delete-button {
+    width: 100% !important;
+  }
+
+  &__title {
+    @include inter();
+    font-size: 15px;
+    color: var(--app-text)
+  }
 }
