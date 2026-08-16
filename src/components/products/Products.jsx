@@ -96,7 +96,7 @@ const Products = () => {
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
 
-      const dropdownWidth = 320;
+      const dropdownWidth = 333;
       let leftPosition = rect.left;
 
       if (rect.left + dropdownWidth > window.innerWidth) {
@@ -321,7 +321,7 @@ const Products = () => {
                       </svg>
                     </span>
                   </button>
-                  {openFilter &&
+                  {openFilter && coords?.left && coords?.top &&
                     createPortal(
                       <>
                         {/* <div

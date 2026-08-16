@@ -18,13 +18,93 @@
     border-radius: 10px;
   }
 
-  &__cn-span{
+  &__cn-span {
     position: absolute;
     top: 5px;
     right: 5px;
     width: 20px;
     height: 20px;
     padding: 3px;
-    color: var(--app-text)
+    color: var(--app-text);
+  }
+
+  &__form {
+    @include display();
+    flex-direction: column;
+    max-width: 500px;
+    gap: 10px;
+    width: 100%;
+  }
+
+  &__inputs {
+    @include inter();
+    font-size: 14px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 0px !important;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    color: var(--app-text);
+  }
+
+  &__textarea {
+    max-width: 100%;
+    max-height: 100px;
+    resize: none;
+  }
+
+  &__select {
+    @include display();
+    padding: 0px !important;
+    flex-wrap: wrap !important;
+  }
+
+  &__select-wrap {
+    flex-grow: 1;
+    height: fit-content !important;
+  }
+
+  &__select-choosed {
+    justify-content: end !important;
+    max-width: fit-content !important;
+  }
+
+  &__options {
+    @include display();
+    position: absolute !important;
+    justify-content: start !important;
+    overflow: auto;
+    gap: 0px !important;
+    max-height: 250px;
+
+    &-top {
+      top: auto !important;
+      bottom: calc(100% + 6px) !important;
+    }
+
+    &-bottom {
+      top: calc(100% + 6px) !important;
+    }
+  }
+
+  &__submit {
+    @include display();
+    font-size: 14px;
+    width: 100%;
+    padding: 6px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+
+    background: #7e3af2;
+    background: linear-gradient(
+      90deg,
+      rgba(126, 58, 242, 0.5) 0%,
+      rgba(0, 130, 255, 0.5) 100%
+    );
+    color: var(--app-text);
   }
 }

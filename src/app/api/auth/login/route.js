@@ -9,7 +9,7 @@ export async function POST(request) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 900,
+      maxAge: 60 * 60 * 24 * 6,
     });
     return Response.json({success: true});
   } catch (err) {
