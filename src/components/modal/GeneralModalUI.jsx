@@ -1,9 +1,12 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import "./modal.modules.scss";
 import {GeneralModal} from "@/context/GeneralModal";
 
 const GeneralModalUI = () => {
-  const {compModal, setCloseModal, closeSpan} = useContext(GeneralModal);
+  const {compModal, setCloseModal, closeSpan, setCloseSpan} = useContext(GeneralModal);
+  useEffect(() => {
+    setCloseSpan(true)
+  }, [])
   return (
     <div className="modal">
       <div className="modal__center">

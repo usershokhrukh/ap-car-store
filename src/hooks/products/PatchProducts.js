@@ -7,7 +7,7 @@ const request = async (payload) => {
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
-      throw new Error(error.response.data.message || "Could not resolve!");
+      throw new Error(error.response.data.message + error.response?.data?.errors?.[0] || "Could not resolve!");
     }
     throw new Error(error.message || "Something went wrong!");
   }

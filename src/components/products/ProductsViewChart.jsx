@@ -42,7 +42,7 @@ export default function ProductsViewChart({data}) {
   return (
     <div className="products-view__chart">
       <div className="dashboard__chart-bottom products-view__chart-bottom">
-        <span className="dashboard__chart-right-title">Distribution stock to categories</span>
+        <span className="dashboard__chart-right-title">Distribution cars' stock in category</span>
         <div className="dashboard__chart-left products-view__chart-left">
           <ResponsiveContainer width="100" aspect={1}>
             <PieChart>

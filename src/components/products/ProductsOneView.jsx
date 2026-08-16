@@ -14,6 +14,7 @@ import {usePatchProducts} from "@/hooks/products/PatchProducts";
 import {usePatchStatusProducts} from "@/hooks/products/PatchStatusProducts";
 import { GeneralModal } from "@/context/GeneralModal";
 import ProductDeleteConfirm from "./ProductDeleteConfirm";
+import EditProductsModal from "../modal/products/EditProductsModal";
 
 const ProductsOneView = () => {
   const {id} = useParams();
@@ -216,7 +217,10 @@ const ProductsOneView = () => {
                   </div>
                 </div>
                 <div className="products-view__mleft-side-right">
-                  <button className="products-view__mleft-buttons">
+                  <button onClick={() => {
+                    setCompModal(<EditProductsModal id={id}/>)
+                    setCloseModal(true)
+                  }} className="products-view__mleft-buttons">
                     <span className="products-view__mleft-buttons-span">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
