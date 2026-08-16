@@ -50,7 +50,12 @@ const ProductsTable = ({cars}) => {
 
   const handleProducts = (e, id) => {
     if (e.target?.id != "switch") {
-      console.log(id);
+      // notice({
+      //   text: "Loading...",
+      //   status: "info",
+      //   time: "infinite"
+      // })
+      route.push(`/products/${id}`)
     }
   };
 

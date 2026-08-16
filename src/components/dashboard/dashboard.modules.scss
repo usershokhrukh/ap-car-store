@@ -166,7 +166,6 @@
   &__chart-bottom {
     @include display();
     justify-content: center;
-
     flex-grow: 1;
     width: 100%;
     border-radius: 10px;

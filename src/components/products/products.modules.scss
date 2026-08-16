@@ -8,6 +8,7 @@
   width: 100%;
   flex-direction: column;
   gap: 15px;
+  align-items: start;
 
   &__top {
     @include display();
@@ -568,6 +569,21 @@
   &__b-pag-lfilter-wrap {
     position: relative;
     padding: 25px 10px 10px 10px;
+  }
+
+
+
+  &__view-back {
+    width: 35px;
+    height: 35px;
+    color: var(--secondary-text);
+    cursor: pointer;
+  }
+
+  &__view-top{
+    @include display();
+    justify-content: start !important;
+    width: 100%;
   }
 }
 

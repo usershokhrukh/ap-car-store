@@ -1,0 +1,286 @@
+@use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
+
+.products-view {
+  @include display();
+
+  &__main {
+    @include display();
+    @include paddingLargeBoxes();
+    // flex-direction: column;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+
+    background-color: rgb(from var(--app-sidebar) r g b / 0.3);
+  }
+
+  &__image {
+    // width: 100%;
+    // height: 100%;
+    // max-width: 800px;
+    // max-height: 700px;
+    border-radius: 20px;
+  }
+  &__image-container {
+    @include display();
+    position: relative; /* Anchors the overlay cleanly on top */
+    border-radius: 16px; /* Smooth card curvature matching your image */
+    overflow: hidden; /* Ensures the image and overlay share perfect edges */
+    flex-grow: 3;
+    max-width: 800px;
+    // height: 100%;
+    max-height: 700px !important;
+    // background-color: red;
+  }
+
+  &__image {
+    // min-width: 800px;
+    // min-height: 400px;
+    object-fit: contain;
+    // display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__vignette-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    box-shadow:
+      inset 0 0 200px rgba(0, 0, 0, 0.85),
+      inset 0 0 300px rgba(0, 0, 0, 0.9);
+  }
+
+  &__main-left {
+    @include display();
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+    padding: 15px;
+    // height: 100%;
+    // max-width: 600px;
+    flex-grow: 1;
+
+  }
+
+  &__chart-bottom {
+    flex-direction: column;
+    background-color: transparent !important;
+    border-radius: 20px !important;
+  }
+
+  &__chart-left {
+    @include display();
+    justify-content: center !important;
+    align-items: center !important;
+    // background-color: red
+  }
+
+  &__main-title {
+    @include inter();
+    font-size: 25px;
+    font-weight: 400;
+    color: var(--app-neon-cyan);
+  }
+
+  &__main-desc {
+    @include inter();
+    font-size: 15px;
+    color: var(--app-text);
+    margin-top: 4px;
+  }
+
+  &__main-box {
+    @include display();
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  &__main-stock-span {
+    width: 20px;
+    height: 20px;
+    color: rgb(from var(--secondary-text) r g b / 0.7);
+  }
+
+  &__main-b-activate {
+    @include inter();
+    font-size: 14px;
+    padding: 8px 10px;
+    border-radius: 50px;
+    background-color: rgb(from var(--app-purple) r g b / 0.1);
+    cursor: pointer;
+    opacity: 0.7;
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &:active {
+      opacity: 1;
+    }
+
+    &:has(.products-view__main-b-activate-act) {
+      border: 1px solid var(--app-green);
+    }
+    &-act {
+      color: var(--app-green);
+    }
+
+    &:has(.products-view__main-b-activate-inact) {
+      border: 1px solid var(--app-red);
+    }
+    &-inact {
+      color: var(--app-red);
+    }
+  }
+
+  &__main-price {
+    @include inter();
+    font-size: 20px;
+    color: var(--app-green);
+  }
+
+  &__main-left-side {
+    @include display();
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+
+  &__main-stock-wr {
+    @include display();
+    justify-content: space-between;
+    // padding: 8px;
+    border-radius: 10px;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    min-width: 100px;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  &__main-stock-nums {
+    @include display();
+    width: 40px;
+    height: 40px;
+    color: var(--secondary-text);
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 0.7);
+        color: var(--app-text);
+      }
+    }
+  }
+
+  &__main-stock {
+    @include inter();
+    font-size: 20px;
+    flex-grow: 1;
+    color: var(--app-text);
+  }
+
+  &__mleft-side-right {
+    @include display();
+    gap: 5px;
+  }
+
+  &__mleft-buttons {
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border: none;
+    cursor: pointer;
+    color: var(--secondary-text);
+    outline: none;
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 0.7);
+        color: var(--app-text);
+      }
+    }
+    &-span {
+      width: 10px;
+      height: 10px;
+    }
+
+    &-delete {
+      background-color: rgb(from var(--app-red) r g b / 0.1) !important;
+      color: var(--app-red) !important;
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: rgb(from var(--app-red) r g b / 0.3) !important;
+          color: var(--app-red) !important;
+        }
+      }
+    }
+  }
+  &__main-left-bottom {
+    @include display();
+    align-items: end;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  &__chart {
+    background-color: transparent !important;
+    width: 100%;
+    // max-width: 700px
+  }
+  &__category {
+    @include display();
+    flex-direction: column;
+    width: 100%;
+    align-items: start;
+    gap: 10px;
+
+    &-title {
+      @include inter();
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--secondary-text);
+    }
+
+    &-main {
+      @include display();
+      width: 100%;
+      justify-content: space-between;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: rgb(from var(--app-sidebar) r g b / 0.3);
+      flex-wrap: wrap;
+    }
+
+    &-left {
+      @include display();
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    &-name {
+      @include inter();
+      font-size: 18px;
+      color: var(--app-text);
+    }
+
+    &-desc {
+      @include inter();
+      font-size: 15px;
+      color: rgb(from var(--app-cyan) r g b / 0.5);
+    }
+  }
+}
