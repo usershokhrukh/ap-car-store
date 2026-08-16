@@ -1,26 +1,129 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./products.modules.scss";
 import "./one-product.modules.scss";
-import "../../components/dashboard/dashboard.modules.scss"
+import "../../components/dashboard/dashboard.modules.scss";
 import {useParams, useRouter} from "next/navigation";
 import {useNotify} from "@/hooks/useNotify";
 import {useGetOneProduct} from "@/hooks/products/GetOneProduct";
 import NotFound from "../notfound/NotFound";
 import {useGetProducts} from "@/hooks/products/GetProducts";
-import BookingDistribution from "../dashboard/dashboardChart";
 import ProductsViewChart from "./ProductsViewChart";
+import {usePatchProducts} from "@/hooks/products/PatchProducts";
+import {usePatchStatusProducts} from "@/hooks/products/PatchStatusProducts";
+import { GeneralModal } from "@/context/GeneralModal";
+import ProductDeleteConfirm from "./ProductDeleteConfirm";
 
 const ProductsOneView = () => {
   const {id} = useParams();
   const route = useRouter();
   const {data, error, isPending} = useGetOneProduct(id);
   const [chartData, setChartData] = useState(null);
+  const {setCloseModal, setCompModal} = useContext(GeneralModal);
   const {notice} = useNotify();
   const search = `${data?.data?.categoryId ? `?categoryId=${data?.data?.categoryId}` : ""}`;
+  const {
+    mutate,
+    data: patchData,
+    isPending: patchPending,
+    error: patchError,
+  } = usePatchProducts();
   const {data: categoryProducts} = useGetProducts(search);
-  // console.log(categoryProducts);
+
+  const handlePlus = (data) => {
+    try {
+      notice({
+        text: "Pending...",
+        time: "infinite",
+        status: "info",
+      });
+      mutate([data?.id, {stock: data?.stock + 1}]);
+    } catch (error) {
+      route.refresh();
+    }
+  };
+
+  const handleMinus = (data) => {
+    if (data?.stock - 1 >= 0) {
+      try {
+        notice({
+          text: "Pending...",
+          time: "infinite",
+          status: "info",
+        });
+        mutate([data?.id, {stock: data?.stock - 1}]);
+      } catch (error) {
+        route.refresh();
+      }
+    }
+  };
+
+  const {
+    mutate: mutateStatus,
+    data: dataStatus,
+    isPending: pendingStatus,
+    error: errorStatus,
+  } = usePatchStatusProducts();
+
+  const handleProductStatus = (data) => {
+    try {
+      notice({
+        text: "Pending...",
+        time: "infinite",
+        status: "info",
+      });
+      mutateStatus([data?.id, {isActive: !data?.isActive}]);
+    } catch (error) {
+      route.refresh();
+    }
+  };
+
+  useEffect(() => {
+    if (patchError?.message) {
+      notice({
+        text: patchError?.message,
+        status: "error",
+        time: "infinite",
+        close: true,
+      });
+      route.refresh();
+    }
+  }, [patchError]);
+
+  useEffect(() => {
+    if (patchData && !patchPending && !patchError?.message) {
+      notice({
+        text: patchData?.message,
+        time: 5000,
+        status: "success",
+      });
+    }
+  }, [patchData, patchPending]);
+
+
+
+  useEffect(() => {
+    if (errorStatus?.message) {
+      notice({
+        text: errorStatus?.message,
+        status: "error",
+        time: "infinite",
+        close: true,
+      });
+      route.refresh();
+    }
+  }, [errorStatus]);
+
+  useEffect(() => {
+    if (dataStatus && !pendingStatus && !errorStatus?.message) {
+      notice({
+        text: dataStatus?.message,
+        time: 5000,
+        status: "success",
+      });
+    }
+  }, [dataStatus, pendingStatus]);
 
   useEffect(() => {
     if (categoryProducts?.data?.items?.length) {
@@ -51,7 +154,7 @@ const ProductsOneView = () => {
         <>
           <div className="products-view__main">
             <div className="products-view__main-left">
-              <ProductsViewChart data={chartData}/>
+              <ProductsViewChart data={chartData} />
               <div className="products-view__main-left-bottom">
                 <div className="products-view__main-left-side">
                   <h2 className="products-view__main-title">
@@ -70,7 +173,8 @@ const ProductsOneView = () => {
                         <path d="M19 20H5V21C5 21.5523 4.55228 22 4 22H3C2.44772 22 2 21.5523 2 21V13.5L0.757464 13.1894C0.312297 13.0781 0 12.6781 0 12.2192V11.5C0 11.2239 0.223858 11 0.5 11H2L4.4805 5.21216C4.79566 4.47679 5.51874 4 6.31879 4H17.6812C18.4813 4 19.2043 4.47679 19.5195 5.21216L22 11H23.5C23.7761 11 24 11.2239 24 11.5V12.2192C24 12.6781 23.6877 13.0781 23.2425 13.1894L22 13.5V21C22 21.5523 21.5523 22 21 22H20C19.4477 22 19 21.5523 19 21V20ZM20 18V13H4V18H20ZM5.47703 11H18.523C18.6502 11 18.7762 10.9757 18.8944 10.9285C19.4071 10.7234 19.6566 10.1414 19.4514 9.62861L18 6H6L4.54856 9.62861C4.50131 9.74673 4.47703 9.87278 4.47703 10C4.47703 10.5523 4.92475 11 5.47703 11ZM5 14C7.31672 14 8.87868 14.7548 9.68588 16.2643L9.68582 16.2643C9.81602 16.5078 9.72418 16.8107 9.4807 16.9409C9.40818 16.9797 9.3272 17 9.24496 17H6C5.44772 17 5 16.5523 5 16V14ZM19 14V16C19 16.5523 18.5523 17 18 17H14.755C14.6728 17 14.5918 16.9797 14.5193 16.9409C14.2758 16.8107 14.184 16.5078 14.3142 16.2643L14.3141 16.2643C15.1213 14.7548 16.6833 14 19 14Z"></path>
                       </svg>
                     </span>
-                    {data?.data?.isActive ? (
+                    <span onClick={() => handleProductStatus({id, isActive: data?.data?.isActive})}>
+                      {data?.data?.isActive ? (
                       <span className="products-view__main-b-activate">
                         <span className="products-view__main-b-activate-act">
                           Active
@@ -83,15 +187,31 @@ const ProductsOneView = () => {
                         </span>
                       </span>
                     )}
+                    </span>
+                    
                     <p className="products-view__main-price">
                       {data?.data?.price} UZS
                     </p>
                     <span className="products-view__main-stock-wr">
-                      <span className="products-view__main-stock-nums">-</span>
+                      <span
+                        onClick={() =>
+                          handleMinus({stock: data?.data?.stock, id})
+                        }
+                        className="products-view__main-stock-nums"
+                      >
+                        -
+                      </span>
                       <p className="products-view__main-stock">
                         {data?.data?.stock}
                       </p>
-                      <span className="products-view__main-stock-nums">+</span>
+                      <span
+                        onClick={() =>
+                          handlePlus({stock: data?.data?.stock, id})
+                        }
+                        className="products-view__main-stock-nums"
+                      >
+                        +
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -108,7 +228,10 @@ const ProductsOneView = () => {
                     </span>
                   </button>
 
-                  <button className="products-view__mleft-buttons products-view__mleft-buttons-delete">
+                  <button onClick={() => {
+                    setCompModal(<ProductDeleteConfirm id={id}/>)
+                    setCloseModal(true)
+                  }} className="products-view__mleft-buttons products-view__mleft-buttons-delete">
                     <span className="products-view__mleft-buttons-span products-view__mleft-buttons-span-delete">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

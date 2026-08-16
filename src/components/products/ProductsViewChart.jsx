@@ -15,9 +15,7 @@ const dataColor = [
 ];
 
 export default function ProductsViewChart({data}) {
-  const [dataResult, setDataResult] = useState(null);
-  console.log(data);
-  
+  const [dataResult, setDataResult] = useState(null);  
   useEffect(() => {
     if (data?.length) {
       const result = data?.map((item, index) => {
