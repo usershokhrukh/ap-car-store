@@ -2,9 +2,9 @@ import { api } from "@/utils/api";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
 
-const request = async () => {
+const request = async (string) => {
   try {
-    const res = await api.get("/api/categories");
+    const res = await api.get(`/api/categories${string || ''}`);
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -13,9 +13,9 @@ const request = async () => {
     throw new Error(error.message || "Something went wrong!");
   }
 };
-export const useGetCategories = () => {
+export const useGetCategories = (string) => {
   return useQuery({
-    queryKey: ["category"],
-    queryFn: request,
+    queryKey: ["categories", string],
+    queryFn: () =>  request(string),
   });
 };
