@@ -49,7 +49,7 @@ const NewProductsModal = () => {
   useEffect(() => {
     if (!openCategory || !dropRef.current) return;
     const checkSpace = () => {
-      const rect = dropRef.current.getBoundingClientRect();
+      const rect = dropRef.current?.getBoundingClientRect();
       const viewPointHeight = window.innerHeight;
       const dropHeight = 250;
       if (viewPointHeight - rect.bottom < dropHeight && rect.top > dropHeight) {
