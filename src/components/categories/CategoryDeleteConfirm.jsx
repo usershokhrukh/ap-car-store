@@ -1,17 +1,17 @@
 "use client";
 
 import {GeneralModal} from "@/context/GeneralModal";
-import {useDeleteProduct} from "@/hooks/products/DeleteProduct";
+import { useDeleteCategory } from "@/hooks/category/DeleteCategory";
 import {useNotify} from "@/hooks/useNotify";
 import {useRouter} from "next/navigation";
 import React, {useContext, useEffect} from "react";
 
-const ProductDeleteConfirm = ({id}) => {
+const CategoryDeleteConfirm = ({id}) => {
   const route = useRouter();
 
   const {setCloseSpan, setCloseModal} = useContext(GeneralModal);
 
-  const {error, mutate, data, isPending} = useDeleteProduct();
+  const {error, mutate, data, isPending} = useDeleteCategory();
   const {notice} = useNotify();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const ProductDeleteConfirm = ({id}) => {
         time: "infinite",
         close: true,
       });
-      setCloseModal(false);
+      setCloseModal(false)
       route.refresh();
     }
   }, [error]);
@@ -34,13 +34,13 @@ const ProductDeleteConfirm = ({id}) => {
         time: 5000,
         status: "success",
       });
-      route.push("/products");
+      route.push("/categories");
     }
   }, [data, isPending]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCloseSpan(false);
+    setCloseSpan(false)
     notice({
       text: "Deleting...",
       status: "info",
@@ -52,7 +52,7 @@ const ProductDeleteConfirm = ({id}) => {
     <form onSubmit={handleSubmit} className="modal__form">
       {!isPending && !data?.success ? (
         <>
-          <p className="modal__title">Are you sure to delete car?</p>
+          <p className="modal__title">Are you sure to delete category?</p>
           <button
             type="submit"
             className="modal__f-delete-button products-view__mleft-buttons products-view__mleft-buttons-delete"
@@ -67,4 +67,4 @@ const ProductDeleteConfirm = ({id}) => {
   );
 };
 
-export default ProductDeleteConfirm;
+export default CategoryDeleteConfirm;

@@ -6,7 +6,10 @@ export default function CarDetailsSkeleton() {
     <div className="details-skeleton">
       {/* Top Split Workspace Container */}
       <div className="details-skeleton__workspace">
-        
+        {/* Right Feature Panel: Car Showcase Image Frame */}
+        <div className="details-skeleton__right-panel">
+          <div className="skeleton-box details-skeleton__image-frame" />
+        </div>
         {/* Left Interactive Column (Donut Chart & Info Panels) */}
         <div className="details-skeleton__left-panel">
           
@@ -45,10 +48,7 @@ export default function CarDetailsSkeleton() {
 
         </div>
 
-        {/* Right Feature Panel: Car Showcase Image Frame */}
-        <div className="details-skeleton__right-panel">
-          <div className="skeleton-box details-skeleton__image-frame" />
-        </div>
+        
 
       </div>
 

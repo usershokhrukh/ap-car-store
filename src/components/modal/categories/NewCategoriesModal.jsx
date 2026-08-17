@@ -1,8 +1,6 @@
-import {useGetCategories} from "@/hooks/category/GetCategories";
 import {useRouter} from "next/navigation";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {useNotify} from "@/hooks/useNotify";
-import {usePostProducts} from "@/hooks/products/PostProducts";
 import {GeneralModal} from "@/context/GeneralModal";
 import { usePostCategories } from "@/hooks/category/PostCategories";
 

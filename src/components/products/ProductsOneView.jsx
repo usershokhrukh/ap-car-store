@@ -4,6 +4,7 @@ import React, {useContext, useEffect, useState} from "react";
 import "./products.modules.scss";
 import "./one-product.modules.scss";
 import "../../components/dashboard/dashboard.modules.scss";
+import "./products-one-loading.modules.scss";
 import {useParams, useRouter} from "next/navigation";
 import {useNotify} from "@/hooks/useNotify";
 import {useGetOneProduct} from "@/hooks/products/GetOneProduct";
@@ -170,20 +171,23 @@ const ProductsOneView = () => {
   const handlePatchCategory = (data) => {
     try {
       notice({
-        text: 'Loading...',
+        text: "Loading...",
         status: "info",
         time: "infinite",
-      })
-      patchCategoryMutate([data?.id, {isActive: !data?.isActive}])
-    }catch(error) {
+      });
+      patchCategoryMutate([data?.id, {isActive: !data?.isActive}]);
+    } catch (error) {
       route.refresh();
     }
-  }
+  };
+  const [isError, setIsError] = useState(false);
+
   return (
     <div className="products products-view container">
       <div className="products__top products__view-top">
         <span
-          onClick={() => route.push("/products")}
+          // onClick={() => route.push(`${from.text == "categories" ? `/categories${from?.id ? `/${from?.id}` :""}` : `/products`}`)}
+          onClick={() => route.back()}
           className="products__view-back"
         >
           <svg
@@ -268,10 +272,13 @@ const ProductsOneView = () => {
                   </div>
                 </div>
                 <div className="products-view__mleft-side-right">
-                  <button onClick={() => {
-                    setCompModal(<EditProductsModal id={id}/>)
-                    setCloseModal(true)
-                  }} className="products-view__mleft-buttons">
+                  <button
+                    onClick={() => {
+                      setCompModal(<EditProductsModal id={id} />);
+                      setCloseModal(true);
+                    }}
+                    className="products-view__mleft-buttons"
+                  >
                     <span className="products-view__mleft-buttons-span">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -304,13 +311,48 @@ const ProductsOneView = () => {
               </div>
             </div>
             <div className="products-view__image-container">
-              <img
-                className="products-view__image"
-                src={data?.data?.image}
-                alt={data?.data?.name}
-              />
+              {!isError ? (
+                <img
+                  className="products-view__image"
+                  src={data?.data?.image}
+                  alt={data?.data?.name}
+                  onError={() => setIsError(true)}
+                />
+              ) : (
+                <div className="safe-image-container__fallback">
+                  <span>No Photo</span>
+                </div>
+              )}
 
-              <div className="products-view__vignette-overlay"></div>
+              {/* 
+              <div className={`safe-image-container `}>
+                {isLoading && !isError && (
+                  <div className="skeleton-box safe-image-container__loader" />
+                )}
+
+                {isError && (
+                  
+                )}
+
+                {!isError && (
+                  <>
+                    <img
+                      src={data?.data?.image}
+                      alt={"Product image"}
+                      className={` ${isLoading ? "safe-image-container__img--hidden" : ""} products-view__image`}
+                      onLoad={() => setIsLoading(false)} // Fires when image successfully loads
+                      onError={() => setIsError(true)} // Fires if the image link is broken
+                    />
+                    <div className="products-view__vignette-overlay"></div>
+                  </>
+                )}
+              </div> */}
+
+              {!isError ? (
+                <>
+                  <div className="products-view__vignette-overlay"></div>
+                </>
+              ) : null}
             </div>
           </div>
           <div className="products-view__category">
@@ -326,27 +368,35 @@ const ProductsOneView = () => {
                   {data?.data?.category?.description}
                 </p>
               </div>
-              <span onClick={() => handlePatchCategory({id: data?.data?.category?.id, isActive: data?.data?.category?.isActive})}>
+              <span
+                onClick={() =>
+                  handlePatchCategory({
+                    id: data?.data?.category?.id,
+                    isActive: data?.data?.category?.isActive,
+                  })
+                }
+              >
                 {data?.data?.category?.isActive ? (
-                <span className="products-view__main-b-activate">
-                  <span className="products-view__main-b-activate-act">
-                    Active
+                  <span className="products-view__main-b-activate">
+                    <span className="products-view__main-b-activate-act">
+                      Active
+                    </span>
                   </span>
-                </span>
-              ) : (
-                <span className="products-view__main-b-activate ">
-                  <span className="products-view__main-b-activate-inact">
-                    Inactive
+                ) : (
+                  <span className="products-view__main-b-activate ">
+                    <span className="products-view__main-b-activate-inact">
+                      Inactive
+                    </span>
                   </span>
-                </span>
-              )}
+                )}
               </span>
-              
             </div>
           </div>
         </>
       ) : isPending ? (
-        <><CarDetailsSkeleton/></>
+        <>
+          <CarDetailsSkeleton />
+        </>
       ) : (
         <NotFound />
       )}
