@@ -65,11 +65,11 @@
       inset 0 0 200px rgba(0, 0, 0, 0.85),
       inset 0 0 300px rgba(0, 0, 0, 0.9);
 
-      @media (max-width: 800px) {
-        box-shadow:
-      inset 0 0 200px transparent,
-      inset 0 0 300px transparent;
-      }
+    @media (max-width: 800px) {
+      box-shadow:
+        inset 0 0 200px transparent,
+        inset 0 0 300px transparent;
+    }
   }
 
   &__main-left {
@@ -286,6 +286,16 @@
       border-radius: 10px;
       background-color: rgb(from var(--app-sidebar) r g b / 0.3);
       flex-wrap: wrap;
+      cursor: pointer;
+      @media (hover: hover) {
+        &:hover {
+          background-color: rgb(from var(--app-light-blue) r g b / 0.1);
+        }
+      }
+
+      &:active {
+        background-color: rgb(from var(--app-light-blue) r g b / 0.1);
+      }
     }
 
     &-left {

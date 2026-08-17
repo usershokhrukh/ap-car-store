@@ -359,7 +359,12 @@ const ProductsOneView = () => {
             <h2 className="products-view__category-title">
               Category Properties
             </h2>
-            <div className="products-view__category-main">
+            <div onClick={(e) => {
+              if(e.target.id != "is-active"){
+                route.push(`/categories/${data?.data?.category?.id}`)                
+              }
+              
+            }} className="products-view__category-main">
               <div className="products-view__category-left">
                 <p className="products-view__category-name">
                   {data?.data?.category?.name}
@@ -369,6 +374,7 @@ const ProductsOneView = () => {
                 </p>
               </div>
               <span
+              id="is-active"
                 onClick={() =>
                   handlePatchCategory({
                     id: data?.data?.category?.id,
@@ -377,14 +383,14 @@ const ProductsOneView = () => {
                 }
               >
                 {data?.data?.category?.isActive ? (
-                  <span className="products-view__main-b-activate">
-                    <span className="products-view__main-b-activate-act">
+                  <span id="is-active" className="products-view__main-b-activate">
+                    <span id="is-active" className="products-view__main-b-activate-act">
                       Active
                     </span>
                   </span>
                 ) : (
-                  <span className="products-view__main-b-activate ">
-                    <span className="products-view__main-b-activate-inact">
+                  <span id="is-active" className="products-view__main-b-activate ">
+                    <span id="is-active" className="products-view__main-b-activate-inact">
                       Inactive
                     </span>
                   </span>

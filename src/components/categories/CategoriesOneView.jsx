@@ -112,7 +112,7 @@ const CategoriesOneView = () => {
     <div className="categories categories-view container">
       <div className="categories__top categories__view-top">
         <span
-          onClick={() => route.push("/categories")}
+          onClick={() => route.back()}
           className="categories__view-back"
         >
           <svg
