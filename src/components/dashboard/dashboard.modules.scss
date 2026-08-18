@@ -95,7 +95,7 @@
     align-items: start;
     padding: 20px;
     border-radius: 10px;
-    background-color: rgb(from var(--app-sidebar) r g b / 0.4);
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
     border: 1px solid var(--app-border);
     min-width: 250px;
     gap: 5px;
@@ -119,10 +119,10 @@
     @include display();
     @include inter();
     font-size: 14px;
-    color: rgb(from var(--app-text) r g b / 0.8);
+    color: var(--secondary-text);
     width: 100%;
     justify-content: space-between;
-    border-top: 1px solid rgb(from var(--app-border) r g b / 0.3);
+    border-top: 1px solid rgb(from var(--app-border) r g b / 0.7);
     padding: 4px 0px;
   }
 
@@ -172,7 +172,8 @@
     padding: 20px;
     gap: 5px;
     background-color: rgb(from var(--app-sidebar) r g b / 1);
-    border: 1px solid rgb(from var(--app-text) r g b / 0.2);
+    // border: 1px solid rgb(from var(--app-text) r g b / 0.2);
+    border: 1px solid var(--app-border);
   }
 
   &__chart-left {
@@ -252,15 +253,12 @@
   }
 }
 
-$skeleton-base: #252936;
-$skeleton-animation: #353a4a;
-
 .skeleton-box {
   background: linear-gradient(
     90deg,
-    $skeleton-base 25%,
-    $skeleton-animation 50%,
-    $skeleton-base 75%
+    var(--skeleton-base) 25%,
+    var(--skeleton-animation) 50%,
+    var(--skeleton-base) 75%
   );
   background-size: 200% 100%;
   animation: skeleton-pulse-wave 1.5s infinite ease-in-out;
@@ -360,7 +358,7 @@ $skeleton-animation: #353a4a;
     @include display();
     width: 100%;
     justify-content: space-between;
-    border-top: 1px solid rgb(from var(--app-border) r g b / 0.3);
+    border-top: 1px solid rgb(from var(--app-border) r g b / 1);
     padding: 6px 0px;
 
     .sk-label {
@@ -411,7 +409,8 @@ $skeleton-animation: #353a4a;
     padding: 20px;
     gap: 16px;
     background-color: rgb(from var(--app-sidebar) r g b / 1);
-    border: 1px solid rgb(from var(--app-text) r g b / 0.2);
+    // border: 1px solid rgb(from var(--app-text) r g b / 0.2);
+    border: 1px solid var(--app-border);
     box-sizing: border-box;
   }
 
@@ -423,7 +422,7 @@ $skeleton-animation: #353a4a;
     // max-width: 150px !important;
     // max-height: 150px !important;
     border-radius: 50%;
-    border: 14px solid $skeleton-base;
+    border: 14px solid var(--skeleton-base);
     box-sizing: border-box;
     animation: skeleton-pulse-wave 1.5s infinite ease-in-out;
   }

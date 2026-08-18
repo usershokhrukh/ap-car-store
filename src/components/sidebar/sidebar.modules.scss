@@ -11,7 +11,7 @@
   top: 0px;
   min-width: 280px;
   width: 280px;
-  background-color: rgb(from var(--app-sidebar) r g b / 0.4);
+  background-color: rgb(from var(--app-sidebar) r g b / 1);
   backdrop-filter: blur(5px);
   flex-direction: column;
   align-items: start;
@@ -37,7 +37,7 @@
 
     @media (hover: hover) {
       &:hover {
-        background-color: rgb(from var(--app-sidebar) r g b / 1);
+        background-color: rgb(from var(--app-sidebar-300) r g b / 1);
         color: var(--app-neon-cyan) !important;
       }
     }
@@ -106,7 +106,7 @@
 
     @media (hover: hover) {
       &:hover {
-        background-color: rgb(from var(--app-sidebar) r g b / 0.6);
+        background-color: rgb(from var(--app-sidebar-300) r g b /1);
         color: var(--app-neon-cyan) !important;
       }
     }

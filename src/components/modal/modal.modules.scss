@@ -9,7 +9,7 @@
   width: 100%;
   z-index: 110;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.253);
+  background-color: rgb(from var(--app-black) r g b / 0.253);
 
   &__center {
     padding: 30px;
@@ -116,15 +116,13 @@
   &__title {
     @include inter();
     font-size: 15px;
-    $skeleton-base: #252936;
-    $skeleton-animation: #353a4a;
 
     .skeleton-box {
       background: linear-gradient(
         90deg,
-        $skeleton-base 25%,
-        $skeleton-animation 50%,
-        $skeleton-base 75%
+        var(--skeleton-base) 25%,
+        var(--skeleton-animation) 50%,
+        var(--skeleton-base) 75%
       );
       background-size: 200% 100%;
       animation: skeleton-pulse-wave 1.5s infinite ease-in-out;
@@ -150,8 +148,8 @@
   width: 100%;
   max-width: 320px; // Compact width to fit perfectly inside your filter/modal side drawers
   padding: 16px;
-  background-color: #1e222d; // Matches --app-sidebar color
-  border: 1px solid var(--app-border, #252936);
+  background-color: var(--app-sidebar); // Matches --app-sidebar color
+  border: 1px solid var(--app-border);
   border-radius: 12px;
   box-sizing: border-box;
   gap: 16px;

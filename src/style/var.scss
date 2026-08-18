@@ -1,10 +1,13 @@
-:root {
+// Your existing dark mode variables (now mapped to html.dark or default)
+html.dark {
   --app-bg-main: #1A1D26;
   --app-border: #252936;
-  --app-sidebar:#1E222D;
+  --app-sidebar: #1E222D;
+  --app-sidebar-300: #2f3441;
+  --app-black: rgb(10, 10, 10);
   --app-pink: #D23A7A;
   --app-purple: #7E3AF2;
-  --app-light-blue:#0082FF;
+  --app-light-blue: #0082FF;
   --app-neon-cyan: #00D4FF;
   --app-yellow: #FFA800;
   --app-orange: #FF6B00;
@@ -18,4 +21,33 @@
   --status-success: #00C853;
   --status-pending: #FFB300;
   --status-error: #FF2D55;
+  --skeleton-base: #252936;
+  --skeleton-animation: #353a4a;
+}
+
+// New Light Mode variables
+:root, html.light {
+  --app-bg-main: #FAFAFC;          // Soft off-white main canvas
+  --app-border: #E4E7ED;           // Light gray crisp borders
+  --app-sidebar: #ffffff;          // Pure white clean sidebar
+  --app-sidebar-300: #F0F2F5;      // Slightly darker gray for sidebar highlights/hover states
+  --app-black: rgb(245, 245, 245); // Inverted black to a light placeholder/surface gray
+  --app-pink: #c21a5a;             // Darkened slightly for accessible text contrast on white
+  --app-purple: #6927da;           // Deepened for rich readability
+  --app-light-blue: #5ea0e2;       // Vibrant corporate blue
+  --app-neon-cyan: #00A3C4;        // Tamed neon to a solid, legible cyan-blue
+  --app-yellow: #D98200;           // Darkened amber so it doesn't disappear on white backgrounds
+  --app-orange: #E05300;           // High-contrast deep orange
+  --app-cyan: #0099A8;             // Darkened deep teal/cyan for safe reading contrast
+  --app-neon-purple: #8516e0;      // Royal rich purple
+  --app-hot-pink: #E6005C;         // Sharp, legible magenta/pink
+  --app-text: #11141A;             // Dark charcoal/almost black for primary typography
+  --app-red: rgb(211, 33, 27);     // Rich, solid red
+  --app-green: rgb(28, 145, 28);   // Safe, dark green text color
+  --secondary-text: #626775;       // Subdued gray for captions and metadata
+  --status-success: #008F3B;       // Grounded success green
+  --status-pending: #E09E00;       // Grounded warning amber
+  --status-error: #E61740;         // Clean error red
+  --skeleton-base: #EAECEF;        // Soft gray skeleton loader base
+  --skeleton-animation: #F4F5F7;   // Shimmer pulse highlight
 }

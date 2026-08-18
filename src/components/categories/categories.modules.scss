@@ -48,7 +48,7 @@
     width: 235px;
     height: 35px;
     font-size: 20px;
-    color: var(--app-text, #ffffff);
+    color: var(--app-text);
     font-weight: 400;
   }
 
@@ -57,8 +57,8 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1.2fr 2.5fr 1fr 1fr 1fr;
-    background-color: var(--app-sidebar, #1e222d);
-    border: 1px solid var(--app-border, #252936);
+    background-color: var(--app-sidebar);
+    border: 1px solid var(--app-border);
     border-radius: 12px;
     padding: 20px 24px;
     gap: 16px;
@@ -74,7 +74,7 @@
 
   &__label {
     font-size: 13px;
-    color: var(--secondary-text, #9fa4b0);
+    color: var(--secondary-text);
     font-weight: 300;
   }
 
@@ -97,8 +97,8 @@
   /* --- BOTTOM PRODUCTS LIST TABLE --- */
   &__table-card {
     width: 100%;
-    background-color: var(--app-sidebar, #1e222d);
-    border: 1px solid var(--app-border, #252936);
+    background-color: var(--app-sidebar);
+    border: 1px solid var(--app-border);
     border-radius: 12px;
     padding: 16px 24px;
     overflow-x: auto;
@@ -116,12 +116,12 @@
     display: grid;
     grid-template-columns: 80px 2fr 1.5fr 1fr 1.2fr 1.5fr;
     padding: 14px 0;
-    border-bottom: 1px solid var(--app-border, #252936);
+    border-bottom: 1px solid var(--app-border);
   }
 
   &__th {
     font-size: 13px;
-    color: var(--secondary-text, #9fa4b0);
+    color: var(--secondary-text);
     font-weight: 400;
   }
 
@@ -135,7 +135,7 @@
     width: 100%;
     grid-template-columns: 80px 2fr 1.5fr 1fr 1.2fr 1.5fr;
     padding: 16px 0;
-    border-bottom: 1px solid rgba(37, 41, 54, 0.5);
+    border-bottom: 1px solid rgb(from var(--app-sidebar-300) r g b / 1);
     align-items: center;
 
     &:last-child {
