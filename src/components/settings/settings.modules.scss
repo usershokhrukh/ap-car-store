@@ -1,0 +1,143 @@
+@use "../../style/globalSkeleton.scss" as *;
+
+
+.settings {
+  @include display();
+  @include paddingLargeBoxes();
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  width: 100%;
+  &__title {
+    @include inter();
+    font-weight: 400;
+    font-size: 30px;
+    color: var(--app-text);
+  }
+
+  &__bottom-about {
+    @include display();
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+    align-items: start;
+    gap: 10px;
+    background-color: var(--app-sidebar);
+    // width: 100%;
+    flex-grow: 1;
+    border: 1px solid var(--app-border);
+  }
+
+  &__bottom {
+    @include display();
+    width: 100%;
+    align-items: start;
+    gap: 10px;
+  }
+
+  &__status {
+    @include inter();
+    font-size: 15px;
+    color: var(--app-text);
+  }
+
+  &__boab-subtitle,
+  &__boab-ver {
+    @include inter();
+    font-size: 14px;
+    color: var(--secondary-text);
+  }
+
+  &__boab {
+    @include display();
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+  }
+
+  &__bottom-title {
+    @include inter();
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--app-text);
+  }
+
+  &__boab-text {
+    @include inter();
+    @include display();
+    font-size: 14px;
+    color: var(--app-text);
+  }
+
+  &__bottom-look {
+    @include display();
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 10px;
+    background-color: rgb(from var(--app-text) r g b /0.2);
+    border-radius: 9px;
+  }
+
+  &__bottom-look-items {
+    position: relative;
+    flex-grow: 1;
+    height: 100px;
+    width: 100px;
+    border: 1px solid var(--app-border);
+    border-radius: 10px;
+    min-width: 100px;
+
+    &-dark {
+      background-color: #1E222D;
+
+      &:after {
+        @include inter();
+        content: "Dark Neon Blue";
+        font-size: 14px;
+        color: #fff;
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+      }
+    }
+
+    &-light {
+      background-color: #fff;
+
+      &:after {
+        @include inter();
+        content: "Light Neon Purple/Blue";
+        font-size: 14px;
+        color: black;
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+      }
+    }
+
+
+    &-active {
+      border: 3px solid var(--app-light-blue) !important;
+    }
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        border: 1px solid rgb(from var(--app-light-blue) r g b / 0.7);
+      }
+    }
+
+    &:active {
+      border: 1px solid rgb(from var(--app-light-blue) r g b / 0.7);
+    }
+  }
+  &__bottom-look-wr {
+    @include display();
+    padding: 20px;
+    width: 100%;
+    align-items: start;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
