@@ -6,8 +6,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import CarProductsTable from "../products/ProductsTable";
-import {useGetProducts} from "@/hooks/products/GetProducts";
 import "../products/products.modules.scss";
 import {useNotify} from "@/hooks/useNotify";
 import ProductsSkeleton from "../products/ProductsLoading";
@@ -15,22 +13,27 @@ import NotFound from "../notfound/NotFound";
 import {useRouter} from "next/navigation";
 import {createPortal} from "react-dom"; // Native React module feature
 import {GeneralModal} from "@/context/GeneralModal";
-import NewProductsModal from "../modal/products/NewProductsModal";
 import CategoriesTable from "./CategoriesTable";
-import { useGetCategories } from "@/hooks/category/GetCategories";
+import {useGetCategories} from "@/hooks/category/GetCategories";
 import NewCategoriesModal from "../modal/categories/NewCategoriesModal";
 
 const Categories = () => {
+  const [localLimit, setLocalLimit] = useState(
+    JSON.parse(localStorage.getItem("categoriesLimit")),
+  );
+  useEffect(() => {
+    setLocalLimit(JSON.parse(localStorage.getItem("categoriesLimit")));
+  }, []);
   const [limit, setLimit] = useState({
-    search: "",
-    limit: 8,
-    page: 1,
-    isActive: "",
-    sortBy: "",
-    order: "",
+    search: localLimit?.search || "",
+    limit: localLimit?.search || 8,
+    page: localLimit?.search || 1,
+    isActive: localLimit?.isActive || "",
+    sortBy: localLimit?.sortBy || "",
+    order: localLimit?.order || "",
   });
-  const [windowWidth, setWindowWidth] = useState(null);
 
+  const [windowWidth, setWindowWidth] = useState(null);
   useEffect(() => {
     if (typeof window !== "undefined") {
       setWindowWidth(window.innerWidth);
@@ -50,9 +53,8 @@ const Categories = () => {
   const [openSortBy, setOpenSortBy] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
 
-
   const searchQuery = `${limit?.page ? `?page=${limit?.page}` : ""}${limit?.limit ? `&limit=${limit?.limit}` : ""}${limit?.search ? `&search=${limit?.search}` : ""}${limit?.isActive ? `&isActive=${limit?.isActive}` : ""}${limit?.sortBy ? `&sortBy=${limit?.sortBy}` : ""}${limit?.order ? `&order=${limit?.order}` : ""}`;
-  const {data, isPending, error} = useGetCategories(searchQuery);  
+  const {data, isPending, error} = useGetCategories(searchQuery);
   const {notice} = useNotify();
   const route = useRouter();
   const [loaded, setLoaded] = useState(false);
@@ -84,9 +86,17 @@ const Categories = () => {
     setLimit({
       ...limit,
       limit: e.target?.id || 4,
-      page: 1
+      page: 1,
     });
-    setPage(1)
+    localStorage.setItem(
+      "categoriesLimit",
+      JSON.stringify({
+        ...limit,
+        limit: e.target?.id || 4,
+        page: 1,
+      }),
+    );
+    setPage(1);
     setOpenLimit(false);
   };
 
@@ -131,6 +141,14 @@ const Categories = () => {
       search,
       page: 1,
     });
+    localStorage.setItem(
+      "categoriesLimit",
+      JSON.stringify({
+        ...limit,
+        search,
+        page: 1,
+      }),
+    );
   };
   const [page, setPage] = useState(1);
   const handleSearchChange = (e) => {
@@ -143,6 +161,15 @@ const Categories = () => {
         search: "",
         page,
       });
+
+      localStorage.setItem(
+        "categoriesLimit",
+        JSON.stringify({
+          ...limit,
+          search: "",
+          page,
+        }),
+      );
       setSearch(value);
     }
   };
@@ -150,6 +177,13 @@ const Categories = () => {
   const [isActiveValue, setIsActiveValue] = useState("");
   const [sortByValue, setSortByValue] = useState("");
   const [orderValue, setOrderValue] = useState("");
+
+  useEffect(() => {
+    setSearch(limit?.search);
+    setIsActiveValue(limit?.isActive)
+    setSortByValue(limit?.sortBy)
+    setOrderValue(limit?.order)
+  }, [limit]);
 
   useEffect(() => {
     setOpenIsActive(false);
@@ -174,6 +208,14 @@ const Categories = () => {
       ...limit,
       ...filterData,
     });
+
+    localStorage.setItem(
+      "categoriesLimit",
+      JSON.stringify({
+        ...limit,
+        ...filterData,
+      }),
+    );
     setOpenFilter(false);
   };
 
@@ -196,6 +238,14 @@ const Categories = () => {
         ...limit,
         page,
       });
+
+      localStorage.setItem(
+        "categoriesLimit",
+        JSON.stringify({
+          ...localLimit,
+          page,
+        }),
+      );
     }
   }, [page]);
 
@@ -204,8 +254,8 @@ const Categories = () => {
   useEffect(() => {
     setCloseModal(false);
     setCompModal(null);
-    setCloseSpan(true)
-  }, []);  
+    setCloseSpan(true);
+  }, []);
   return (
     <div className="products container">
       {!isPending && data && loaded ? (
@@ -218,7 +268,7 @@ const Categories = () => {
             <button
               onClick={() => {
                 setCloseModal(true);
-                setCompModal(<NewCategoriesModal/>);
+                setCompModal(<NewCategoriesModal />);
               }}
               className="products__top-submit"
             >
