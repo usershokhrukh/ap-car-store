@@ -4,67 +4,39 @@ export const api = axios.create({
   baseURL: "https://backend.magnateshop.uz",
 });
 
-let isRefreshing = false;
-let failedQueue = [];
+let activeCheckTokenPromise = null;
 
-const processQueue = (error, token = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
+api.interceptors.request.use(
+  async (config) => {
+    if (config._isPublic) {
+      return config;
     }
-  });
-  failedQueue = [];
-};
 
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest._isPublic
-    ) {
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({resolve, reject});
-        })
-          .then((token) => {
-            originalRequest.headers["Authorization"] = `Bearer ${token}`;
-            return api(originalRequest);
-          })
+    try {
+      if (!activeCheckTokenPromise) {
+        activeCheckTokenPromise = axios
+          .post("/api/auth/checktoken")
+          .then((res) => res?.data?.accessToken)
           .catch((err) => {
             err._isAuthFailure = true;
-            return Promise.reject(err);
+            throw err;
+          })
+          .finally(() => {
+            activeCheckTokenPromise = null;
           });
       }
-      originalRequest._retry = true;
-      isRefreshing = true;
 
-      try {
-        const check = await axios.post("/api/auth/checktoken");
-        const accessToken = check?.data?.accessToken;
-        if (accessToken) {
-          isRefreshing = false;
-          processQueue(null, accessToken);
-          originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
-          return api(originalRequest);
-        }
-      } catch (refreshError) {
-        isRefreshing = false;
-        refreshError._isAuthFailure = true;
-        if (refreshError.response) {
-          refreshError.response._isAuthFailure = true;
-        }
+      const accessToken = await activeCheckTokenPromise;
 
-        processQueue(refreshError, null);
-        return Promise.reject(refreshError);
+      if (accessToken) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
       }
+    } catch (error) {
+      return Promise.reject(error);
     }
-
+    return config;
+  },
+  (error) => {
     return Promise.reject(error);
   },
 );

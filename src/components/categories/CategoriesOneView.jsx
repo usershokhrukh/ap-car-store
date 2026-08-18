@@ -185,14 +185,14 @@ const CategoriesOneView = () => {
                         id="switch"
                         className="products__t-b-status-active products__t-b-status"
                       >
-                        Active
+                        Change to Inactive
                       </span>
                     ) : (
                       <span
                         id="switch"
                         className="products__t-b-status-inactive products__t-b-status"
                       >
-                        Inactive
+                        Change to active
                       </span>
                     )}
                   </td>

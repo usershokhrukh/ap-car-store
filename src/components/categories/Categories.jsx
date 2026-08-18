@@ -23,7 +23,7 @@ import NewCategoriesModal from "../modal/categories/NewCategoriesModal";
 const Categories = () => {
   const [limit, setLimit] = useState({
     search: "",
-    limit: 4,
+    limit: 8,
     page: 1,
     isActive: "",
     sortBy: "",
