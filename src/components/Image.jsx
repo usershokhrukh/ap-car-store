@@ -2,11 +2,16 @@
 
 import Image from "next/image";
 import backImg from "../../public/images/image.png";
+import backImgLight from "../../public/images/img-light.jpg"
+import { useTheme } from "next-themes";
 
 export default function ProtectedImage() {
+  const {theme, setTheme} = useTheme();
+  console.log(theme);
+  
   return (
     <div
-      className="global__back-img"
+      className={`global__back-img ${theme == "dark" ? "" : "global__back-img-light"}`}
       onContextMenu={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
       onSelect={(e) => e.preventDefault()}
@@ -21,7 +26,7 @@ export default function ProtectedImage() {
       }}
     >
       <Image
-        src={backImg}
+        src={theme == "dark" ? backImg : backImgLight}
         alt="Dashboard Background"
         unoptimized
         priority

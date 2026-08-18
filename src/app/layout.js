@@ -32,7 +32,7 @@ export default function RootLayout({children}) {
               <AppLayout>{children}</AppLayout>
               <ThemeToggle/>
             </NotificationCustom>
-            {/* <ProtectedImage /> */}
+            <ProtectedImage />
           </GeneralModalProvide>
         </ThemeProvider>
       </body>
