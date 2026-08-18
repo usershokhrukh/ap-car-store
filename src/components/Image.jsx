@@ -8,9 +8,6 @@ import {useEffect, useState} from "react";
 
 export default function ProtectedImage() {
   const {theme, setTheme} = useTheme();
-  useEffect(() => {
-    console.log(theme);
-  }, [theme]);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
