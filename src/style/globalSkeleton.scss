@@ -1,2 +1,139 @@
 @import "./mixin.scss";
-@import "./var.scss"
+@import "./var.scss";
+
+.skeleton-box {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-animation) 50%,
+    var(--skeleton-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: settings-pulse-wave 1.5s infinite ease-in-out;
+  border-radius: 6px;
+}
+
+@keyframes settings-pulse-wave {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.settings-skeleton {
+  @include inter();
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__main-title {
+    height: 38px;
+    width: 160px;
+    border-radius: 4px;
+  }
+
+  /* --- TOP INFORMATION CARDS ROW --- */
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+  }
+
+  &__card {
+    background-color: var(--app-sidebar);
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  }
+
+  &__card-title {
+    height: 16px;
+    width: 200px;
+    margin-bottom: 4px;
+  }
+
+  &__text-med {
+    height: 14px;
+    width: 140px;
+  }
+
+  &__text-short {
+    height: 14px;
+    width: 90px;
+  }
+
+  &__text-long {
+    height: 14px;
+    width: 220px;
+  }
+
+  &__section-title {
+    height: 24px;
+    width: 70px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+
+  /* --- BOTTOM LOOK/APPEARANCE BLOCK --- */
+  &__appearance-panel {
+    background-color: var(--app-sidebar);
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__theme-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+
+  &__theme-box {
+    height: 120px;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-end;
+    box-sizing: border-box;
+    border: 3px solid var(--app-border);
+
+    /* Left Light Mode representation preview container box */
+    &--light {
+      background-color: #FAFAFC;
+    }
+
+    /* Right Dark Mode representation preview container box */
+    &--dark {
+      background-color: #1A1D26;
+    }
+  }
+
+  &__theme-label {
+    height: 14px;
+    width: 150px;
+  }
+
+  /* --- RESPONSIVE WORKSPACE MEDIA BREAKPOINT --- */
+  @media (max-width: 768px) {
+    padding: 16px;
+
+    &__row,
+    &__theme-grid {
+      grid-template-columns: 1fr; // Wraps multi-column grid tracks down to standard row structures
+      gap: 16px;
+    }
+    
+    &__theme-box {
+      height: 100px;
+    }
+  }
+}
