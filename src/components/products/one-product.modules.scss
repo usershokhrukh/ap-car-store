@@ -275,7 +275,7 @@
       @include inter();
       font-size: 18px;
       font-weight: 400;
-      color: var(--secondary-text);
+      color: var(--app-text);
     }
 
     &-main {
@@ -287,14 +287,15 @@
       background-color: rgb(from var(--app-sidebar-300) r g b / 1);
       flex-wrap: wrap;
       cursor: pointer;
+      opacity: 0.8;
       @media (hover: hover) {
         &:hover {
-          background-color: rgb(from var(--app-light-blue) r g b / 0.1);
+          opacity: 1;
         }
       }
 
       &:active {
-        background-color: rgb(from var(--app-light-blue) r g b / 0.1);
+        opacity: 1;
       }
     }
 
@@ -313,7 +314,7 @@
     &-desc {
       @include inter();
       font-size: 15px;
-      color: rgb(from var(--app-cyan) r g b / 0.5);
+      color: var(--app-text);
     }
   }
 }

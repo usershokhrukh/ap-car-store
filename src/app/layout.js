@@ -5,7 +5,6 @@ import AppLayout from "@/components/AppLayout";
 import NotificationCustom from "./NotificationCustom";
 import GeneralModalProvide from "@/components/modal/GeneralModalProvide";
 import {ThemeProvider} from "@/components/ThemeProvider";
-import ThemeToggle from "@/components/ThemeToggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +29,6 @@ export default function RootLayout({children}) {
           <GeneralModalProvide>
             <NotificationCustom>
               <AppLayout>{children}</AppLayout>
-              <ThemeToggle/>
             </NotificationCustom>
             <ProtectedImage />
           </GeneralModalProvide>

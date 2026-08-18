@@ -4,6 +4,7 @@ import Sidebar from "./sidebar/Sidebar";
 import {usePathname} from "next/navigation";
 import { GeneralModal } from "@/context/GeneralModal";
 import GeneralModalUI from "./modal/GeneralModalUI";
+import Header from "./header/Header";
 const AppLayout = ({children}) => {
   const pathname = usePathname();
   const {closeModal, setCloseModal} = useContext(GeneralModal);
@@ -26,6 +27,7 @@ const AppLayout = ({children}) => {
         <>
           <Sidebar />
           <main className="global__main">
+            <Header/>
             <Suspense>{children}</Suspense>
           </main>
         </>

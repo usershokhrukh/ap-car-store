@@ -11,7 +11,7 @@ export default function ProtectedImage() {
   
   return (
     <div
-      className={`global__back-img ${theme == "dark" ? "" : "global__back-img-light"}`}
+      className={`global__back-img ${theme == "dark" ? "" : theme == "light" ? "global__back-img-light" : ""}`}
       onContextMenu={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
       onSelect={(e) => e.preventDefault()}
@@ -26,7 +26,7 @@ export default function ProtectedImage() {
       }}
     >
       <Image
-        src={theme == "dark" ? backImg : backImgLight}
+        src={theme == "dark" ? backImg : theme == "light" ? backImgLight: backImg}
         alt="Dashboard Background"
         unoptimized
         priority

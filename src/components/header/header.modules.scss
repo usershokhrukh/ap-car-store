@@ -1,0 +1,35 @@
+@use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
+
+.header {
+  @include display();
+  justify-content: end;
+  width: 100%;
+  padding: 20px 20px 0px 20px;
+
+  &__theme-btn {
+    @include display();
+    @include inter();
+    padding: 5px 10px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    background-color: var(--app-sidebar);
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    cursor: pointer;
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+        color: white;
+        border: 1px solid transparent;
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+      color: white;
+      border: 1px solid transparent;
+    }
+  }
+}
