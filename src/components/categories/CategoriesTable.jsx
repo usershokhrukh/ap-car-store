@@ -69,6 +69,7 @@ const CategoriesTable = ({cars}) => {
         {cars?.data?.items?.map(
           ({name, productsCount, description, isActive, id}) => (
             <tr
+            key={`${name} ${id}`}
               onClick={(e) => handleProducts(e, id)}
               className="products__t-b-row"
             >

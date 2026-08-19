@@ -18,17 +18,25 @@ import {GeneralModal} from "@/context/GeneralModal";
 import NewProductsModal from "../modal/products/NewProductsModal";
 
 const Products = () => {
+  const [localLimit, setLocalLimit] = useState(() => {
+    if(typeof window !== "undefined") {
+      const savedLimit = localStorage.getItem("productsLimit");
+      return savedLimit ? JSON.parse(savedLimit) : null
+    }
+    return null
+  });
+
   const [limit, setLimit] = useState({
-    search: "",
-    limit: 8,
-    page: 1,
-    categoryId: "",
-    isActive: "",
-    minPrice: "",
-    maxPrice: "",
-    inStock: "",
-    sortBy: "",
-    order: "",
+    search: localLimit?.search || "",
+    limit: localLimit?.limit || 8,
+    page: localLimit?.page || 1,
+    categoryId: localLimit?.categoryId || "",
+    isActive: localLimit?.isActive || "",
+    minPrice: localLimit?.minPrice || "",
+    maxPrice: localLimit?.maxPrice || "",
+    inStock: localLimit?.inStock || "",
+    sortBy: localLimit?.sortBy || "",
+    order: localLimit?.order || "",
   });
   const [windowWidth, setWindowWidth] = useState(null);
 
@@ -51,12 +59,6 @@ const Products = () => {
   const [openInStock, setOpenInStock] = useState(false);
   const [openSortBy, setOpenSortBy] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
-  // useEffect(() => {
-  //   if(windowWidth) {
-  //     setOpenFilter(false);
-  //     setOpenLimit(false)
-  //   }
-  // }, [windowWidth])
 
   const searchQuery = `${limit?.page ? `?page=${limit?.page}` : ""}${limit?.limit ? `&limit=${limit?.limit}` : ""}${limit?.search ? `&search=${limit?.search}` : ""}${limit?.categoryId ? `&categoryId=${limit?.categoryId}` : ""}${limit?.minPrice ? `&minPrice=${limit?.minPrice}` : ""}${limit?.maxPrice ? `&maxPrice=${limit?.maxPrice}` : ""}${limit?.isActive ? `&isActive=${limit?.isActive}` : ""}${limit?.inStock ? `&inStock=${limit?.inStock}` : ""}${limit?.sortBy ? `&sortBy=${limit?.sortBy}` : ""}${limit?.order ? `&order=${limit?.order}` : ""}`;
   const {data, isPending, error} = useGetProducts(searchQuery);
@@ -91,9 +93,18 @@ const Products = () => {
     setLimit({
       ...limit,
       limit: e.target?.id || 4,
-      page: 1
+      page: 1,
     });
-    setPage(1)
+    localStorage.setItem(
+      "productsLimit",
+      JSON.stringify({
+        ...limit,
+        limit: e.target?.id || 4,
+        page: 1,
+      }),
+    );
+    setLocalLimit(JSON.parse(localStorage.getItem("productsLimit")));
+    setPage(1);
     setOpenLimit(false);
   };
 
@@ -138,8 +149,18 @@ const Products = () => {
       search,
       page: 1,
     });
+
+    localStorage.setItem(
+      "productsLimit",
+      JSON.stringify({
+        ...limit,
+        search,
+        page: 1,
+      }),
+    );
+    setLocalLimit(JSON.parse(localStorage.getItem("productsLimit")));
   };
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(null);
   const handleSearchChange = (e) => {
     const value = e.target.value.trim();
     if (value) {
@@ -150,6 +171,16 @@ const Products = () => {
         search: "",
         page,
       });
+
+      localStorage.setItem(
+        "productsLimit",
+        JSON.stringify({
+          ...limit,
+          search: "",
+          page,
+        }),
+      );
+      setLocalLimit(JSON.parse(localStorage.getItem("productsLimit")));
       setSearch(value);
     }
   };
@@ -161,6 +192,32 @@ const Products = () => {
   const [categoryId, setCategoryId] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+
+  useEffect(() => {
+    if (localLimit) {
+      setIsActiveValue(localLimit?.isActive);
+      setInStockValue(localLimit?.inStock);
+      setSortByValue(localLimit?.sortBy);
+      setOrderValue(localLimit?.order);
+      setCategoryId(localLimit?.categoryId);
+      setMinPrice(localLimit?.minPrice);
+      setMaxPrice(localLimit?.maxPrice);
+      setSearch(localLimit?.search);
+      setPage(localLimit?.page);
+      setLimit({
+        search: localLimit?.search || "",
+        limit: localLimit?.limit || 8,
+        page: localLimit?.page || 1,
+        categoryId: localLimit?.categoryId || "",
+        isActive: localLimit?.isActive || "",
+        minPrice: localLimit?.minPrice || "",
+        maxPrice: localLimit?.maxPrice || "",
+        inStock: localLimit?.inStock || "",
+        sortBy: localLimit?.sortBy || "",
+        order: localLimit?.order || "",
+      });
+    }
+  }, [localLimit]);
 
   useEffect(() => {
     setOpenIsActive(false);
@@ -192,6 +249,15 @@ const Products = () => {
       ...limit,
       ...filterData,
     });
+
+    localStorage.setItem(
+      "productsLimit",
+      JSON.stringify({
+        ...limit,
+        ...filterData,
+      }),
+    );
+    setLocalLimit(JSON.parse(localStorage.getItem("productsLimit")));
     setOpenFilter(false);
   };
 
@@ -210,9 +276,76 @@ const Products = () => {
 
   useEffect(() => {
     if (page) {
+      localStorage.setItem(
+        "productsLimit",
+        JSON.stringify({
+          search: localLimit?.search || limit?.search || "",
+          limit: localLimit?.limit || limit?.limit || 8,
+          page,
+          isActive: localLimit?.isActive || limit?.isActive || "",
+          sortBy: localLimit?.sortBy || limit?.sortBy || "",
+          order: localLimit?.order || limit?.order || "",
+          minPrice: localLimit?.minPrice || limit?.minPrice || "",
+          maxPrice: localLimit?.maxPrice || limit?.maxPrice || "",
+          categoryId: localLimit?.categoryId || limit?.categoryId || "",
+          inStock: localLimit?.inStock || limit?.inStock || "",
+        }),
+      );
+
       setLimit({
-        ...limit,
+        search: localLimit?.search || limit?.search || "",
+        limit: localLimit?.limit || limit?.limit || 8,
         page,
+        isActive: localLimit?.isActive || limit?.isActive || "",
+        sortBy: localLimit?.sortBy || limit?.sortBy || "",
+        order: localLimit?.order || limit?.order || "",
+        minPrice: localLimit?.minPrice || limit?.minPrice || "",
+        maxPrice: localLimit?.maxPrice || limit?.maxPrice || "",
+        categoryId: localLimit?.categoryId || limit?.categoryId || "",
+        inStock: localLimit?.inStock || limit?.inStock || "",
+      });
+      setLocalLimit(JSON.parse(localStorage.getItem("productsLimit")));
+    } else if (localLimit?.page) {
+      setLimit({
+        search: localLimit?.search || limit?.search || "",
+        limit: localLimit?.limit || limit?.limit || 8,
+        page: localLimit?.page || limit?.page || 1,
+        isActive: localLimit?.isActive || limit?.isActive || "",
+        sortBy: localLimit?.sortBy || limit?.sortBy || "",
+        order: localLimit?.order || limit?.order || "",
+        minPrice: localLimit?.minPrice || limit?.minPrice || "",
+        maxPrice: localLimit?.maxPrice || limit?.maxPrice || "",
+        categoryId: localLimit?.categoryId || limit?.categoryId || "",
+        inStock: localLimit?.inStock || limit?.inStock || "",
+      });
+    } else {
+      localStorage.setItem(
+        "productsLimit",
+        JSON.stringify({
+          search: localLimit?.search || limit?.search || "",
+          limit: localLimit?.limit || limit?.limit || 8,
+          page: 1,
+          isActive: localLimit?.isActive || limit?.isActive || "",
+          sortBy: localLimit?.sortBy || limit?.sortBy || "",
+          order: localLimit?.order || limit?.order || "",
+          minPrice: localLimit?.minPrice || limit?.minPrice || "",
+          maxPrice: localLimit?.maxPrice || limit?.maxPrice || "",
+          categoryId: localLimit?.categoryId || limit?.categoryId || "",
+          inStock: localLimit?.inStock || limit?.inStock || "",
+        }),
+      );
+      setLocalLimit(JSON.parse(localStorage.getItem("productsLimit")));
+      setLimit({
+        search: localLimit?.search || limit?.search || "",
+        limit: localLimit?.limit || limit?.limit || 8,
+        page: 1,
+        isActive: localLimit?.isActive || limit?.isActive || "",
+        sortBy: localLimit?.sortBy || limit?.sortBy || "",
+        order: localLimit?.order || limit?.order || "",
+        minPrice: localLimit?.minPrice || limit?.minPrice || "",
+        maxPrice: localLimit?.maxPrice || limit?.maxPrice || "",
+        categoryId: localLimit?.categoryId || limit?.categoryId || "",
+        inStock: localLimit?.inStock || limit?.inStock || "",
       });
     }
   }, [page]);
@@ -222,7 +355,7 @@ const Products = () => {
   useEffect(() => {
     setCloseModal(false);
     setCompModal(null);
-    setCloseSpan(true)
+    setCloseSpan(true);
   }, []);
 
   return (
@@ -746,6 +879,7 @@ const Products = () => {
                     <>
                       {[...Array(totalPages)]?.map((_, index) => (
                         <button
+                          key={index}
                           onClick={() => setPage(index + 1)}
                           className={`products__b-pag-page ${data?.data?.meta?.page == index + 1 ? "products__b-pag-page-active" : ""}`}
                         >
@@ -757,6 +891,7 @@ const Products = () => {
                     <>
                       {[...Array(3)]?.map((_, index) => (
                         <button
+                          key={index * index}
                           onClick={() => setPage(index + 1)}
                           className={`products__b-pag-page ${data?.data?.meta?.page == index + 1 ? "products__b-pag-page-active" : ""}`}
                         >
