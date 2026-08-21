@@ -149,7 +149,7 @@ const Sidebar = () => {
           </Link>
           <span className="sidebar__li-box">
             <p className="sidebar__li-subtit">Control</p>
-            <Link className="sidebar__link" href={"/chats"}>
+            <Link className="sidebar__link" href={"/admins"}>
               <li className="sidebar__list">
                 <span className="sidebar__li-span">
                   <svg
