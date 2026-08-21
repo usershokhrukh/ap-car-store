@@ -15,7 +15,7 @@ import "../products/products.modules.scss";
 
 const Dashboard = () => {
   const {notice} = useNotify();
-  const {data, error, isPending} = useGetDashboardStats();
+  const {data, error, isPending} = useGetDashboardStats();  
   const route = useRouter();
   const {
     data: categoryStats,
@@ -105,7 +105,7 @@ const Dashboard = () => {
                   <li className="dashboard__censts-list">
                     Inactive:
                     <span className="dashboard__censts-span">
-                      {data?.data?.products?.inActive || 0}
+                      {data?.data?.products?.inactive || 0}
                     </span>
                   </li>
                   <li className="dashboard__censts-list">
@@ -140,7 +140,7 @@ const Dashboard = () => {
                   <li className="dashboard__censts-list">
                     Inactive:
                     <span className="dashboard__censts-span">
-                      {data?.data?.categories?.inActive || 0}
+                      {data?.data?.categories?.inactive || 0}
                     </span>
                   </li>
                   <li className="dashboard__censts-list">

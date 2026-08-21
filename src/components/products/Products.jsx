@@ -19,11 +19,11 @@ import NewProductsModal from "../modal/products/NewProductsModal";
 
 const Products = () => {
   const [localLimit, setLocalLimit] = useState(() => {
-    if(typeof window !== "undefined") {
+    if (typeof window !== "undefined") {
       const savedLimit = localStorage.getItem("productsLimit");
-      return savedLimit ? JSON.parse(savedLimit) : null
+      return savedLimit ? JSON.parse(savedLimit) : null;
     }
-    return null
+    return null;
   });
 
   const [limit, setLimit] = useState({
@@ -52,6 +52,7 @@ const Products = () => {
         );
     }
   }, []);
+  const [page, setPage] = useState(null);
 
   const [openLimit, setOpenLimit] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
@@ -66,6 +67,12 @@ const Products = () => {
   const route = useRouter();
   const [loaded, setLoaded] = useState(false);
   const timeRef = useRef(null);
+
+  useEffect(() => {
+    if (data?.data?.meta?.totalPages < limit?.page) {
+      setPage(data?.data?.meta?.totalPages || 1);
+    }
+  }, [data, limit]);
 
   useEffect(() => {
     if (timeRef.current) {
@@ -160,7 +167,6 @@ const Products = () => {
     );
     setLocalLimit(JSON.parse(localStorage.getItem("productsLimit")));
   };
-  const [page, setPage] = useState(null);
   const handleSearchChange = (e) => {
     const value = e.target.value.trim();
     if (value) {

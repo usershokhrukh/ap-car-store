@@ -6,7 +6,7 @@ import { usePostProducts } from "@/hooks/products/PostProducts";
 import { GeneralModal } from "@/context/GeneralModal";
 
 const NewProductsModal = () => {
-  const {data, isPending, error} = useGetCategories();
+  const {data, isPending, error} = useGetCategories("?isActive=true");
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");
   const route = useRouter();

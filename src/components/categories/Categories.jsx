@@ -19,11 +19,11 @@ import NewCategoriesModal from "../modal/categories/NewCategoriesModal";
 
 const Categories = () => {
   const [localLimit, setLocalLimit] = useState(() => {
-    if(typeof window !== "undefined") {
+    if (typeof window !== "undefined") {
       const savedLimit = localStorage.getItem("categoriesLimit");
-      return savedLimit ? JSON.parse(savedLimit) : null
+      return savedLimit ? JSON.parse(savedLimit) : null;
     }
-    return null
+    return null;
   });
   const [limit, setLimit] = useState({
     search: localLimit?.search || "",
@@ -47,7 +47,7 @@ const Categories = () => {
         );
     }
   }, []);
-
+  const [page, setPage] = useState(null);
   const [openLimit, setOpenLimit] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [openIsActive, setOpenIsActive] = useState(false);
@@ -60,6 +60,12 @@ const Categories = () => {
   const route = useRouter();
   const [loaded, setLoaded] = useState(false);
   const timeRef = useRef(null);
+
+  useEffect(() => {
+    if (data?.data?.meta?.totalPages < limit?.page) {
+      setPage(data?.data?.meta?.totalPages || 1);
+    }
+  }, [data, limit]);
 
   useEffect(() => {
     if (timeRef.current) {
@@ -153,7 +159,6 @@ const Categories = () => {
     );
     setLocalLimit(JSON.parse(localStorage.getItem("categoriesLimit")));
   };
-  const [page, setPage] = useState(null);
   const handleSearchChange = (e) => {
     const value = e.target.value.trim();
     if (value) {
@@ -173,7 +178,7 @@ const Categories = () => {
           page,
         }),
       );
-    setLocalLimit(JSON.parse(localStorage.getItem("categoriesLimit")));
+      setLocalLimit(JSON.parse(localStorage.getItem("categoriesLimit")));
       setSearch(value);
     }
   };
@@ -270,12 +275,12 @@ const Categories = () => {
         sortBy: localLimit?.sortBy || limit?.sortBy || "",
         order: localLimit?.order || limit?.order || "",
       });
-    setLocalLimit(JSON.parse(localStorage.getItem("categoriesLimit")));
+      setLocalLimit(JSON.parse(localStorage.getItem("categoriesLimit")));
     } else if (localLimit?.page) {
       setLimit({
         search: localLimit?.search || limit?.search || "",
         limit: localLimit?.limit || limit?.limit || 8,
-        page :localLimit?.page || limit?.page || 1,
+        page: localLimit?.page || limit?.page || 1,
         isActive: localLimit?.isActive || limit?.isActive || "",
         sortBy: localLimit?.sortBy || limit?.sortBy || "",
         order: localLimit?.order || limit?.order || "",
@@ -292,7 +297,7 @@ const Categories = () => {
           order: localLimit?.order || limit?.order || "",
         }),
       );
-    setLocalLimit(JSON.parse(localStorage.getItem("categoriesLimit")));
+      setLocalLimit(JSON.parse(localStorage.getItem("categoriesLimit")));
       setLimit({
         search: localLimit?.search || limit?.search || "",
         limit: localLimit?.limit || limit?.limit || 8,
@@ -740,7 +745,7 @@ const Categories = () => {
                     <>
                       {[...Array(totalPages)]?.map((_, index) => (
                         <button
-                        key={index}
+                          key={index}
                           onClick={() => setPage(index + 1)}
                           className={`products__b-pag-page ${data?.data?.meta?.page == index + 1 ? "products__b-pag-page-active" : ""}`}
                         >
@@ -752,7 +757,7 @@ const Categories = () => {
                     <>
                       {[...Array(3)]?.map((_, index) => (
                         <button
-                        key={index*index}
+                          key={index * index}
                           onClick={() => setPage(index + 1)}
                           className={`products__b-pag-page ${data?.data?.meta?.page == index + 1 ? "products__b-pag-page-active" : ""}`}
                         >
