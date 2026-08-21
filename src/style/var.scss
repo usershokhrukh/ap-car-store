@@ -23,6 +23,8 @@ html.dark {
   --status-error: #FF2D55;
   --skeleton-base: #252936;
   --skeleton-animation: #353a4a;
+  --switch-color: #fff;
+  --app-sidebar-list-300: #2f3441;
 }
 
 // New Light Mode variables
@@ -30,7 +32,7 @@ html.dark {
   --app-bg-main: #FAFAFC;          // Soft off-white main canvas
   --app-border: #E4E7ED;           // Light gray crisp borders
   --app-sidebar: #ffffff;          // Pure white clean sidebar
-  --app-sidebar-300: #F0F2F5;      // Slightly darker gray for sidebar highlights/hover states
+  --app-sidebar-300: #f3f0f0;      // Slightly darker gray for sidebar highlights/hover states
   --app-black: rgb(245, 245, 245); // Inverted black to a light placeholder/surface gray
   --app-pink: #c21a5a;             // Darkened slightly for accessible text contrast on white
   --app-purple: #6927da;           // Deepened for rich readability
@@ -50,4 +52,6 @@ html.dark {
   --status-error: #E61740;         // Clean error red
   --skeleton-base: #EAECEF;        // Soft gray skeleton loader base
   --skeleton-animation: #F4F5F7;   // Shimmer pulse highlight
+  --switch-color: #fff;
+  --app-sidebar-list-300: #31343f;
 }

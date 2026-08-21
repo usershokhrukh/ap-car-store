@@ -18,7 +18,8 @@ export default function ProtectedImage() {
 
   return (
     <div
-      className={`global__back-img ${theme == "dark" ? "" : "global__back-img-light"}`}
+      // className={`global__back-img ${theme == "dark" ? "" : "global__back-img-light"}`}
+      className={`global__back-img`}
       onContextMenu={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
       onSelect={(e) => e.preventDefault()}
@@ -31,8 +32,8 @@ export default function ProtectedImage() {
         msUserSelect: "none",
         pointerEvents: "none",
       }}
-    >
-      <Image
+    >      
+    {theme == "dark" ?<Image
         src={theme == "dark" ? backImg : backImgLight}
         alt="Dashboard Background"
         unoptimized
@@ -40,7 +41,7 @@ export default function ProtectedImage() {
         quality={100}
         fill
         draggable={false}
-      />
+      /> : null}
     </div>
   );
 }

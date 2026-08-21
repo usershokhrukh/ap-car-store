@@ -11,7 +11,7 @@
   top: 0px;
   min-width: 280px;
   width: 280px;
-  background-color: rgb(from var(--app-sidebar) r g b / 1);
+  // background-color: rgb(from var(--app-sidebar) r g b / 1);
   backdrop-filter: blur(5px);
   flex-direction: column;
   align-items: start;
@@ -55,7 +55,7 @@
     @include inter();
     font-size: 20px;
     font-weight: 400;
-    color: var(--app-text);
+    color: var(--switch-color);
   }
 
   &__tit-span {
@@ -106,7 +106,7 @@
 
     @media (hover: hover) {
       &:hover {
-        background-color: rgb(from var(--app-sidebar-300) r g b /1);
+        background-color: rgb(from var(--app-sidebar-list-300) r g b /1);
         color: var(--app-neon-cyan) !important;
       }
     }
@@ -132,5 +132,20 @@
     & .sidebar__li-txt {
       display: none;
     }
+  }
+
+  &__li-box {
+    @include display();
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+    width: 100%;
+  }
+
+  &__li-subtit {
+    @include inter();
+    font-size: 13px;
+    color: var(--secondary-text);
+    opacity: 0.7;
   }
 }
