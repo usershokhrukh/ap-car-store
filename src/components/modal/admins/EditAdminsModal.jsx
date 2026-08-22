@@ -21,7 +21,6 @@ const EditAdminsModal = ({id}) => {
   const [input, setInput] = useState({
     login: "",
     fullName: "",
-    password: "",
   });
   const handleInputs = (e) => {
     setInput({
@@ -41,7 +40,7 @@ const EditAdminsModal = ({id}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!editAdminPending) {
-      if (!input?.fullName || !input?.login || !input?.password)
+      if (!input?.fullName || !input?.login)
         return notice({
           text: "Fill all inputs!",
           status: "error",
@@ -111,15 +110,6 @@ const EditAdminsModal = ({id}) => {
               name="fullName"
               type="text"
               value={input?.fullName}
-            />
-
-            <input
-              onChange={handleInputs}
-              className="modal__inputs"
-              placeholder="Password"
-              name="password"
-              type="text"
-              value={input?.password}
             />
             <button
               style={{

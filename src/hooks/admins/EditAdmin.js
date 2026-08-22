@@ -3,7 +3,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axios from "axios";
 const request = async (payload) => {
   try {
-    const res = await api.put(`/api/admins/${payload[0]}`, payload[1]);
+    const res = await api.patch(`/api/admins/${payload[0]}`, payload[1]);
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {

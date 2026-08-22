@@ -214,7 +214,51 @@ li {
 
 .body {
   @include display();
+  position: relative;
   align-items: start;
   width: 100%;
   background-color: var(--app-bg-dark);
+}
+
+.disable-admin {
+  position: relative;
+  cursor: alias !important;
+  padding: 5px;
+  background-color: rgb(from var(--app-black) r g b / 0.1);
+  border-radius: 10px;
+  &-child {
+    @include display();
+    gap: 5px;
+    filter: brightness(0.6) !important;
+    z-index: 0;
+  }
+  &-span {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    z-index: 1;
+    color: rgb(from var(--app-light-blue) r g b / 1);
+    svg {
+      width: 17px;
+      height: 17px;
+      stroke-width: 0.3px;
+      stroke: var(--app-black);
+    }
+  }
+
+  &-td {
+    padding: 5px;
+  }
+}
+
+.global-tooltip {
+ @include inter();
+ font-size: 12px; 
+  position: fixed;
+  pointer-events: none;
+  border-radius: 10px;
+  background-color: rgb(from var(--app-black) r g b /0.5);
+  padding: 7px 10px;
+  backdrop-filter: blur(10px);
+
 }
