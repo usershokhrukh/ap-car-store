@@ -77,9 +77,7 @@ const Pagination = ({
     if (value.trim() && !limit.search) {
       setPreSearchPage(page || 1);
     }
-    if (!value.trim()) {
-      console.log(preSearchPage);
-      
+    if (!value.trim()) {      
       const restoredPage = preSearchPage || 1;
       executeQueryUpdate(restoredPage, limit, "");
     }

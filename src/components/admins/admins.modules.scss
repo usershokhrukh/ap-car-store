@@ -1,2 +1,59 @@
 @use "../../style/mixin.scss" as *;
 @use "../../style/var.scss" as *;
+
+.admins {
+  @include display();
+  @include paddingLargeBoxes();
+  width: 100%;
+  flex-direction: column;
+  gap: 10px;
+
+  &__me {
+    @include display();
+    width: 100%;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: var(--app-sidebar-300);
+    border-radius: 20px;
+
+    &-box {
+      @include display();
+      flex-direction: column;
+      align-items: start;
+      gap: 4px;
+    }
+
+    &-title {
+      @include inter();
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--app-text)
+    }
+
+    &-sub-tit {
+      @include inter();
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--secondary-text)
+    }
+
+    &-change {
+      @include display();
+      @include inter();
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 400;
+      padding: 8px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background-color: rgb(from var(--app-light-blue) r g b / 0.4);
+    }
+
+    &-span {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
