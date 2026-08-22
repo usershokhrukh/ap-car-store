@@ -1,75 +1,98 @@
 "use client";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "../products/products.modules.scss";
-import {createPortal} from "react-dom";
+import { createPortal } from "react-dom";
 
 const Pagination = ({
   data,
   localStorageName,
-  setSearchQuery,
   openFilter,
   setOpenFilter,
   comp,
   page,
   setPage,
+  limit,
+  setLimit,
+  search,
+  setSearch,
+  setQueryParams,
 }) => {
-  const [localLimit, setLocalLimit] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedLimit = localStorage.getItem(localStorageName);
-      return savedLimit ? JSON.parse(savedLimit) : null;
-    }
-    return null;
-  });
-  const [limit, setLimit] = useState({
-    search: localLimit?.search || "",
-    limit: localLimit?.limit || 8,
-    page: localLimit?.page || 1,
-  });
-
-  useEffect(() => {
-    setSearchQuery(
-      `${limit?.page || 1 ? `page=${limit?.page || 1}` : ""}${limit?.limit ? `&limit=${limit?.limit}` : ""}${limit?.search ? `&search=${limit?.search}` : ""}`,
-    );
-  }, [limit]);
   const [openLimit, setOpenLimit] = useState(false);
-  const [search, setSearch] = useState("");
+  const [preSearchPage, setPreSearchPage] = useState(1);
   const [hasPrevPage, setHasPrevPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(false);
-  const [totalPages, setTotalPages] = useState(null);
-  const [preSearchPage, setPreSearchPage] = useState(1);
-  const [coords, setCoords] = useState({top: 0, left: 0});
+  const [totalPages, setTotalPages] = useState(1);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
 
-  const handleLimitSelect = (e) => {
-    setLimit({
-      ...limit,
-      limit: e.target?.id || 4,
-      page: 1,
-    });
+  useEffect(() => {
+    if (data?.data?.meta) {
+      const meta = data.data.meta;
+      const totalP = meta.totalPages || 1;
+      setTotalPages(totalP);
+      setHasNextPage(page < totalP);
+      setHasPrevPage(page > 1);
+      if (totalP < page && totalP > 0) {
+        handlePageChange(totalP);
+      }
+    }
+  }, [data]);
+
+  const executeQueryUpdate = (targetPage, targetLimit, targetSearch) => {
+    setPage(targetPage);
+    setLimit(targetLimit);
+    setSearch(targetSearch);
+
     localStorage.setItem(
       localStorageName,
-      JSON.stringify({
-        ...limit,
-        limit: e.target?.id || 4,
-        page: 1,
-      }),
+      JSON.stringify({ page: targetPage, limit: targetLimit, search: targetSearch })
     );
-    setLocalLimit(JSON.parse(localStorage.getItem(localStorageName)));
-    setPage(1);
+
+    setQueryParams((prev) => ({
+      ...prev,
+      paginationStr: `page=${targetPage}&limit=${targetLimit}${targetSearch ? `&search=${targetSearch}` : ""}`,
+    }));
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    if (!search.trim()) setPreSearchPage(newPage);
+    executeQueryUpdate(newPage, limit, search);
+  };
+
+  const handleLimitSelect = (e) => {
+    const selectedLimit = Number(e.target?.id) || 8;
+    executeQueryUpdate(1, selectedLimit, search);
     setOpenLimit(false);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    executeQueryUpdate(1, limit, search.trim());
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    if (value.trim() && !limit.search) {
+      setPreSearchPage(page || 1);
+    }
+    if (!value.trim()) {
+      console.log(preSearchPage);
+      
+      const restoredPage = preSearchPage || 1;
+      executeQueryUpdate(restoredPage, limit, "");
+    }
   };
 
   const updateCoords = useCallback(() => {
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-
       const dropdownWidth = 333;
       let leftPosition = rect.left;
-
       if (rect.left + dropdownWidth > window.innerWidth) {
         leftPosition = window.innerWidth - dropdownWidth - 16;
       }
-
       setCoords({
         top: rect.bottom + window.scrollY + 8,
         left: leftPosition + window.scrollX,
@@ -89,395 +112,106 @@ const Pagination = ({
     };
   }, [openFilter, updateCoords]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();        
-    if (search) {
-      setPreSearchPage(page || 1);
-    }
-    setPage(1);
-    const resetLimit = {
-      ...limit,
-      search,
-      page: 1,
-    };
-
-    setLimit(resetLimit);
-    localStorage.setItem(localStorageName, JSON.stringify(resetLimit));
-    setLocalLimit(resetLimit);
-  };
-  const handleSearchChange = (e) => {
-    const value = e.target.value.trim();
-    if (value) {
-      setSearch(value);
-    } else {
-      const restoredPage = preSearchPage || 1;
-      setPage(restoredPage);
-      setSearch("");
-
-      const restoredLimit = {
-        ...limit,
-        search: "",
-        page: restoredPage,
-      };
-
-      setLimit(restoredLimit);
-
-      localStorage.setItem(localStorageName, JSON.stringify(restoredLimit));
-      setLocalLimit(restoredLimit);
-    }
-  };
-
-  useEffect(() => {
-    if (localLimit) {
-      setSearch(localLimit?.search);
-      // setPage(localLimit?.page);
-      // setLimit({
-      //   search: localLimit?.search || "",
-      //   limit: localLimit?.limit || 8,
-      //   page: localLimit?.page || 1,
-      // });
-    }
-  }, [localLimit]);
-
-  useEffect(() => {
-    if (data?.data?.meta) {
-      const {totalPages, page, limit, total} = data?.data?.meta;
-      setHasNextPage(page < totalPages);
-      setHasPrevPage(page > 1);
-      setTotalPages(totalPages);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (page) {
-      localStorage.setItem(
-        localStorageName,
-        JSON.stringify({
-          search: localLimit?.search || limit?.search || "",
-          limit: localLimit?.limit || limit?.limit || 8,
-          page,
-        }),
-      );
-
-      setLimit({
-        search: localLimit?.search || limit?.search || "",
-        limit: localLimit?.limit || limit?.limit || 8,
-        page,
-      });
-      setLocalLimit(JSON.parse(localStorage.getItem(localStorageName)));
-    } else if (localLimit?.page) {
-      setLimit({
-        search: localLimit?.search || limit?.search || "",
-        limit: localLimit?.limit || limit?.limit || 8,
-        page: localLimit?.page || limit?.page || 1,
-      });
-    } else {
-      localStorage.setItem(
-        localStorageName,
-        JSON.stringify({
-          search: localLimit?.search || limit?.search || "",
-          limit: localLimit?.limit || limit?.limit || 8,
-          page: 1,
-        }),
-      );
-      setLocalLimit(JSON.parse(localStorage.getItem(localStorageName)));
-      setLimit({
-        search: localLimit?.search || limit?.search || "",
-        limit: localLimit?.limit || limit?.limit || 8,
-        page: 1,
-      });
-    }
-  }, [page]);
-
   return (
-    <div className="products__b-pag">
-      <div className="products__b-pag-left">
-        <form onSubmit={handleSearch}>
-          <input
-            name="search"
-            type="search"
-            onChange={handleSearchChange}
-            className="products__b-pag-search"
-            placeholder="Search..."
-            value={search}
-          />
-        </form>
-
-        <div className="products__b-pag-limit">
-          <button
-            onClick={() => setOpenLimit(!openLimit)}
-            className="products__b-pag-lbutton"
-          >
-            {limit?.limit}
-            <span className="products__b-pag-span">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 14L8 10H16L12 14Z"></path>
-              </svg>
-            </span>
-          </button>
-          {openLimit ? (
-            <div className="products__b-pag-limits">
-              <span
-                onClick={handleLimitSelect}
-                id="4"
-                className="products__b-pag-lselect"
-              >
-                4
+    <>
+      <div className="products__b-pag">
+        <div className="products__b-pag-left">
+          <form onSubmit={handleSearchSubmit}>
+            <input
+              name="search"
+              type="search"
+              onChange={handleSearchChange}
+              className="products__b-pag-search"
+              placeholder="Search..."
+              value={search}
+            />
+          </form>
+          <div className="products__b-pag-limit">
+            <button onClick={() => setOpenLimit(!openLimit)} className="products__b-pag-lbutton">
+              {limit}
+              <span className="products__b-pag-span">
+                <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 14L8 10H16L12 14Z"></path>
+                </svg>
               </span>
-              <span
-                onClick={handleLimitSelect}
-                id="8"
-                className="products__b-pag-lselect"
-              >
-                8
-              </span>
-              <span
-                onClick={handleLimitSelect}
-                id="10"
-                className="products__b-pag-lselect"
-              >
-                10
-              </span>
-              <span
-                onClick={handleLimitSelect}
-                id="14"
-                className="products__b-pag-lselect"
-              >
-                14
-              </span>
-              <span
-                onClick={handleLimitSelect}
-                id="18"
-                className="products__b-pag-lselect"
-              >
-                18
-              </span>
-            </div>
-          ) : null}
-        </div>
-        <div className="products__b-pag-limit">
-          <button
-            ref={buttonRef}
-            onClick={() => setOpenFilter(!openFilter)}
-            className="products__b-pag-lbutton"
-          >
-            <span className="products__b-pag-span-mini">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M10 18H14V16H10V18ZM3 6V8H21V6H3ZM6 13H18V11H6V13Z"></path>
-              </svg>
-            </span>
-            <span className="products__b-pag-span">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 14L8 10H16L12 14Z"></path>
-              </svg>
-            </span>
-          </button>
-          {openFilter &&
-            coords?.left &&
-            coords?.top &&
-            createPortal(
-              <>
-                <div
-                  className="products__filter-dropdown-portal"
-                  style={{
-                    position: "absolute",
-                    top: `${coords.top}px`,
-                    left: `${coords.left}px`,
-                    zIndex: 9999,
-                  }}
-                >
-                  {comp}
-                </div>
-              </>,
-              document.getElementById("dropdown-portal-root"),
+            </button>
+            {openLimit && (
+              <div className="products__b-pag-limits">
+                {[4, 8, 10, 14, 18].map((id) => (
+                  <span key={id} onClick={handleLimitSelect} id={String(id)} className="products__b-pag-lselect">
+                    {id}
+                  </span>
+                ))}
+              </div>
             )}
+          </div>
+          <div className="products__b-pag-limit">
+            <button ref={buttonRef} onClick={() => setOpenFilter(!openFilter)} className="products__b-pag-lbutton">
+              <span className="products__b-pag-span-mini">
+                <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M10 18H14V16H10V18ZM3 6V8H21V6H3ZM6 13H18V11H6V13Z"></path>
+                </svg>
+              </span>
+              <span className="products__b-pag-span">
+                <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 14L8 10H16L12 14Z"></path>
+                </svg>
+              </span>
+            </button>
+            {openFilter && coords?.left && coords?.top && createPortal(
+              <div className="products__filter-dropdown-portal" style={{ position: "absolute", top: `${coords.top}px`, left: `${coords.left}px`, zIndex: 9999 }}>
+                {comp}
+              </div>,
+              document.getElementById("dropdown-portal-root")
+            )}
+          </div>
+        </div>
+        <div className="products__b-pag-right">
+          <button onClick={() => handlePageChange(page - 1)} disabled={!hasPrevPage} className={`products__b-pag-rbuttons ${hasPrevPage ? "" : "products__b-pag-rbuttons-disable"}`}>
+            <span className="products__b-pag-span">
+              <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 12L13 8V16L9 12Z"></path>
+              </svg>
+            </span>
+            Prev
+          </button>
+          <div className="products__b-pag-pages">
+            {totalPages > 4 ? (
+              <>
+                <button onClick={() => handlePageChange(1)} className={`products__b-pag-page ${page === 1 ? "products__b-pag-page-active" : ""}`}>1</button>
+                <button onClick={() => handlePageChange(2)} className={`products__b-pag-page ${page === 2 ? "products__b-pag-page-active" : ""}`}>2</button>
+                <button onClick={() => handlePageChange(3)} className={`products__b-pag-page ${page === 3 ? "products__b-pag-page-active" : ""}`}>3</button>
+                {page >= 4 && page < totalPages ? (
+                  <button onClick={() => handlePageChange(page)} className="products__b-pag-page products__b-pag-page-active">{page}</button>
+                ) : (
+                  <button className="products__b-pag-page" type="button">
+                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M4.5 10.5C3.675 10.5 3 11.175 3 12s.675 1.5 1.5 1.5h15c.825 0 1.5-.675 1.5-1.5s-.675-1.5-1.5-1.5h-15z"></path>
+                    </svg>
+                  </button>
+                )}
+                <button onClick={() => handlePageChange(totalPages)} className={`products__b-pag-page ${page === totalPages ? "products__b-pag-page-active" : ""}`}>{totalPages}</button>
+              </>
+            ) : (
+              Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pNum) => (
+                <button key={pNum} onClick={() => handlePageChange(pNum)} className={`products__b-pag-page ${page === pNum ? "products__b-pag-page-active" : ""}`}>
+                  {pNum}
+                </button>
+              ))
+            )}
+          </div>
+          <button onClick={() => handlePageChange(page + 1)} disabled={!hasNextPage} className={`products__b-pag-rbuttons ${hasNextPage ? "" : "products__b-pag-rbuttons-disable"}`}>
+            Next
+            <span className="products__b-pag-span">
+              <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14 12L10 16V8L14 12Z"></path>
+              </svg>
+            </span>
+          </button>
         </div>
       </div>
-      <div className="products__b-pag-right">
-        <button
-          onClick={() => setPage(page - 1)}
-          disabled={!hasPrevPage}
-          className={`products__b-pag-rbuttons ${hasPrevPage ? "" : "products__b-pag-rbuttons-disable"}`}
-        >
-          <span className="products__b-pag-span">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M9 12L13 8V16L9 12Z"></path>
-            </svg>
-          </span>
-          Prev
-        </button>
-        <div className="products__b-pag-pages">
-          {totalPages > 4 ? (
-            <>
-              <button
-                onClick={() => setPage(1)}
-                className={`products__b-pag-page ${data?.data?.meta?.page == 1 ? "products__b-pag-page-active" : ""}`}
-              >
-                1
-              </button>
-              <button
-                onClick={() => setPage(2)}
-                className={`products__b-pag-page ${data?.data?.meta?.page == 2 ? "products__b-pag-page-active" : ""}`}
-              >
-                2
-              </button>
-              <button
-                onClick={() => setPage(3)}
-                className={`products__b-pag-page ${data?.data?.meta?.page == 3 ? "products__b-pag-page-active" : ""}`}
-              >
-                3
-              </button>
-
-              {page == 4 && page + 1 == totalPages ? (
-                <button
-                  onClick={() => setPage(4)}
-                  className="products__b-pag-page products__b-pag-page-active"
-                >
-                  4
-                </button>
-              ) : page == 4 && page + 1 != totalPages ? (
-                <>
-                  <button
-                    onClick={() => setPage(4)}
-                    className="products__b-pag-page products__b-pag-page-active"
-                  >
-                    4
-                  </button>
-                  <button className="products__b-pag-page">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M4.5 10.5C3.675 10.5 3 11.175 3 12C3 12.825 3.675 13.5 4.5 13.5C5.325 13.5 6 12.825 6 12C6 11.175 5.325 10.5 4.5 10.5ZM19.5 10.5C18.675 10.5 18 11.175 18 12C18 12.825 18.675 13.5 19.5 13.5C20.325 13.5 21 12.825 21 12C21 11.175 20.325 10.5 19.5 10.5ZM12 10.5C11.175 10.5 10.5 11.175 10.5 12C10.5 12.825 11.175 13.5 12 13.5C12.825 13.5 13.5 12.825 13.5 12C13.5 11.175 12.825 10.5 12 10.5Z"></path>
-                    </svg>
-                  </button>
-                </>
-              ) : page > 4 && page + 1 == totalPages ? (
-                <>
-                  <button className="products__b-pag-page">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M4.5 10.5C3.675 10.5 3 11.175 3 12C3 12.825 3.675 13.5 4.5 13.5C5.325 13.5 6 12.825 6 12C6 11.175 5.325 10.5 4.5 10.5ZM19.5 10.5C18.675 10.5 18 11.175 18 12C18 12.825 18.675 13.5 19.5 13.5C20.325 13.5 21 12.825 21 12C21 11.175 20.325 10.5 19.5 10.5ZM12 10.5C11.175 10.5 10.5 11.175 10.5 12C10.5 12.825 11.175 13.5 12 13.5C12.825 13.5 13.5 12.825 13.5 12C13.5 11.175 12.825 10.5 12 10.5Z"></path>
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => setPage(page)}
-                    className="products__b-pag-page products__b-pag-page-active"
-                  >
-                    {page}
-                  </button>
-                </>
-              ) : page > 4 && page + 1 != totalPages && page != totalPages ? (
-                <>
-                  <button className="products__b-pag-page">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M4.5 10.5C3.675 10.5 3 11.175 3 12C3 12.825 3.675 13.5 4.5 13.5C5.325 13.5 6 12.825 6 12C6 11.175 5.325 10.5 4.5 10.5ZM19.5 10.5C18.675 10.5 18 11.175 18 12C18 12.825 18.675 13.5 19.5 13.5C20.325 13.5 21 12.825 21 12C21 11.175 20.325 10.5 19.5 10.5ZM12 10.5C11.175 10.5 10.5 11.175 10.5 12C10.5 12.825 11.175 13.5 12 13.5C12.825 13.5 13.5 12.825 13.5 12C13.5 11.175 12.825 10.5 12 10.5Z"></path>
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => setPage(page)}
-                    className="products__b-pag-page products__b-pag-page-active"
-                  >
-                    {page}
-                  </button>
-                  <button className="products__b-pag-page">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M4.5 10.5C3.675 10.5 3 11.175 3 12C3 12.825 3.675 13.5 4.5 13.5C5.325 13.5 6 12.825 6 12C6 11.175 5.325 10.5 4.5 10.5ZM19.5 10.5C18.675 10.5 18 11.175 18 12C18 12.825 18.675 13.5 19.5 13.5C20.325 13.5 21 12.825 21 12C21 11.175 20.325 10.5 19.5 10.5ZM12 10.5C11.175 10.5 10.5 11.175 10.5 12C10.5 12.825 11.175 13.5 12 13.5C12.825 13.5 13.5 12.825 13.5 12C13.5 11.175 12.825 10.5 12 10.5Z"></path>
-                    </svg>
-                  </button>
-                </>
-              ) : (
-                <button className="products__b-pag-page">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M4.5 10.5C3.675 10.5 3 11.175 3 12C3 12.825 3.675 13.5 4.5 13.5C5.325 13.5 6 12.825 6 12C6 11.175 5.325 10.5 4.5 10.5ZM19.5 10.5C18.675 10.5 18 11.175 18 12C18 12.825 18.675 13.5 19.5 13.5C20.325 13.5 21 12.825 21 12C21 11.175 20.325 10.5 19.5 10.5ZM12 10.5C11.175 10.5 10.5 11.175 10.5 12C10.5 12.825 11.175 13.5 12 13.5C12.825 13.5 13.5 12.825 13.5 12C13.5 11.175 12.825 10.5 12 10.5Z"></path>
-                  </svg>
-                </button>
-              )}
-              <button
-                onClick={() => setPage(totalPages)}
-                className={`products__b-pag-page ${data?.data?.meta?.page == totalPages ? "products__b-pag-page-active" : ""}`}
-              >
-                {totalPages}
-              </button>
-            </>
-          ) : totalPages < 4 ? (
-            <>
-              {[...Array(totalPages)]?.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setPage(index + 1)}
-                  className={`products__b-pag-page ${data?.data?.meta?.page == index + 1 ? "products__b-pag-page-active" : ""}`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </>
-          ) : (
-            <>
-              {[...Array(3)]?.map((_, index) => (
-                <button
-                  key={index * index}
-                  onClick={() => setPage(index + 1)}
-                  className={`products__b-pag-page ${data?.data?.meta?.page == index + 1 ? "products__b-pag-page-active" : ""}`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </>
-          )}
-        </div>
-        <button
-          onClick={() => setPage(page + 1)}
-          disabled={!hasNextPage}
-          className={`products__b-pag-rbuttons ${hasNextPage ? "" : "products__b-pag-rbuttons-disable"}`}
-        >
-          Next
-          <span className="products__b-pag-span">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M14 12L10 16V8L14 12Z"></path>
-            </svg>
-          </span>
-        </button>
-      </div>
-
       <div id="dropdown-portal-root"></div>
-    </div>
+    </>
   );
 };
 
