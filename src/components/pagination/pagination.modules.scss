@@ -1,0 +1,315 @@
+@use "../../style/mixin.scss" as *;
+@use "../../style/var.scss" as *;
+
+.products{
+    &__b-pag {
+    @include display();
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: start;
+  }
+
+  &__b-pag-left {
+    @include display();
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: start;
+  }
+
+  &__b-pag-right {
+    @include display();
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: start;
+  }
+
+  &__b-pag-search {
+    @include inter();
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    max-width: 200px;
+    width: 100%;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    color: var(--app-text);
+    height: 35px;
+  }
+
+  &__b-pag-limit {
+    @include display();
+    // position: relative;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    height: 35px;
+    gap: 10px;
+  }
+
+  &__b-pag-lbutton,
+  &__b-pag-rbuttons,
+  &__b-pag-page {
+    @include display();
+    @include inter();
+    gap: 8px;
+    height: 35px;
+
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    color: var(--app-text);
+
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+    }
+  }
+
+  &__b-pag-rbuttons-disable {
+    opacity: 0.8;
+    color: var(--secondary-text);
+    border: 1px solid transparent;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-sidebar) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-sidebar) r g b / 1);
+    }
+  }
+
+  &__b-pag-page {
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  &__b-pag-page-active {
+    background-color: var(--app-light-blue);
+  }
+
+  &__b-pag-pages {
+    @include display();
+    gap: 10px;
+    flex-wrap: wrap
+  }
+
+  &__b-pag-limits {
+    @include display();
+    flex-direction: column;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border-radius: 10px;
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    z-index: 10;
+  }
+
+  &__b-pag-lselect {
+    @include display();
+    @include inter();
+    width: 100%;
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 5px 20px;
+    color: var(--app-text);
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+    }
+
+    &:first-child {
+      border-radius: 9px 9px 0px 0px;
+    }
+
+    &:last-child {
+      border-radius: 0px 0px 9px 9px;
+    }
+  }
+
+  &__b-pag-span {
+    width: 25px;
+    height: 25px;
+
+    &-mini {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__b-pag-filter-lselect {
+    gap: 10px;
+    justify-content: space-between;
+    // align-items: start;
+    padding: 5px 10px;
+    flex-wrap: wrap;
+    cursor: alias;
+    @media (hover: hover) {
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+
+    &:active {
+      background-color: transparent;
+    }
+  }
+
+  &__b-pag-filter-select {
+    @include display();
+    position: relative;
+    flex-direction: column;
+    // height: 35px;
+    justify-content: start;
+    align-items: end;
+    gap: 10px;
+    // background-color: red;
+  }
+
+  &__b-pag-filter-choosed {
+    padding: 8px;
+    @include display();
+    @include inter();
+    gap: 8px;
+    height: 35px;
+
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    color: var(--app-text);
+
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+    }
+  }
+
+  &__b-pag-filter-options {
+    @include display();
+    flex-direction: column;
+    position: absolute;
+    top: 40px;
+    z-index: 10;
+    width: 100%;
+
+    min-width: fit-content;
+    @include display();
+    flex-direction: column;
+    background-color: rgb(from var(--app-sidebar) r g b / 1);
+    border-radius: 10px;
+    width: 100%;
+    max-width: fit-content;
+    border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+  }
+
+  &__b-pag-filter-option {
+    @include display();
+    @include inter();
+    width: 100%;
+    // flex-grow: 1;
+    font-size: 14px;
+    font-weight: 400;
+    // padding: 5px;
+    color: var(--app-text);
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgb(from var(--app-light-blue) r g b / 1);
+      }
+    }
+
+    &:active {
+      background-color: rgb(from var(--app-light-blue) r g b / 1);
+    }
+
+    &:first-child {
+      border-radius: 9px 9px 0px 0px;
+    }
+
+    &:last-child {
+      border-radius: 0px 0px 9px 9px;
+    }
+
+    white-space: nowrap;
+    padding: 5px 10px !important;
+  }
+
+  &__b-pag-lselbutton-box {
+    @include display();
+    justify-content: end;
+    width: 100%;
+  }
+
+  &__b-pag-lselect-button {
+    @include inter();
+    padding: 3px 10px;
+    height: 35px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    width: 100%;
+    max-width: 100px;
+    background-color: rgb(from var(--app-light-blue) r g b / 1);
+    color: var(--app-text);
+    cursor: pointer;
+  }
+
+  &__b-pag-span-close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 5px;
+    right: 5px;
+    padding: 3px;
+    color: var(--app-text);
+  }
+
+  &__b-pag-lfilter-wrap {
+    position: relative;
+    padding: 25px 10px 10px 10px;
+  }
+}

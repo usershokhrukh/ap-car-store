@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import "../products/products.modules.scss";
+import "./pagination.modules.scss";
 import { createPortal } from "react-dom";
 
 const Pagination = ({
