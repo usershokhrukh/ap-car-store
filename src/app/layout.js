@@ -5,6 +5,7 @@ import AppLayout from "@/components/AppLayout";
 import NotificationCustom from "./NotificationCustom";
 import GeneralModalProvide from "@/components/modal/GeneralModalProvide";
 import {ThemeProvider} from "@/components/ThemeProvider";
+import TooltipProvider from "@/components/tooltip/TooltipProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,15 +24,21 @@ export const metadata = {
 
 export default function RootLayout({children}) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
       <body className="body">
         <ThemeProvider>
-          <GeneralModalProvide>
-            <NotificationCustom>
-              <AppLayout>{children}</AppLayout>
-            </NotificationCustom>
-            <ProtectedImage />
-          </GeneralModalProvide>
+          <TooltipProvider>
+            <GeneralModalProvide>
+              <NotificationCustom>
+                <AppLayout>{children}</AppLayout>
+              </NotificationCustom>
+              <ProtectedImage />
+            </GeneralModalProvide>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

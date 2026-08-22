@@ -1,7 +1,7 @@
 "use client";
 import React, {useContext, useEffect, useState} from "react";
 import "./admins.modules.scss";
-import "../products/one-product.modules.scss"
+import "../products/one-product.modules.scss";
 import PaginationGeneral from "../pagination/PaginationGeneral";
 import AdminsPaginationProperties from "./AminsPaginationProperties";
 import {useGetAdmins} from "@/hooks/admins/GetAdmins";
@@ -13,21 +13,27 @@ import ProductsSkeleton from "../products/ProductsLoading";
 import AdminsTable from "./AdminsTable";
 import {useGetMe} from "@/hooks/settings/GetMe";
 import {useGetOneAdmin} from "@/hooks/admins/GetAdminMe";
-import { useQueryClient } from "@tanstack/react-query";
+import {useQueryClient} from "@tanstack/react-query";
 import EditAdminsModalPassword from "../modal/admins/EditPasswordModal";
 import NewAdminsModal from "../modal/admins/NewAdminsModal";
+import DisableAdmin from "../DisableAdmin";
 
 const Admins = () => {
   const localStorageName = "adminsLimit";
   const listAct = ["sortBy", "order"];
   const [searchParams, setSearchParams] = useState("");
   const {data, error, isPending} = useGetAdmins(searchParams);
-  const {refetch, data: meId, error: meIdError, isPending: meIdPending} = useGetMe();
+  const {
+    refetch,
+    data: meId,
+    error: meIdError,
+    isPending: meIdPending,
+  } = useGetMe();
   const route = useRouter();
   const queryClient = useQueryClient();
   useEffect(() => {
-    queryClient.invalidateQueries({queryKey: ["settings-me"]})
-  }, [])
+    queryClient.invalidateQueries({queryKey: ["settings-me"]});
+  }, []);
   const {
     data: adminId,
     error: adminIdError,
@@ -52,7 +58,7 @@ const Admins = () => {
     setCloseModal(false);
     setCompModal(null);
     setCloseSpan(true);
-  }, []);  
+  }, []);
 
   return (
     <div className="admins container">
@@ -77,24 +83,60 @@ const Admins = () => {
           </div>
           <div className="admins__me">
             <div className="admins__me-box">
-              <p className="admins__me-title">{adminId?.data?.login || "No login"}</p>
-              <p className="admins__me-sub-tit">{adminId?.data?.fullName || "No fullname"}</p>
+              <p className="admins__me-title">
+                {adminId?.data?.login || "No login"}
+              </p>
+              <p className="admins__me-sub-tit">
+                {adminId?.data?.fullName || "No fullname"}
+              </p>
             </div>
-            <button onClick={() => {
-              setCloseModal(true)
-              setCompModal(<EditAdminsModalPassword/>)
-            }} className="admins__me-change">
-              <span className="admins__me-span">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M19 10H20C20.5523 10 21 10.4477 21 11V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V11C3 10.4477 3.44772 10 4 10H5V9C5 5.13401 8.13401 2 12 2C15.866 2 19 5.13401 19 9V10ZM5 12V20H19V12H5ZM11 14H13V18H11V14ZM17 10V9C17 6.23858 14.7614 4 12 4C9.23858 4 7 6.23858 7 9V10H17Z"></path>
-                </svg>
-              </span>
-              Change own password
-            </button>
+            {adminId?.data?.isSuperAdmin ? (
+              <>
+                <DisableAdmin
+                text={"Super admin can not change his password"}
+                  comp={
+                      <button
+                      disabled
+                        onClick={() => {
+                          setCloseModal(true);
+                          setCompModal(<EditAdminsModalPassword />);
+                        }}
+                        className="admins__me-change disable-admin"
+                      >
+                        <span className="admins__me-span">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M19 10H20C20.5523 10 21 10.4477 21 11V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V11C3 10.4477 3.44772 10 4 10H5V9C5 5.13401 8.13401 2 12 2C15.866 2 19 5.13401 19 9V10ZM5 12V20H19V12H5ZM11 14H13V18H11V14ZM17 10V9C17 6.23858 14.7614 4 12 4C9.23858 4 7 6.23858 7 9V10H17Z"></path>
+                          </svg>
+                        </span>
+                        Change own password
+                      </button>
+                  }
+                ></DisableAdmin>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  setCloseModal(true);
+                  setCompModal(<EditAdminsModalPassword />);
+                }}
+                className="admins__me-change disable-admin"
+              >
+                <span className="admins__me-span">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M19 10H20C20.5523 10 21 10.4477 21 11V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V11C3 10.4477 3.44772 10 4 10H5V9C5 5.13401 8.13401 2 12 2C15.866 2 19 5.13401 19 9V10ZM5 12V20H19V12H5ZM11 14H13V18H11V14ZM17 10V9C17 6.23858 14.7614 4 12 4C9.23858 4 7 6.23858 7 9V10H17Z"></path>
+                  </svg>
+                </span>
+                Change own password
+              </button>
+            )}
           </div>
           <div className="products__bottom">
             <PaginationGeneral
