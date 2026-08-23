@@ -43,7 +43,16 @@
     align-items: start;
     gap: 10px;
     flex-wrap: wrap;
+    flex-direction: column;
     // background-color: red;
+  }
+
+  &__center-bottom {
+    @include display();
+    width: 100%;
+    align-items: start;
+    gap: 10px;
+    flex-wrap: wrap;
   }
   &__cen-stats {
     display: grid;
@@ -51,7 +60,7 @@
     grid-template-rows: auto auto;
     gap: 10px;
     flex-grow: 1;
-    width: 100%;
+    // width: 100%;
     // background-color: red;
   }
 
@@ -147,6 +156,8 @@
     height: 300px;
     border-radius: 10px;
     padding: 20px;
+    width: 100%;
+    flex-grow: 1;
     background: #d23a7a;
     background: linear-gradient(
       90deg,
@@ -154,6 +165,7 @@
       rgba(126, 58, 242, 0.2) 100%
     );
     gap: 10px;
+    min-width: fit-content;
   }
 
   &__chart-title {

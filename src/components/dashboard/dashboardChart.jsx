@@ -14,7 +14,7 @@ const dataColor = [
   "var(--app-neon-cyan)",
 ];
 
-export default function BookingDistribution({data}) {
+export default function BookingDistribution({data,title, subtitle}) {
   const [dataResult, setDataResult] = useState(null);
   useEffect(() => {
     if (data?.length) {
@@ -42,7 +42,7 @@ export default function BookingDistribution({data}) {
   return (
     <div className="dashboard__chart">
       <div className="dashboard__chart-top">
-        <h2 className="dashboard__chart-title">Distribution Total</h2>
+        <h2 className="dashboard__chart-title">{title || 'Distribution Total'}</h2>
       </div>
 
       <div className="dashboard__chart-bottom">
@@ -74,7 +74,7 @@ export default function BookingDistribution({data}) {
 
         <div className="dashboard__chart-right">
           <span className="dashboard__chart-right-title">
-            Vehicle Categories
+            {subtitle||'Vehicle Categories'}
           </span>
           <div className="dashboard__chart-right-list">
             {dataResult?.map((item, index) => (
