@@ -96,7 +96,7 @@ const ProductsPaginationProperties = ({
       const rect = dropRef.current?.getBoundingClientRect();
       const viewPointHeight = window.innerHeight;
       const dropHeight = 250;
-      if (viewPointHeight - rect.bottom < dropHeight && rect.top > dropHeight) {
+      if (viewPointHeight - rect?.bottom < dropHeight && rect?.top > dropHeight) {
         setDropDownPosition("top");
       } else {
         setDropDownPosition("bottom");
@@ -140,7 +140,7 @@ const ProductsPaginationProperties = ({
       const rect = dropRefPickUp.current?.getBoundingClientRect();
       const viewPointHeight = window.innerHeight;
       const dropHeight = 250;
-      if (viewPointHeight - rect.bottom < dropHeight && rect.top > dropHeight) {
+      if (viewPointHeight - rect?.bottom < dropHeight && rect?.top > dropHeight) {
         setDropDownPositionPickUp("top");
       } else {
         setDropDownPositionPickUp("bottom");
