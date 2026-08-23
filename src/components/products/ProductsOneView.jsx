@@ -180,13 +180,11 @@ const ProductsOneView = () => {
       route.refresh();
     }
   };
-  const [isError, setIsError] = useState(false);
-
+  const [isError, setIsError] = useState(false);  
   return (
     <div className="products products-view container">
       <div className="products__top products__view-top">
         <span
-          // onClick={() => route.push(`${from.text == "categories" ? `/categories${from?.id ? `/${from?.id}` :""}` : `/products`}`)}
           onClick={() => route.back()}
           className="products__view-back"
         >
@@ -323,30 +321,6 @@ const ProductsOneView = () => {
                   <span>No Photo</span>
                 </div>
               )}
-
-              {/* 
-              <div className={`safe-image-container `}>
-                {isLoading && !isError && (
-                  <div className="skeleton-box safe-image-container__loader" />
-                )}
-
-                {isError && (
-                  
-                )}
-
-                {!isError && (
-                  <>
-                    <img
-                      src={data?.data?.image}
-                      alt={"Product image"}
-                      className={` ${isLoading ? "safe-image-container__img--hidden" : ""} products-view__image`}
-                      onLoad={() => setIsLoading(false)} // Fires when image successfully loads
-                      onError={() => setIsError(true)} // Fires if the image link is broken
-                    />
-                    <div className="products-view__vignette-overlay"></div>
-                  </>
-                )}
-              </div> */}
 
               {!isError ? (
                 <>

@@ -26,8 +26,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     if(pickupData) {
-      const filter = pickupData?.data?.map(({city, productsCount}) => {
-        return {name: city, totalStock: productsCount}
+      const filter = pickupData?.data?.map(({name, productsCount}) => {
+        return {name, totalStock: productsCount}
       })
       setPickUpList(filter)      
     }

@@ -6,11 +6,13 @@ import {GeneralModal} from "@/context/GeneralModal";
 import {useGetOneProduct} from "@/hooks/products/GetOneProduct";
 import {useEditProducts} from "@/hooks/products/EditProduct";
 import ProductFormSkeleton from "../ModalLoading";
+import { useGetPickup } from "@/hooks/pickup/GET/GetPickup";
 
 const EditProductsModal = ({id: productId}) => {
   const {data, isPending, error} = useGetCategories();
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");
+  const [pickUpValue, setPickUpValue] = useState("");
   const {
     data: oneProductData,
     error: oneProductError,
@@ -25,6 +27,7 @@ const EditProductsModal = ({id: productId}) => {
     price: 0,
     stock: 0,
     image: "",
+    pickupPointId: "",
   });
 
   useEffect(() => {
@@ -36,8 +39,10 @@ const EditProductsModal = ({id: productId}) => {
         price: oneProductData?.data?.price,
         stock: oneProductData?.data?.stock,
         image: oneProductData?.data?.image,
+        pickupPointId: oneProductData?.data?.pickupPointId
       });
       setCategoryValue(oneProductData?.data?.category?.name);
+      setPickUpValue(oneProductData?.data?.pickupPoint?.name);
     }
   }, [oneProductData]);
 
@@ -159,6 +164,52 @@ const EditProductsModal = ({id: productId}) => {
     }
   }, [postData, postError, postPending]);
 
+  const [openPickUp, setOpenPickUp] = useState(false);
+  const dropRefPickUp = useRef(null);
+  const dropHeightRefPickUp = useRef(null);
+  const [dropDownPositionPickUp, setDropDownPositionPickUp] =
+    useState("bottom");
+  useEffect(() => {
+    if (!openPickUp || !dropRefPickUp.current) return;
+    const checkSpace = () => {
+      const rect = dropRefPickUp.current?.getBoundingClientRect();
+      const viewPointHeight = window.innerHeight;
+      const dropHeight = 250;
+      if (viewPointHeight - rect.bottom < dropHeight && rect.top > dropHeight) {
+        setDropDownPositionPickUp("top");
+      } else {
+        setDropDownPositionPickUp("bottom");
+      }
+    };
+    checkSpace();
+    window.addEventListener("scroll", checkSpace);
+    window.addEventListener("resize", checkSpace);
+
+    return () => {
+      window.addEventListener("scroll", checkSpace);
+      window.addEventListener("resize", checkSpace);
+    };
+  }, [openPickUp]);
+
+  useEffect(() => {
+    setOpenPickUp(false);
+  }, [pickUpValue]);
+  const {
+    data: pickUpData,
+    error: pickUpError,
+    isPending: pickUpPending,
+  } = useGetPickup();
+
+  useEffect(() => {
+    if (pickUpError?.message) {
+      notice({
+        text: pickUpError?.message || "Could not get pickup points!",
+        time: 3000,
+        status: "error",
+      });
+    }
+  }, [pickUpError]);
+
   return (
     <>
       {data && !isPending ? (
@@ -239,6 +290,63 @@ const EditProductsModal = ({id: productId}) => {
                               categoryId: id,
                             });
                             setCategoryValue(name);
+                          }}
+                          className="products__b-pag-filter-option"
+                        >
+                          {name}
+                        </span>
+                      ))}
+                    </span>
+                  </>
+                ) : null}
+              </span>
+            </span>
+            <span className="products__b-pag-lselect products__b-pag-filter-lselect modal__select">
+              <span>Pickup point: </span>
+              <span className="products__b-pag-filter-select modal__select-wrap">
+                <span
+                  ref={dropRefPickUp}
+                  onClick={() => setOpenPickUp(!openPickUp)}
+                  className="products__b-pag-filter-choosed modal__select-choosed"
+                >
+                  {pickUpValue || "--"}
+                  <span className="products__b-pag-span">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M12 14L8 10H16L12 14Z"></path>
+                    </svg>
+                  </span>
+                </span>
+                {openPickUp ? (
+                  <>
+                    <span
+                      ref={dropHeightRefPickUp}
+                      className={`products__b-pag-filter-options modal__options modal__options-${dropDownPositionPickUp}`}
+                    >
+                      <span
+                          onClick={() => {
+                            setInput({
+                              ...input,
+                              pickupPointId: null,
+                            });
+                            setPickUpValue(null);
+                          }}
+                          className="products__b-pag-filter-option"
+                        >
+                          --
+                        </span>
+                      {pickUpData?.data?.items?.map(({id, name}) => (
+                        <span
+                          key={id}
+                          onClick={() => {
+                            setInput({
+                              ...input,
+                              pickupPointId: id,
+                            });
+                            setPickUpValue(name);
                           }}
                           className="products__b-pag-filter-option"
                         >
