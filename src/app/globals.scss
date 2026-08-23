@@ -1,4 +1,5 @@
 @use "../style/mixin.scss" as *;
+@use "leaflet/dist/leaflet.css" as *;
 
 * {
   padding: 0;
@@ -262,3 +263,4 @@ li {
   backdrop-filter: blur(10px);
 
 }
+

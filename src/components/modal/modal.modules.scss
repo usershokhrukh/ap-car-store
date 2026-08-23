@@ -9,13 +9,17 @@
   width: 100%;
   z-index: 110;
   height: 100vh;
-  background-color: rgb(from var(--app-black) r g b / 0.253);
+  // background-color: rgb(from var(--app-black) r g b / 0.253);
+  backdrop-filter: blur(2px);
+
 
   &__center {
     padding: 30px;
     position: relative;
     background-color: var(--app-sidebar);
     border-radius: 10px;
+    box-shadow: 0px 0px 30px -1px rgb(from var(--app-black) r g b /0.7);
+    border: 1px solid rgb(from var(--app-cyan) r g b/ 0.2)
   }
 
   &__cn-span {

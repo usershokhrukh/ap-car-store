@@ -18,6 +18,8 @@ import ProductDeleteConfirm from "./ProductDeleteConfirm";
 import EditProductsModal from "../modal/products/EditProductsModal";
 import {usePatchStatusCategories} from "@/hooks/category/PatchCategoriesStatus";
 import CarDetailsSkeleton from "./ProductsOneLoading";
+import MapView from "../map/MapDynamic";
+import MapViewLocate from "../map/MapPointDynamic";
 
 const ProductsOneView = () => {
   const {id} = useParams();
@@ -181,6 +183,7 @@ const ProductsOneView = () => {
     }
   };
   const [isError, setIsError] = useState(false);  
+  
   return (
     <div className="products products-view container">
       <div className="products__top products__view-top">
@@ -372,6 +375,11 @@ const ProductsOneView = () => {
               </span>
             </div>
           </div>
+          {
+            data?.data?.pickupPoint ? <><MapView data={data?.data?.pickupPoint}/> <MapViewLocate data={data?.data?.pickupPoint}/></>: null
+          }
+          
+          
         </>
       ) : isPending ? (
         <>
