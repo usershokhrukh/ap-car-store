@@ -20,6 +20,7 @@ export const usePatchStatusPickup = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["pickup"]});
       queryClient.invalidateQueries({queryKey: ["pickup-stats"]});
+      queryClient.invalidateQueries({queryKey: ["products"]});
     },
   });
 };

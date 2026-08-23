@@ -20,6 +20,7 @@
   border-right: 1px solid var(--app-border);
   overflow-y: auto;
   transition: all 0.15s linear;
+  z-index: 10;
 
   &__top {
     @include display();
@@ -128,6 +129,7 @@
 
   &__close {
     min-width: 0px !important;
+    padding: 5px !important;
     width: fit-content !important;
     & .sidebar__li-txt {
       display: none;

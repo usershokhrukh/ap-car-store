@@ -111,7 +111,7 @@ const Dashboard = () => {
                 data={pieData}
               />
               <BookingDistribution
-                subtitle={"City categories"}
+                subtitle={"Pickup categories"}
                 title={pickupData?.message}
                 data={pickupList}
               />

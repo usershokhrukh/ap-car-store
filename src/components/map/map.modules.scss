@@ -2,9 +2,9 @@
 @use "../../style/var.scss" as *;
 
 .map {
-  z-index: 0;
+  z-index: 0 !important;
   &__container {
-    z-index: 0;
+    z-index: 0 !important;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -13,10 +13,8 @@
   &-svg {
     svg {
       color: var(--app-red);
-      width: 50px;
-      height: 50px;
-      stroke-width: 0.4px;
-      stroke: black;
+      width: 40px;
+      height: 40px;
     }
   }
 
@@ -40,9 +38,9 @@
 
   &__wrapper {
     height: 400px;
-    width: 100%;
+    // width: 100%;
     flex-grow: 1;
-    min-width: 400px;
+    // min-width: 250px;
     border-radius: 15px;
     overflow: hidden;
     position: relative;
@@ -57,8 +55,6 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    // z-index: 1000;
-    // z-index: 100;
     z-index: 1000;
     background: #ffffff;
     border: 1px solid #cccc;
@@ -94,4 +90,39 @@
     background-color: #f3f4f6;
     border-radius: 15px;
   }
+  &__floating-actions {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 1100; // Capital Z fixed to z-index
+    display: flex;
+    gap: 8px;
+    pointer-events: auto;
+  }
+
+  &__nav-btn {
+    @include inter();
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
+    &:active {
+      transform: scale(0.96);
+    }
+
+    &--google {
+      background-color: #4285f4;
+    }
+  }
+
+  &__pop-box {
+    font-family: sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+
 }

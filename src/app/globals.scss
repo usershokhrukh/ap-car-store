@@ -19,6 +19,7 @@
   gap: 10px;
   backdrop-filter: blur(10px);
   color: var(--app-text);
+  z-index: 112 !important;
   svg {
     width: 20px;
     height: 20px;
@@ -65,7 +66,7 @@
 
   &-wrap {
     @include display();
-    z-index: 105;
+    z-index: 111 !important;
     width: fit-content;
     position: fixed;
     flex-direction: column;

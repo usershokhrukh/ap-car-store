@@ -20,6 +20,7 @@ import {usePatchStatusCategories} from "@/hooks/category/PatchCategoriesStatus";
 import CarDetailsSkeleton from "./ProductsOneLoading";
 import MapView from "../map/MapDynamic";
 import MapViewLocate from "../map/MapPointDynamic";
+import {usePatchStatusPickup} from "@/hooks/pickup/PATCH/PatchPickUpStatus";
 
 const ProductsOneView = () => {
   const {id} = useParams();
@@ -182,15 +183,60 @@ const ProductsOneView = () => {
       route.refresh();
     }
   };
-  const [isError, setIsError] = useState(false);  
+
+  const {
+    data: patchPickupData,
+    error: patchPickupError,
+    isPending: patchPickupPending,
+    mutate: patchPickupMutate,
+  } = usePatchStatusPickup();
+  useEffect(() => {
+    if (patchPickupError?.message) {
+      notice({
+        text: patchPickupError?.message,
+        status: "error",
+        time: "infinite",
+        close: true,
+      });
+      route.refresh();
+    }
+  }, [patchPickupError]);
+
+  useEffect(() => {
+    if (patchPickupData && !patchPickupPending && !patchPickupError?.message) {
+      notice({
+        text: patchPickupData?.message,
+        time: 5000,
+        status: "success",
+      });
+    }
+  }, [patchPickupData, patchPickupPending]);
+
+  const handlePatchPickup = (data) => {
+    try {
+      notice({
+        text: "Loading...",
+        status: "info",
+        time: "infinite",
+      });
+      patchPickupMutate([data?.id, {isActive: !data?.isActive}]);
+    } catch (error) {
+      route.refresh();
+    }
+  };
+  const [isError, setIsError] = useState(false);
+  const [isErrorPickup, setIsErrorPickUp] = useState(false);
+
+  useEffect(() => {
+    setIsErrorPickUp(false);
+    setIsError(false);
+  }, [data]);
   
+
   return (
     <div className="products products-view container">
       <div className="products__top products__view-top">
-        <span
-          onClick={() => route.back()}
-          className="products__view-back"
-        >
+        <span onClick={() => route.back()} className="products__view-back">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -336,12 +382,14 @@ const ProductsOneView = () => {
             <h2 className="products-view__category-title">
               Category Properties
             </h2>
-            <div onClick={(e) => {
-              if(e.target.id != "is-active"){
-                route.push(`/categories/${data?.data?.category?.id}`)                
-              }
-              
-            }} className="products-view__category-main">
+            <div
+              onClick={(e) => {
+                if (e.target.id != "is-active") {
+                  route.push(`/categories/${data?.data?.category?.id}`);
+                }
+              }}
+              className="products-view__category-main"
+            >
               <div className="products-view__category-left">
                 <p className="products-view__category-name">
                   {data?.data?.category?.name}
@@ -351,7 +399,7 @@ const ProductsOneView = () => {
                 </p>
               </div>
               <span
-              id="is-active"
+                id="is-active"
                 onClick={() =>
                   handlePatchCategory({
                     id: data?.data?.category?.id,
@@ -360,14 +408,26 @@ const ProductsOneView = () => {
                 }
               >
                 {data?.data?.category?.isActive ? (
-                  <span id="is-active" className="products-view__main-b-activate">
-                    <span id="is-active" className="products-view__main-b-activate-act">
+                  <span
+                    id="is-active"
+                    className="products-view__main-b-activate"
+                  >
+                    <span
+                      id="is-active"
+                      className="products-view__main-b-activate-act"
+                    >
                       Active
                     </span>
                   </span>
                 ) : (
-                  <span id="is-active" className="products-view__main-b-activate ">
-                    <span id="is-active" className="products-view__main-b-activate-inact">
+                  <span
+                    id="is-active"
+                    className="products-view__main-b-activate "
+                  >
+                    <span
+                      id="is-active"
+                      className="products-view__main-b-activate-inact"
+                    >
                       Inactive
                     </span>
                   </span>
@@ -375,14 +435,143 @@ const ProductsOneView = () => {
               </span>
             </div>
           </div>
-          <div className="map">
-            {
-            data?.data?.pickupPoint ? <><MapView data={data?.data?.pickupPoint}/> <MapViewLocate data={data?.data?.pickupPoint}/></>: null
-          }
+          <div className="products-view__map-wr">
+            <div className="products-view__top">
+              <h2 className="products-view__category-title">Pickup point</h2>
+            </div>
+
+            {data?.data?.pickupPoint ? (
+              <div className="products-view__map">
+                <span className="products-view__map-self">
+                  <MapView data={data?.data?.pickupPoint} />{" "}
+                </span>
+                <div className="products-view__map-list">
+                  {!isErrorPickup ? (
+                    <>
+                      {data?.data?.pickupPoint?.imagePath ? (
+                        <img
+                          className="products-view__map-img"
+                          src={`https://backend.magnateshop.uz/uploads/${data?.data?.pickupPoint?.imagePath}`}
+                          alt=""
+                          onError={() => setIsErrorPickUp(true)}
+                        />
+                      ) : (
+                        <img
+                          className="products-view__map-img"
+                          src={data?.data?.pickupPoint?.image}
+                          alt=""
+                          onError={() => setIsErrorPickUp(true)}
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <div
+                      style={{
+                        width: "100%",
+                        minHeight: "130px",
+                      }}
+                      className="safe-image-container__fallback"
+                    >
+                      <span>No Photo</span>
+                    </div>
+                  )}
+                  <div className="products-view__map-cont">
+                    <div className="products-view__mlist-top-nav">
+                      <div className="products-view__mlist-top">
+                        <p className="products-view__mlist-title">
+                          {data?.data?.pickupPoint?.name || "--"}
+                        </p>
+                        <span className="products-view__mlist-sub-tit">
+                          {data?.data?.pickupPoint?.city || "--"}
+                        </span>
+                        <p className="products-view__mlist-sub-tit">
+                          {data?.data?.pickupPoint?.address || "--"}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() =>
+                          route.push(
+                            `/pickup-points/${data?.data?.pickupPoint?.id}`,
+                          )
+                        }
+                        className="products-view__mleft-buttons"
+                      >
+                        <span className="products-view__mleft-buttons-span products-view__mleft-buttons-span-delete">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path>
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+
+                    <div className="products-view__mlist-box">
+                      <p className="products-view__mlist-b-li">
+                        opens at:{" "}
+                        <span className="products-view__mlisbli-high">
+                          {data?.data?.pickupPoint?.opensAt || "--"}
+                        </span>
+                      </p>
+                      <p className="products-view__mlist-b-li">
+                        closes at:{" "}
+                        <span className="products-view__mlisbli-high">
+                          {data?.data?.pickupPoint?.closesAt || "--"}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="products-view__mlist-bottom">
+                      <span
+                        id="is-active"
+                        onClick={() =>
+                          handlePatchPickup({
+                            id: data?.data?.pickupPoint?.id,
+                            isActive: data?.data?.pickupPoint?.isActive,
+                          })
+                        }
+                      >
+                        {data?.data?.pickupPoint?.isActive ? (
+                          <span
+                            id="is-active"
+                            className="products-view__main-b-activate"
+                          >
+                            <span
+                              id="is-active"
+                              className="products-view__main-b-activate-act"
+                            >
+                              Active
+                            </span>
+                          </span>
+                        ) : (
+                          <span
+                            id="is-active"
+                            className="products-view__main-b-activate "
+                          >
+                            <span
+                              id="is-active"
+                              className="products-view__main-b-activate-inact"
+                            >
+                              Inactive
+                            </span>
+                          </span>
+                        )}
+                      </span>
+                      <p className="products-view__mlist-high">
+                        {data?.data?.pickupPoint?.phone || "--"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* <MapViewLocate data={data?.data?.pickupPoint} /> */}
+              </div>
+            ) : (
+              <p className="products-view__sub-tit">
+                This product does not have pickup point
+              </p>
+            )}
           </div>
-          
-          
-          
         </>
       ) : isPending ? (
         <>

@@ -19,6 +19,11 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
+  useEffect(() => {
+    notice({
+      stop: "true"
+    })
+  }, [])
   const refUsername = useRef(null);
   const refPassword = useRef(null);
   const {mutate, data, error, isPending} = PostLogin();
