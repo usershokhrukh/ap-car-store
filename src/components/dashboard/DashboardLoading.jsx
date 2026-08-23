@@ -1,4 +1,4 @@
-import './dashboard.modules.scss';
+import "./dashboard.modules.scss";
 
 export default function CarServiceSkeleton() {
   return (
@@ -11,10 +11,33 @@ export default function CarServiceSkeleton() {
 
       {/* Center Layout Container */}
       <div className="dashboard-skeleton__center">
-        
+        <div className="dashboard-skeleton__chart">
+          <div className="skeleton-box dashboard-skeleton__chart-title" />
+
+          <div className="dashboard-skeleton__chart-bottom">
+            {/* Pulsing Donut Ring Wireframe */}
+            <div className="dashboard-skeleton__chart-left" />
+
+            {/* Chart Legend List Block */}
+            <div className="dashboard-skeleton__chart-right">
+              <div className="skeleton-box dashboard-skeleton__chart-right-title" />
+
+              <div className="dashboard-skeleton__chart-right-list">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="dashboard-skeleton__chart-card">
+                    <div className="dashboard-skeleton__chart-item-left">
+                      <div className="skeleton-box dashboard-skeleton__chart-dot" />
+                      <div className="skeleton-box dashboard-skeleton__chart-text-block" />
+                    </div>
+                    <div className="skeleton-box dashboard-skeleton__chart-right-value" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
         {/* Left Column Structure */}
         <div className="dashboard-skeleton__cen-stats">
-          
           {/* Card 1: Products */}
           <div className="dashboard-skeleton__cen-stats-items">
             <div className="skeleton-box dashboard-skeleton__censts-title" />
@@ -53,21 +76,20 @@ export default function CarServiceSkeleton() {
               ))}
             </div>
           </div>
-
         </div>
 
         {/* Right Column Structure: Distribution Total Chart */}
         <div className="dashboard-skeleton__chart">
           <div className="skeleton-box dashboard-skeleton__chart-title" />
-          
+
           <div className="dashboard-skeleton__chart-bottom">
             {/* Pulsing Donut Ring Wireframe */}
             <div className="dashboard-skeleton__chart-left" />
-            
+
             {/* Chart Legend List Block */}
             <div className="dashboard-skeleton__chart-right">
               <div className="skeleton-box dashboard-skeleton__chart-right-title" />
-              
+
               <div className="dashboard-skeleton__chart-right-list">
                 {[...Array(8)].map((_, i) => (
                   <div key={i} className="dashboard-skeleton__chart-card">
@@ -82,7 +104,6 @@ export default function CarServiceSkeleton() {
             </div>
           </div>
         </div>
-
       </div>
       <div className="skeleton-box dashboard-skeleton__tit-sub" />
       <div className="products-skeleton__table-wrapper">
