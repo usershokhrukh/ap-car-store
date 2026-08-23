@@ -18,7 +18,7 @@ import ProductsPaginationProperties from "./ProductsPaginationProperties";
 
 const Products = () => {
   const localStorageName = "productsLimit";
-  const listAct = ["isActive", "sortBy", "order", "categoryId", "minPrice", "maxPrice", "inStock"];
+  const listAct = ["isActive", "sortBy", "order", "categoryId", "minPrice", "maxPrice", "inStock", "pickupPointId"];
   const [searchParams, setSearchParams] = useState("");
   const {data, isPending, error} = useGetProducts(searchParams);
 
