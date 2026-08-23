@@ -10,10 +10,6 @@
   width: 100%;
   justify-content: start;
   gap: 10px;
-  // height: fit-content;
-  // overflow: auto;s
-  // background-color: red;
-
   &__top {
     @include display();
     flex-direction: column;
@@ -30,10 +26,26 @@
     color: var(--app-text);
   }
 
+  &__cen-drop {
+    @include display();
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: var(--app-sidebar-300);
+    border-radius: 12px;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  &__cen-span {
+    svg {
+      width: 23px;
+      height: 23px;
+    }
+  }
   &__tit-sub {
     @include inter();
     font-size: 14px;
-    color: var(--secondary-text);
+    color: var(--app-text);
   }
 
   &__center {
@@ -47,22 +59,28 @@
     // background-color: red;
   }
 
-  &__center-bottom {
-    @include display();
-    width: 100%;
-    align-items: start;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  &__cen-stats {
+  &__center-l {
+    // @include display();
     display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-row: auto;
+    gap: 10px;
+  }
+
+  &__cen-stats {
+    @include display();
+    // display: grid;
+    // grid-template-columns: auto auto;
+    // grid-template-rows: auto auto;
     gap: 10px;
     flex-grow: 1;
-    // width: 100%;
+    width: 100%;
     // background-color: red;
+    flex-wrap: wrap;
+    align-items: start;
   }
+
 
   &__cen-stats-items:nth-child(1) {
     grid-row: 1/2;
@@ -103,11 +121,13 @@
     justify-content: start;
     align-items: start;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 12px;
     background-color: rgb(from var(--app-sidebar) r g b / 1);
     border: 1px solid var(--app-border);
     min-width: 250px;
     gap: 5px;
+    // height: 100%;
+    flex-grow: 1
   }
 
   &__censts-title {
@@ -154,7 +174,7 @@
     flex-grow: 1;
     min-height: fit-content;
     height: 300px;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 20px;
     width: 100%;
     flex-grow: 1;
@@ -180,7 +200,7 @@
     justify-content: center;
     flex-grow: 1;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 20px;
     gap: 5px;
     background-color: rgb(from var(--app-sidebar) r g b / 1);
@@ -235,13 +255,23 @@
   &__chart-dot {
     width: 15px;
     height: 15px;
-    border-radius: 50px;
+    border-radius: 12px;
   }
 
   &__chart-right-list {
     @include display();
     flex-wrap: wrap;
     gap: 10px;
+  }
+
+  @media (max-width: 1500px) {
+    &__chart-bottom {
+      flex-wrap: wrap;
+    }
+    &__center-l {
+      grid-template-columns: auto;
+      grid-template-rows: auto;
+    }
   }
 
   @media (max-width: 1000px) {
@@ -273,257 +303,210 @@
     var(--skeleton-base) 75%
   );
   background-size: 200% 100%;
-  animation: skeleton-pulse-wave 1.5s infinite ease-in-out;
-  border-radius: 10px;
+  animation: dashboard-pulse-wave 1.5s infinite ease-in-out;
+  border-radius: 6px;
+}
+
+@keyframes dashboard-pulse-wave {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .dashboard-skeleton {
-  @include display();
-  flex-direction: column;
-  align-items: start;
-  flex-grow: 1;
+  @include inter();
   width: 100%;
-  justify-content: start;
-  gap: 10px;
-  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  box-sizing: border-box;
 
   &__top {
-    @include display();
+    display: flex;
     flex-direction: column;
-    align-items: start;
-    justify-content: start;
-    width: 100%;
-    gap: 10px;
+    gap: 8px;
   }
 
   &__title {
-    height: 36px;
-    width: 280px;
+    height: 28px;
+    width: 240px;
   }
 
   &__tit-sub {
-    height: 16px;
-    width: 200px;
+    height: 14px;
+    width: 180px;
   }
 
-  &__center {
-    @include display();
-    width: 100%;
-    justify-content: space-between;
-    flex-direction: column-reverse;
-    align-items: start;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  &__cen-stats {
+  /* --- CHARTS GRID ROW LAYER --- */
+  &__charts-grid {
     display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
-    gap: 10px;
-    flex-grow: 1;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     width: 100%;
-  }
-
-  &__cen-stats-items {
-    @include display();
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: var(--app-sidebar);
-    border: 1px solid var(--app-border);
-    min-width: 250px;
-    gap: 5px;
-    box-sizing: border-box;
-
-    &:nth-child(1) {
-      grid-row: 1/2;
-      grid-column: 1/2;
-    }
-    &:nth-child(2) {
-      grid-row: 1/2;
-      grid-column: 2/3;
-    }
-    &:nth-child(3) {
-      grid-row: 2/3;
-      grid-column: 1/3;
-    }
-  }
-
-  &__censts-title {
-    height: 16px;
-    width: 80px;
-    margin-bottom: 8px;
-  }
-
-  &__censts-ul {
-    @include display();
-    flex-direction: column;
-    align-items: start;
-    width: 100%;
-    gap: 4px;
-  }
-
-  &__censts-list {
-    @include display();
-    width: 100%;
-    justify-content: space-between;
-    border-top: 1px solid rgb(from var(--app-border) r g b / 1);
-    padding: 6px 0px;
-
-    .sk-label {
-      height: 14px;
-      width: 70px;
-    }
-    .sk-val {
-      height: 16px;
-      width: 40px;
-    }
-    .sk-val-large {
-      height: 20px;
-      width: 110px;
-    }
   }
 
   &__chart {
-    @include display();
+    background-color: var(--app-sidebar);
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
     flex-direction: column;
-    align-items: start;
-    justify-content: start;
-    flex-grow: 1;
-    height: 100%;
-    border-radius: 10px;
-    padding: 20px;
-    max-height: fit-content;
-    background: linear-gradient(
-      90deg,
-      rgba(210, 58, 122, 0.2) 0%,
-      rgba(126, 58, 242, 0.2) 100%
-    );
-    gap: 10px;
+    gap: 16px;
     box-sizing: border-box;
-    width: 100%;
   }
 
   &__chart-title {
-    height: 24px;
-    width: 160px;
+    height: 16px;
+    width: 180px;
   }
 
   &__chart-bottom {
-    @include display();
-    justify-content: center;
-    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 24px;
     width: 100%;
-    border-radius: 10px;
-    padding: 20px;
-    gap: 16px;
-    background-color: rgb(from var(--app-sidebar) r g b / 1);
-    // border: 1px solid rgb(from var(--app-text) r g b / 0.2);
-    border: 1px solid var(--app-border);
-    box-sizing: border-box;
   }
 
   &__chart-left {
-    // width: 100% !important;
-    // height: 100% !important;
-    min-width: 170px;
-    min-height: 170px;
-    // max-width: 150px !important;
-    // max-height: 150px !important;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
-    border: 14px solid var(--skeleton-base);
+    border: 16px solid var(--skeleton-base);
     box-sizing: border-box;
-    animation: skeleton-pulse-wave 1.5s infinite ease-in-out;
+    animation: dashboard-pulse-wave 1.5s infinite ease-in-out;
+    flex-shrink: 0;
   }
 
   &__chart-right {
-    @include display();
+    display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-width: 500px;
+    gap: 12px;
     flex-grow: 1;
   }
 
   &__chart-right-title {
-    height: 20px;
-    width: 130px;
+    height: 14px;
+    width: 120px;
     margin-bottom: 4px;
   }
 
   &__chart-right-list {
-    @include display();
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     width: 100%;
   }
 
   &__chart-card {
-    @include display();
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    border-left: 1px solid rgb(from var(--app-text) r g b / 0.2);
-    padding: 0px 0px 0px 10px;
     gap: 8px;
-    min-width: 110px;
-
-    &:nth-child(1) {
-      border: none !important;
-    }
   }
 
   &__chart-item-left {
-    @include display();
-    gap: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
 
   &__chart-dot {
-    width: 15px;
-    height: 15px;
-    border-radius: 50px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
   }
 
   &__chart-text-block {
     height: 12px;
-    width: 65px;
+    width: 90px;
   }
 
   &__chart-right-value {
     height: 12px;
-    width: 30px;
+    width: 20px;
   }
 
-  // Matching Breakpoint Layout Shifting
+  /* --- SUMMARY STATISTICS GROUPS --- */
+  &__cen-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+  }
+
+  &__cen-stats-items {
+    background-color: var(--app-sidebar);
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+  }
+
+  &__censts-title {
+    height: 16px;
+    width: 80px;
+  }
+
+  &__censts-ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  &__censts-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .sk-label { height: 12px; width: 90px; }
+    .sk-val { height: 12px; width: 24px; }
+    .sk-val-large { height: 14px; width: 70px; }
+  }
+
+  /* --- BOTTOM ACCORDION SECTIONS --- */
+  &__bottom-accordions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  &__accordion-bar {
+    width: 100%;
+    height: 48px;
+    border-radius: 8px;
+  }
+
+  /* --- SCREEN BREAKPOINTS (FROM 1000PX DOWN) --- */
   @media (max-width: 1000px) {
-    &__cen-stats-items {
-      min-width: 0px;
+    padding: 16px;
+    gap: 20px;
+
+    &__charts-grid {
+      grid-template-columns: 1fr; // Drops twin charts down into vertical columns
+      gap: 16px;
     }
 
-    &__censts-list {
-      flex-wrap: wrap;
-      gap: 4px;
+    &__cen-stats {
+      grid-template-columns: 1fr; // Folds data tracking panels into blocks
+      gap: 16px;
     }
 
     &__chart-bottom {
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
-
-    &__chart-left {
-      width: 100px;
-      height: 100px;
-      border-width: 8px;
-      min-width: 0px;
-      min-height: 0px;
+    
+    &__chart-right-list {
+      grid-template-columns: 1fr;
     }
-  }
-}
-
-@keyframes skeleton-pulse-wave {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
   }
 }

@@ -20,6 +20,28 @@
     flex-wrap: wrap
   }
 
+  &__t-b-box {
+    @include display();
+    position: relative;
+    flex-direction: column;
+    align-items: start;
+    padding: 0px 0px 0px 22px;
+  }
+
+  &__t-b-box-title {
+    @include display();
+  }
+
+  &__t-box-video {
+    position: absolute;
+    left: 0px;
+    color: var(--app-light-blue);
+    svg {
+      width: 18px;
+      height: 18px
+    }
+  }
+
   &__top-left {
     @include display();
     flex-direction: column;
