@@ -84,8 +84,6 @@ const ProductsPaginationProperties = ({
 
     setOpenFilter(false);
   };
-  console.log(pickUpId);
-
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");
   const dropRef = useRef(null);
