@@ -375,9 +375,12 @@ const ProductsOneView = () => {
               </span>
             </div>
           </div>
-          {
+          <div className="map">
+            {
             data?.data?.pickupPoint ? <><MapView data={data?.data?.pickupPoint}/> <MapViewLocate data={data?.data?.pickupPoint}/></>: null
           }
+          </div>
+          
           
           
         </>
