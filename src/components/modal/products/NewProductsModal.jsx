@@ -2,8 +2,9 @@ import {useGetCategories} from "@/hooks/category/GetCategories";
 import {useRouter} from "next/navigation";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {useNotify} from "@/hooks/useNotify";
-import { usePostProducts } from "@/hooks/products/PostProducts";
-import { GeneralModal } from "@/context/GeneralModal";
+import {usePostProducts} from "@/hooks/products/PostProducts";
+import {GeneralModal} from "@/context/GeneralModal";
+import { useGetPickup } from "@/hooks/pickup/GET/GetPickup";
 
 const NewProductsModal = () => {
   const {data, isPending, error} = useGetCategories("?isActive=true");
@@ -18,6 +19,7 @@ const NewProductsModal = () => {
     price: 0,
     stock: 0,
     image: "",
+    pickupPointId: "",
   });
   const handleInput = (e) => {
     setInput({
@@ -67,11 +69,63 @@ const NewProductsModal = () => {
     };
   }, [openCategory]);
 
+  const [openPickUp, setOpenPickUp] = useState(false);
+  const [pickUpValue, setPickUpValue] = useState("");
+  const dropRefPickUp = useRef(null);
+  const dropHeightRefPickUp = useRef(null);
+  const [dropDownPositionPickUp, setDropDownPositionPickUp] =
+    useState("bottom");
+  useEffect(() => {
+    if (!openPickUp || !dropRefPickUp.current) return;
+    const checkSpace = () => {
+      const rect = dropRefPickUp.current?.getBoundingClientRect();
+      const viewPointHeight = window.innerHeight;
+      const dropHeight = 250;
+      if (viewPointHeight - rect.bottom < dropHeight && rect.top > dropHeight) {
+        setDropDownPositionPickUp("top");
+      } else {
+        setDropDownPositionPickUp("bottom");
+      }
+    };
+    checkSpace();
+    window.addEventListener("scroll", checkSpace);
+    window.addEventListener("resize", checkSpace);
 
-  const {mutate, data: postData, error: postError, isPending: postPending} = usePostProducts();
+    return () => {
+      window.addEventListener("scroll", checkSpace);
+      window.addEventListener("resize", checkSpace);
+    };
+  }, [openPickUp]);
+
+  useEffect(() => {
+    setOpenPickUp(false);
+  }, [pickUpValue]);
+  const {
+    data: pickUpData,
+    error: pickUpError,
+    isPending: pickUpPending,
+  } = useGetPickup();
+
+
+  useEffect(() => {
+    if (pickUpError?.message) {
+      notice({
+        text: pickUpError?.message || "Could not get pickup points!",
+        time: 3000,
+        status: "error",
+      });
+    }
+  }, [pickUpError]);
+
+  const {
+    mutate,
+    data: postData,
+    error: postError,
+    isPending: postPending,
+  } = usePostProducts();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault();    
     if (
       !input.name ||
       !input.description ||
@@ -89,16 +143,16 @@ const NewProductsModal = () => {
       notice({
         text: "Adding...",
         status: "info",
-        time:"infinite"
-      })
+        time: "infinite",
+      });
       mutate(input);
-    }catch(error) {
+    } catch (error) {
       route.refresh();
     }
   };
 
-  const {setCloseModal} = useContext(GeneralModal)
-    useEffect(() => {
+  const {setCloseModal} = useContext(GeneralModal);
+  useEffect(() => {
     if (postError?.message) {
       notice({
         text: postError?.message,
@@ -111,16 +165,15 @@ const NewProductsModal = () => {
   }, [postError]);
 
   useEffect(() => {
-    if(postData?.success && !postError?.message && !postPending) {
+    if (postData?.success && !postError?.message && !postPending) {
       notice({
         text: postData?.message || "Qo'shildi",
         time: 5000,
         status: "success",
       });
-      setCloseModal(false)
-      
+      setCloseModal(false);
     }
-  }, [postData, postError, postPending])
+  }, [postData, postError, postPending]);
 
   return (
     <form onSubmit={handleSubmit} className="modal__form">
@@ -187,7 +240,7 @@ const NewProductsModal = () => {
               >
                 {data?.data?.items?.map(({id, name}) => (
                   <span
-                  key={id}
+                    key={id}
                     onClick={() => {
                       setInput({
                         ...input,
@@ -205,9 +258,59 @@ const NewProductsModal = () => {
           ) : null}
         </span>
       </span>
-      <button style={{
-        opacity: `${postPending ? '0.5' : '1'}`
-      }} disabled={postPending} className="modal__submit" type="submit">
+      <span className="products__b-pag-lselect products__b-pag-filter-lselect modal__select">
+        <span>Pickup point: </span>
+        <span className="products__b-pag-filter-select modal__select-wrap">
+          <span
+            ref={dropRefPickUp}
+            onClick={() => setOpenPickUp(!openPickUp)}
+            className="products__b-pag-filter-choosed modal__select-choosed"
+          >
+            {pickUpValue || "--"}
+            <span className="products__b-pag-span">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M12 14L8 10H16L12 14Z"></path>
+              </svg>
+            </span>
+          </span>
+          {openPickUp ? (
+            <>
+              <span
+                ref={dropHeightRefPickUp}
+                className={`products__b-pag-filter-options modal__options modal__options-${dropDownPositionPickUp}`}
+              >
+                {pickUpData?.data?.items?.map(({id, name}) => (
+                  <span
+                    key={id}
+                    onClick={() => {
+                      setInput({
+                        ...input,
+                        pickupPointId: id,
+                      });
+                      setPickUpValue(name);
+                    }}
+                    className="products__b-pag-filter-option"
+                  >
+                    {name}
+                  </span>
+                ))}
+              </span>
+            </>
+          ) : null}
+        </span>
+      </span>
+      <button
+        style={{
+          opacity: `${postPending ? "0.5" : "1"}`,
+        }}
+        disabled={postPending}
+        className="modal__submit"
+        type="submit"
+      >
         Submit
       </button>
     </form>
