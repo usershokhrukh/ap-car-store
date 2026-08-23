@@ -231,8 +231,6 @@ const ProductsOneView = () => {
     setIsErrorPickUp(false);
     setIsError(false);
   }, [data]);
-  
-
   return (
     <div className="products products-view container">
       <div className="products__top products__view-top">
@@ -458,7 +456,7 @@ const ProductsOneView = () => {
                       ) : (
                         <img
                           className="products-view__map-img"
-                          src={data?.data?.pickupPoint?.image}
+                          src={`${data?.data?.pickupPoint?.image}`}
                           alt=""
                           onError={() => setIsErrorPickUp(true)}
                         />
@@ -468,7 +466,7 @@ const ProductsOneView = () => {
                     <div
                       style={{
                         width: "100%",
-                        minHeight: "130px",
+                        minHeight: "150px",
                       }}
                       className="safe-image-container__fallback"
                     >
