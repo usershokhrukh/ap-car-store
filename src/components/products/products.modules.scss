@@ -42,6 +42,12 @@
     }
   }
 
+
+  &__t-box-sub {
+    font-size: 13px;
+    color: var(--secondary-text) !important;
+  }
+
   &__top-left {
     @include display();
     flex-direction: column;
