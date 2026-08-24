@@ -11,8 +11,8 @@ const svgIcon = L.divIcon({
   `,
   className: "map-svg",
   // iconSize:,
-  iconAnchor: [20, 40],
-  popupAnchor: [0, -40],
+  iconAnchor: [17.5, 35],
+  popupAnchor: [0, -35],
 });
 
 function ChangeMapView({ center }) {

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import "../products/products.modules.scss";
-import Pagination from "../pagination/Pagination";
+import Pagination from "./Pagination";
 
 const PaginationGeneral = ({
   data,

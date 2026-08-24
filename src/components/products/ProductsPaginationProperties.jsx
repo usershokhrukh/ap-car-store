@@ -1,7 +1,7 @@
 "use client";
 import {useGetCategories} from "@/hooks/category/GetCategories";
 import {useGetPickup} from "@/hooks/pickup/GET/GetPickup";
-import { useNotify } from "@/hooks/useNotify";
+import {useNotify} from "@/hooks/useNotify";
 import React, {useEffect, useRef, useState} from "react";
 
 const ProductsPaginationProperties = ({
@@ -96,7 +96,10 @@ const ProductsPaginationProperties = ({
       const rect = dropRef.current?.getBoundingClientRect();
       const viewPointHeight = window.innerHeight;
       const dropHeight = 250;
-      if (viewPointHeight - rect?.bottom < dropHeight && rect?.top > dropHeight) {
+      if (
+        viewPointHeight - rect?.bottom < dropHeight &&
+        rect?.top > dropHeight
+      ) {
         setDropDownPosition("top");
       } else {
         setDropDownPosition("bottom");
@@ -140,7 +143,10 @@ const ProductsPaginationProperties = ({
       const rect = dropRefPickUp.current?.getBoundingClientRect();
       const viewPointHeight = window.innerHeight;
       const dropHeight = 250;
-      if (viewPointHeight - rect?.bottom < dropHeight && rect?.top > dropHeight) {
+      if (
+        viewPointHeight - rect?.bottom < dropHeight &&
+        rect?.top > dropHeight
+      ) {
         setDropDownPositionPickUp("top");
       } else {
         setDropDownPositionPickUp("bottom");
@@ -172,27 +178,26 @@ const ProductsPaginationProperties = ({
     setPickUpValue(selected?.name || null);
   }, [pickUpData, pickUpId]);
 
-
   const {notice} = useNotify();
   useEffect(() => {
-    if(pickUpError?.message) {
-        notice({
-          text:pickUpError?.message || "Could not get pickup points!",
-          time: 3000,
-          status:"error"
-        })
+    if (pickUpError?.message) {
+      notice({
+        text: pickUpError?.message || "Could not get pickup points!",
+        time: 3000,
+        status: "error",
+      });
     }
-  }, [pickUpError])
+  }, [pickUpError]);
 
-    useEffect(() => {
-    if(categoriesError?.message) {
-        notice({
-          text: categoriesError?.message || "Could not get categories!",
-          time: 3000,
-          status:"error"
-        })
+  useEffect(() => {
+    if (categoriesError?.message) {
+      notice({
+        text: categoriesError?.message || "Could not get categories!",
+        time: 3000,
+        status: "error",
+      });
     }
-  }, [categoriesError])
+  }, [categoriesError]);
   return (
     <form
       onSubmit={handleFilterSubmit}

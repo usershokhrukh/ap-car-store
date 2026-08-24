@@ -1,0 +1,82 @@
+"use client";
+
+import React, {useContext, useEffect, useState} from "react";
+import "./pickup-points.modules.scss";
+import {useGetPickup} from "@/hooks/pickup/GET/GetPickup";
+import {useNotify} from "@/hooks/useNotify";
+import {GeneralModal} from "@/context/GeneralModal";
+import {useRouter} from "next/navigation";
+import PaginationGeneral from "../pagination/PaginationGeneral";
+import PickUpPointsPaginationProperties from "./PickUpPointsPaginationProperties";
+import PickupPointsTable from "./PickupPointsTable";
+import ProductsSkeleton from "../products/ProductsLoading";
+import NotFound from "../notfound/NotFound";
+import NewPickupPointModal from "../modal/pickup/NewPickupPointModal";
+
+const PickupPoints = () => {
+  const localStorageName = "pickupPointsLimit";
+  const listAct = ["isActive", "sortBy", "order", "city"];
+  const [searchParams, setSearchParams] = useState("");
+  const {data, isPending, error} = useGetPickup(searchParams);
+
+  const {notice} = useNotify();
+  const route = useRouter();
+
+  useEffect(() => {
+    if (error?.message) {
+      notice({
+        text: error?.message,
+        time: "infinite",
+        status: "error",
+        close: "true",
+      });
+      route.refresh();
+    }
+  }, [error]);
+
+  const {setCloseModal, setCompModal, setCloseSpan} = useContext(GeneralModal);
+
+  useEffect(() => {
+    setCloseModal(false);
+    setCompModal(null);
+    setCloseSpan(true);
+  }, []);
+
+  return (
+    <div className="pickup-points container">
+      {
+        !isPending && data ? <><div className="pickup-points__top">
+        <div className="pickup-points__t-box">
+          <h2 className="pickup-points__title">Pickup Points</h2>
+          <p className="pickup-points__tit-sub">Lorem, ipsum dolor.</p>
+        </div>
+        <button onClick={() => {
+          setCloseModal(true)
+          setCompModal(<NewPickupPointModal/>)
+        }} className="pickup-points__top-submit">
+          + Add New Pickup Point
+        </button>
+      </div>
+      <PaginationGeneral
+        comp={PickUpPointsPaginationProperties}
+        data={data}
+        localStorageName={localStorageName}
+        listAct={listAct}
+        setSearchParams={setSearchParams}
+      />
+      <div className="products__bottom">
+        {data?.data?.items?.length ? (
+          <PickupPointsTable data={data} />
+        ) : (
+          <span className="products__tit-sub">
+            There are not products for this filter
+          </span>
+        )}
+      </div></> : isPending ? <ProductsSkeleton/> : <NotFound/>
+      }
+      
+    </div>
+  );
+};
+
+export default PickupPoints;

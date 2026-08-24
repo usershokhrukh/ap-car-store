@@ -11,34 +11,51 @@
   height: 100vh;
   // background-color: rgb(from var(--app-black) r g b / 0.253);
   backdrop-filter: blur(2px);
-
+  padding: 30px 0px;
 
   &__center {
-    padding: 30px;
     position: relative;
+    // padding: 0px 30px 30px 30px;
     background-color: var(--app-sidebar);
     border-radius: 10px;
-    box-shadow: 0px 0px 30px -1px rgb(from var(--app-black) r g b /0.7);
-    border: 1px solid rgb(from var(--app-cyan) r g b/ 0.2)
+    box-shadow: 0px 0px 30px -1px rgb(from var(--app-black) r g b / 0.7);
+    border: 1px solid rgb(from var(--app-cyan) r g b/ 0.2);
+    max-height: 90vh;
+    overflow: auto;
+  }
+
+  &__center-box {
+    @include display();
+    position: sticky;
+    justify-content: end;
+    top: 0px;
+    z-index: 2;
+    padding: 5px;
+    width: 100%;
+    background-color: var(--app-sidebar);
   }
 
   &__cn-span {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 20px;
-    height: 20px;
+    svg {
+      width: 16px;
+      height: 16px;
+    }
     padding: 3px;
     color: var(--app-text);
     cursor: pointer;
+    z-index: 2;
   }
 
   &__form {
     @include display();
+    position: relative;
+    z-index: 1 !important;
     flex-direction: column;
     max-width: 500px;
     gap: 10px;
     width: 100%;
+    justify-content: start;
+    padding: 0px 20px 20px 20px;
   }
 
   &__inputs {
@@ -144,6 +161,106 @@
 
     color: var(--app-text);
   }
+
+
+  &__f-bigbox {
+    @include display();
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+
+  &__f-bg-top {
+    @include display();
+    // white-space: nowrap;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__no-inputs {
+    width: fit-content !important;
+    flex-grow: 1;
+    min-width: 0px !important;
+  }
+
+  &__f-text {
+    @include inter();
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--secondary-text)
+  }
+
+  &__f-bg-center {
+    @include display();
+    width: 100%; 
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+
+  &__f-map {
+    min-width: 300px;
+    max-height: 300px !important;
+    min-width: 0px;
+  }
+
+  &__input-phone {
+    width: 100%;
+  }
+
+  &__f-bg-b-time {
+    @include display();
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap
+  }
+
+  &__f-bg-t-wr {
+    @include display();
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: start;
+    gap: 5px;
+  }
+
+  &__bg-b-info {
+    @include display();
+    @include inter();
+    text-align: center;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--secondary-text)
+  }
+
+  &__f-bg-bottom {
+    @include display();
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  &__f-bg-info-box{
+    @include display();
+    flex-direction: column;
+    align-items: start;
+    padding: 15px;
+    border-radius: 15px;
+    background-color: rgb(from var(--app-cyan) r g b/ 0.2);
+    width: 100%;
+    gap: 5px;
+  }
+
+  &__f-text-high {
+    @include inter();
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--app-text)
+  }
+
+  &__f-text-sub {
+    font-size: 16px;
+    color: var(--app-text);
+  }
 }
 
 .form-skeleton {
@@ -210,5 +327,105 @@
     );
     background-size: 200% 100%;
     animation: skeleton-pulse-wave 1.5s infinite ease-in-out;
+  }
+}
+.PhoneInput {
+  @include display();
+  flex-direction: row-reverse;
+  gap: 10px;
+}
+.PhoneInputCountry {
+  @include display();
+  gap: 10px;
+  height: 100%;
+}
+
+.PhoneInputCountryIcon {
+  width: 30px;
+}
+
+.PhoneInputCountrySelect {
+  display: none;
+}
+
+.PhoneInputInput {
+  @include inter();
+  font-size: 14px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 0px !important;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+  color: var(--app-text);
+  margin-top: 10px;
+}
+
+
+
+
+.image-uploader {
+  width: 100%;
+  border-radius: 12px;
+  background-color: var(--app-sidebar-300);
+
+  &__dropzone {
+    width: 100%;
+    height: 150px; 
+    border: 2px dashed var(--app-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    @include display();
+    flex-direction: column;
+
+    &--dragging {
+      border-color: var(--app-light-blue);
+      background-color: var(--app-sidebar-300);
+    }
+  }
+
+  &__input {
+    display: none;
+  }
+
+  &__preview-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+  }
+
+  &__preview-image {
+    object-fit: contain;
+  }
+
+  &__remove-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: var(--app-red);
+    color: #ffffff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &__placeholder {
+    @include inter();
+    color: var(--secondary-text);
+    margin: 0;
+    font-size: 16px;
+    user-select: none;
   }
 }
