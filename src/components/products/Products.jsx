@@ -86,8 +86,6 @@ const Products = () => {
       ) : (
         <NotFound />
       )}
-
-      <div id="dropdown-portal-root"></div>
     </div>
   );
 };

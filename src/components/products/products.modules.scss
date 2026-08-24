@@ -42,6 +42,25 @@
     }
   }
 
+  &__t-b-status-se {
+    @include inter();
+    font-size: 14px;
+    padding: 5px 8px;
+    border-radius: 50px;
+    background-color: rgb(from var(--app-purple) r g b / 0.1);
+    border: 1px solid transparent;
+  }
+
+  &__t-b-status-error {
+    border: 1px solid var(--app-red);
+    color: var(--app-red)
+  }
+
+  &__t-b-status-success {
+    border: 1px solid var(--app-green);
+    color: var(--app-green)
+  }
+
 
   &__t-box-sub {
     font-size: 13px;
@@ -71,6 +90,11 @@
       rgba(210, 58, 122, 0.7) 0%,
       rgba(126, 58, 242, 0.7) 100%
     );
+  }
+
+  &__t-phone {
+    font-size: 14px;
+    color: var(--app-cyan)
   }
 
   &__title {

@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import "./map.modules.scss";
 
-const ProductMap = dynamic(() => import("../map/Map"), {
+const ProductMap = dynamic(() => import("./Map"), {
   ssr: false,
   loading: () => <div className="map__loading"></div>,
 });
