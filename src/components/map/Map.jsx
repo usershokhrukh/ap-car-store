@@ -19,12 +19,12 @@ function ChangeMapView({ center }) {
   const map = useMap();
   useEffect(() => {
     if (center && center[0] && center[1]) {
-      map.invalidateSize();
-      map.closePopup();
+      map?.invalidateSize();
+      map?.closePopup();
       
       setTimeout(() => {
-        map.setView(center, map.getZoom(), { animate: true });
-        map.panTo(center, { animate: true });
+        map?.setView(center, map.getZoom(), { animate: true });
+        map?.panTo(center, { animate: true });
       }, 50);
     }
   }, [center, map]);

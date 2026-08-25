@@ -1,20 +1,28 @@
 import React, {useContext, useEffect} from "react";
 import "./modal.modules.scss";
 import {GeneralModal} from "@/context/GeneralModal";
+import { useNotify } from "@/hooks/useNotify";
 
 const GeneralModalUI = () => {
-  const {compModal, setCloseModal, closeSpan, setCloseSpan} =
-    useContext(GeneralModal);
+  const {compModal, setCloseModal,setModalStopped, modalStopped, closeSpan, setCloseSpan} =
+  useContext(GeneralModal);
   useEffect(() => {
+    setModalStopped(false)
     setCloseSpan(true);
   }, []);
+
+  const {notice} = useNotify();
   return (
     <div className="modal">
       <div className="modal__center">
-        {closeSpan ? (
+        {closeSpan && !modalStopped ? (
           <div className="modal__center-box">
             <span
-              onClick={() => setCloseModal(false)}
+              onClick={() => {setCloseModal(false)
+                notice({
+                  stop: "true"
+                })
+              }}
               className="modal__cn-span"
             >
               <svg
