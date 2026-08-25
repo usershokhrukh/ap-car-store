@@ -142,12 +142,9 @@ const NewPickupPointModal = () => {
       });
     }
   }, [searchPending, searchData, secondSearch, reLocate, secondSearch]);
-
-  // console.log(isFetching, isPending);
   
 
   const [phone, setPhone] = useState(null);
-  const [county, setCountry] = useState(null);
   const [preview, setPreview] = useState(null);
 
   const [image, setImage] = useState(null);
@@ -295,7 +292,7 @@ const NewPickupPointModal = () => {
         time: 3000,
       });
 
-    if (!isValidNumber(input?.phone, county))
+    if (!isValidNumber(input?.phone, "UZ"))
       return notice({
         text: "Phone number is not valid!",
         status: "error",
@@ -385,7 +382,9 @@ const NewPickupPointModal = () => {
             value={phone}
             limitMaxLength
             required
-            onCountryChange={setCountry}
+            defaultCountry="UZ"
+            countries={['UZ']}
+            international={false}
           />
           <div className="modal__f-bg-b-time">
             <span className="modal__f-bg-t-wr">

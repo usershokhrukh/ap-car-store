@@ -48,7 +48,7 @@ const PickupPoints = () => {
         !isPending && data ? <><div className="pickup-points__top">
         <div className="pickup-points__t-box">
           <h2 className="pickup-points__title">Pickup Points</h2>
-          <p className="pickup-points__tit-sub">Lorem, ipsum dolor.</p>
+          <p className="pickup-points__tit-sub">{data?.data?.message}</p>
         </div>
         <button onClick={() => {
           setCloseModal(true)

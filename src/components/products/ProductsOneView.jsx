@@ -231,6 +231,7 @@ const ProductsOneView = () => {
     setIsErrorPickUp(false);
     setIsError(false);
   }, [data]);
+  
   return (
     <div className="products products-view container">
       <div className="products__top products__view-top">
