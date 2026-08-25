@@ -14,13 +14,14 @@ import {usePatchPickupImage} from "@/hooks/pickup/PATCH/PatchPickUpImage";
 const NewPickupPointModal = () => {
   const {notice} = useNotify();
   const route = useRouter();
+  const {setCloseModal, setModalStopped} = useContext(GeneralModal);
   const [input, setInput] = useState({
     name: "",
     city: "",
     address: "",
     phone: "",
     opensAt: "",
-    closesAt: null,
+    closesAt: "",
     latitude: null,
     longitude: null,
   });
@@ -46,6 +47,7 @@ const NewPickupPointModal = () => {
         time: 5000,
       });
       route.refresh();
+      setModalStopped(false);
     }
   }, [error]);
 
@@ -57,6 +59,7 @@ const NewPickupPointModal = () => {
         time: 5000,
       });
       route.refresh();
+      setModalStopped(false);
     }
   }, [searchError]);
 
@@ -96,18 +99,32 @@ const NewPickupPointModal = () => {
   }, [searchData]);
 
   useEffect(() => {
-    if ((searchPending && !searchData) || (isPending && !data)) {
+    if (isPending && !data) {
       notice({
         text: "Searching...",
         status: "info",
         time: "infinite",
       });
-    }else {
+    } else {
       notice({
-        stop: "true"
-      })
+        stop: "true",
+      });
     }
-  }, [searchPending, isPending, searchData, data]);  
+  }, [isPending, data]);
+
+  useEffect(() => {
+    if (searchPending && !searchData && secondSearch?.length) {
+      notice({
+        text: "Searching...",
+        status: "info",
+        time: "infinite",
+      });
+    } else {
+      notice({
+        stop: "true",
+      });
+    }
+  }, [searchPending, searchData, secondSearch]);
 
   const [phone, setPhone] = useState(null);
   const [county, setCountry] = useState(null);
@@ -162,10 +179,10 @@ const NewPickupPointModal = () => {
         time: 5000,
       });
       route.refresh();
+      setModalStopped(false);
     }
   }, [errorSend]);
 
-  const {setCloseModal} = useContext(GeneralModal);
   useEffect(() => {
     if (errorPatch?.message) {
       notice({
@@ -175,6 +192,7 @@ const NewPickupPointModal = () => {
       });
       route.refresh();
       setCloseModal(false);
+      setModalStopped(false);
     }
   }, [errorPatch]);
 
@@ -186,6 +204,7 @@ const NewPickupPointModal = () => {
       status: "info",
       time: "infinite",
     });
+    setModalStopped(true);
 
     mutatePatch({
       formData,
@@ -201,6 +220,7 @@ const NewPickupPointModal = () => {
 
   useEffect(() => {
     if (dataPatch && !patchPending) {
+      setModalStopped(false);
       notice({
         text:
           `${dataSend?.message} , ${dataPatch?.message}` ||
@@ -221,7 +241,9 @@ const NewPickupPointModal = () => {
           status: "success",
         });
         setCloseModal(false);
+        setModalStopped(false);
       } else {
+        setModalStopped(true);
         uploadImage(dataSend?.data?.id);
       }
     }
@@ -260,6 +282,7 @@ const NewPickupPointModal = () => {
         time: 5000,
       });
 
+    setModalStopped(true);
     notice({
       text: "Adding properties...",
       status: "info",
@@ -285,11 +308,6 @@ const NewPickupPointModal = () => {
           value={secondSearch}
           onChange={(e) => {
             setSecondSearch(e.target.value);
-            // if (!e.target.value.trim()) {
-            //   notice({
-            //     stop: "true",
-            //   });
-            // }
             if (timeRef.current) {
               clearTimeout(timeRef.current);
               timeRef.current = setTimeout(() => {
