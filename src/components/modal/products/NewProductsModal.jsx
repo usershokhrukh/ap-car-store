@@ -35,6 +35,7 @@ const NewProductsModal = () => {
         status: "error",
         close: " true",
       });
+      setCategoryValue("error")
       route.refresh();
     }
   }, [error]);
@@ -111,10 +112,9 @@ const NewProductsModal = () => {
 
   useEffect(() => {
     if (pickUpData) {
-      setTotalPickUp(pickUpData?.data?.meta?.total)
+      setTotalPickUp(pickUpData?.data?.meta?.total);
     }
   }, [pickUpData]);
-  
 
   useEffect(() => {
     if (pickUpError?.message) {
@@ -123,6 +123,7 @@ const NewProductsModal = () => {
         time: 3000,
         status: "error",
       });
+      setPickUpValue("error")
     }
   }, [pickUpError]);
 
@@ -184,6 +185,24 @@ const NewProductsModal = () => {
     }
   }, [postData, postError, postPending]);
 
+  useEffect(() => {
+    if (data) {
+      setCategoryValue(null);
+    }
+    if (pickUpData) {
+      setPickUpValue(null);
+    }
+  }, [data, pickUpData]);
+
+  useEffect(() => {
+    if (!data) {
+      setCategoryValue("loading...");
+    }
+    if (!pickUpData) {
+      setPickUpValue("loading...");
+    }
+  }, [data, pickUpData]);
+
   return (
     <form onSubmit={handleSubmit} className="modal__form">
       <input
@@ -227,29 +246,31 @@ const NewProductsModal = () => {
         <span className="products__b-pag-filter-select">
           <span
             onClick={() => {
-              setCloseDrop(true);
-              setCompDrop(
-                <>
-                  <span className={`products__b-pag-filter-options`}>
-                    {data?.data?.items?.map(({id, name}) => (
-                      <span
-                        key={id}
-                        onClick={() => {
-                          setInput({
-                            ...input,
-                            categoryId: id,
-                          });
-                          setCategoryValue(name);
-                          setCloseDrop(false);
-                        }}
-                        className="products__b-pag-filter-option"
-                      >
-                        {name}
-                      </span>
-                    ))}
-                  </span>
-                </>,
-              );
+              if (data?.data?.items?.length) {
+                setCloseDrop(true);
+                setCompDrop(
+                  <>
+                    <span className={`products__b-pag-filter-options`}>
+                      {data?.data?.items?.map(({id, name}) => (
+                        <span
+                          key={id}
+                          onClick={() => {
+                            setInput({
+                              ...input,
+                              categoryId: id,
+                            });
+                            setCategoryValue(name);
+                            setCloseDrop(false);
+                          }}
+                          className="products__b-pag-filter-option"
+                        >
+                          {name}
+                        </span>
+                      ))}
+                    </span>
+                  </>,
+                );
+              }
             }}
             className="products__b-pag-filter-choosed modal__select-choosed"
           >
@@ -271,29 +292,31 @@ const NewProductsModal = () => {
         <span className="products__b-pag-filter-select">
           <span
             onClick={() => {
-              setCloseDrop(true);
-              setCompDrop(
-                <>
-                  <span className={`products__b-pag-filter-options`}>
-                    {pickUpData?.data?.items?.map(({id, name}) => (
-                      <span
-                        key={id}
-                        onClick={() => {
-                          setInput({
-                            ...input,
-                            pickupPointId: id,
-                          });
-                          setPickUpValue(name);
-                          setCloseDrop(false);
-                        }}
-                        className="products__b-pag-filter-option"
-                      >
-                        {name}
-                      </span>
-                    ))}
-                  </span>
-                </>,
-              );
+              if (pickUpData?.data?.items?.length) {
+                setCloseDrop(true);
+                setCompDrop(
+                  <>
+                    <span className={`products__b-pag-filter-options`}>
+                      {pickUpData?.data?.items?.map(({id, name}) => (
+                        <span
+                          key={id}
+                          onClick={() => {
+                            setInput({
+                              ...input,
+                              pickupPointId: id,
+                            });
+                            setPickUpValue(name);
+                            setCloseDrop(false);
+                          }}
+                          className="products__b-pag-filter-option"
+                        >
+                          {name}
+                        </span>
+                      ))}
+                    </span>
+                  </>,
+                );
+              }
             }}
             className="products__b-pag-filter-choosed modal__select-choosed"
           >

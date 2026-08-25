@@ -63,6 +63,7 @@ const EditProductsModal = ({id: productId}) => {
         close: " true",
       });
       route.refresh();
+      setCategoryValue("error")
     }
   }, [error]);
 
@@ -74,6 +75,7 @@ const EditProductsModal = ({id: productId}) => {
         status: "error",
         close: " true",
       });
+      setCategoryValue("error")
       route.refresh();
     }
   }, [oneProductError]);
@@ -166,8 +168,30 @@ const EditProductsModal = ({id: productId}) => {
         time: 3000,
         status: "error",
       });
+      setPickUpValue("error")
     }
   }, [pickUpError]);
+
+  useEffect(() => {
+    if (data && oneProductData) {
+      setCategoryValue(oneProductData?.data?.category?.name || null);
+    }
+    if (pickUpData) {
+      setPickUpValue(null);
+    }
+  }, [data, pickUpData, oneProductData]);
+
+  useEffect(() => {
+    if (!pickUpData && pickUpPending) {
+      setPickUpValue("loading...");
+    }
+  }, [pickUpPending, pickUpData]);
+
+  useEffect(() => {
+    if ((!data && isPending) || (!oneProductData && oneProductPending)) {
+      setCategoryValue("loading...");
+    }
+  }, [isPending, data, oneProductData, oneProductPending]);
 
   return (
     <>
@@ -220,29 +244,31 @@ const EditProductsModal = ({id: productId}) => {
               <span className="products__b-pag-filter-select modal__select-wrap">
                 <span
                   onClick={() => {
-                    setCloseDrop(true);
-                    setCompDrop(
-                      <>
-                        <span className={`products__b-pag-filter-options`}>
-                          {data?.data?.items?.map(({id, name}) => (
-                            <span
-                              key={id}
-                              onClick={() => {
-                                setInput({
-                                  ...input,
-                                  categoryId: id,
-                                });
-                                setCategoryValue(name);
-                                setCloseDrop(false);
-                              }}
-                              className="products__b-pag-filter-option"
-                            >
-                              {name}
-                            </span>
-                          ))}
-                        </span>
-                      </>,
-                    );
+                    if (data?.data?.items?.length) {
+                      setCloseDrop(true);
+                      setCompDrop(
+                        <>
+                          <span className={`products__b-pag-filter-options`}>
+                            {data?.data?.items?.map(({id, name}) => (
+                              <span
+                                key={id}
+                                onClick={() => {
+                                  setInput({
+                                    ...input,
+                                    categoryId: id,
+                                  });
+                                  setCategoryValue(name);
+                                  setCloseDrop(false);
+                                }}
+                                className="products__b-pag-filter-option"
+                              >
+                                {name}
+                              </span>
+                            ))}
+                          </span>
+                        </>,
+                      );
+                    }
                   }}
                   className="products__b-pag-filter-choosed modal__select-choosed"
                 >
@@ -264,42 +290,44 @@ const EditProductsModal = ({id: productId}) => {
               <span className="products__b-pag-filter-select modal__select-wrap">
                 <span
                   onClick={() => {
-                    setCloseDrop(true);
-                    setCompDrop(
-                      <>
-                        <span className={`products__b-pag-filter-options`}>
-                          <span
-                            onClick={() => {
-                              setInput({
-                                ...input,
-                                pickupPointId: null,
-                              });
-                              setPickUpValue(null);
-                              setCloseDrop(false);
-                            }}
-                            className="products__b-pag-filter-option"
-                          >
-                            --
-                          </span>
-                          {pickUpData?.data?.items?.map(({id, name}) => (
+                    if (pickUpData?.data?.items?.length) {
+                      setCloseDrop(true);
+                      setCompDrop(
+                        <>
+                          <span className={`products__b-pag-filter-options`}>
                             <span
-                              key={id}
                               onClick={() => {
                                 setInput({
                                   ...input,
-                                  pickupPointId: id,
+                                  pickupPointId: null,
                                 });
-                                setPickUpValue(name);
+                                setPickUpValue(null);
                                 setCloseDrop(false);
                               }}
                               className="products__b-pag-filter-option"
                             >
-                              {name}
+                              --
                             </span>
-                          ))}
-                        </span>
-                      </>,
-                    );
+                            {pickUpData?.data?.items?.map(({id, name}) => (
+                              <span
+                                key={id}
+                                onClick={() => {
+                                  setInput({
+                                    ...input,
+                                    pickupPointId: id,
+                                  });
+                                  setPickUpValue(name);
+                                  setCloseDrop(false);
+                                }}
+                                className="products__b-pag-filter-option"
+                              >
+                                {name}
+                              </span>
+                            ))}
+                          </span>
+                        </>,
+                      );
+                    }
                   }}
                   className="products__b-pag-filter-choosed modal__select-choosed"
                 >

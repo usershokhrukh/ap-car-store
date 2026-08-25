@@ -6,6 +6,8 @@ import React, {useState} from "react";
 const ModalDropDownProvider = ({children}) => {
   const [closeDrop, setCloseDrop] = useState(false);
   const [compDrop, setCompDrop] = useState(null);
+
+  const [meta, setMeta] = useState(null);
   return (
     <ModalDropDown.Provider
       value={{closeDrop, setCloseDrop, compDrop, setCompDrop}}

@@ -14,7 +14,8 @@ const GeneralModalUI = () => {
   const {notice} = useNotify();
   return (
     <div className="modal">
-      <div className="modal__center">
+      <div className="modal__center-wr">
+        <div className="modal__center">
         {closeSpan && !modalStopped ? (
           <div className="modal__center-box">
             <span
@@ -37,6 +38,8 @@ const GeneralModalUI = () => {
         ) : null}
         {compModal}
       </div>
+      </div>
+      
     </div>
   );
 };
