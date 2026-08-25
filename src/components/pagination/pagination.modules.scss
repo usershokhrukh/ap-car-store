@@ -187,7 +187,7 @@
 
   &__b-pag-filter-select {
     @include display();
-    position: relative;
+    // position: relative;
     flex-direction: column;
     // height: 35px;
     justify-content: start;
@@ -230,9 +230,6 @@
   &__b-pag-filter-options {
     @include display();
     flex-direction: column;
-    position: absolute;
-    top: 40px;
-    z-index: 10;
     width: 100%;
 
     min-width: fit-content;

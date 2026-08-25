@@ -6,6 +6,7 @@ import NotificationCustom from "./NotificationCustom";
 import GeneralModalProvide from "@/components/modal/GeneralModalProvide";
 import {ThemeProvider} from "@/components/ThemeProvider";
 import TooltipProvider from "@/components/tooltip/TooltipProvider";
+import ModalDropDownProvider from "@/components/ModalDropDownProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,9 @@ export default function RootLayout({children}) {
           <TooltipProvider>
             <GeneralModalProvide>
               <NotificationCustom>
-                <AppLayout>{children}</AppLayout>
+                <ModalDropDownProvider>
+                  <AppLayout>{children}</AppLayout>
+                </ModalDropDownProvider>
               </NotificationCustom>
               <ProtectedImage />
             </GeneralModalProvide>

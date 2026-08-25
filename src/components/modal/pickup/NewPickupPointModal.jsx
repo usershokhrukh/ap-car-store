@@ -9,7 +9,8 @@ import PhoneInputWithCountrySelect from "react-phone-number-input";
 import {isValidNumber} from "libphonenumber-js";
 import {usePostPickup} from "@/hooks/pickup/POST/PostPickUp";
 import {GeneralModal} from "@/context/GeneralModal";
-import {usePatchPickupImage} from "@/hooks/pickup/PATCH/PatchPickUpImage";
+import {usePostPickupImage} from "@/hooks/pickup/POST/PostPickUpImage";
+import { useQueryClient } from "@tanstack/react-query";
 
 const NewPickupPointModal = () => {
   const {notice} = useNotify();
@@ -36,9 +37,11 @@ const NewPickupPointModal = () => {
     data: searchData,
     error: searchError,
     isPending: searchPending,
+    isFetching
   } = useGetGeoSearch(`${search.trim() ? `?q=${search}` : ""}`);
   const {data, error, isPending} = useGetGeoCode(searchGeo);
 
+  const [reLocate, setReLocate] = useState(false);
   useEffect(() => {
     if (error?.message) {
       notice({
@@ -47,7 +50,15 @@ const NewPickupPointModal = () => {
         time: 5000,
       });
       route.refresh();
+      setSearch("");
+      setSecondSearch("");
+      setMapData({
+        ...mapData,
+        latitude: 41.3,
+        longitude: 69.24,
+      });
       setModalStopped(false);
+      setReLocate(true);
     }
   }, [error]);
 
@@ -59,17 +70,24 @@ const NewPickupPointModal = () => {
         time: 5000,
       });
       route.refresh();
+      setSearch("");
+      setSecondSearch("");
+      setMapData({
+        ...mapData,
+        latitude: 41.3,
+        longitude: 69.24,
+      });
       setModalStopped(false);
+      setReLocate(true);
     }
   }, [searchError]);
 
   useEffect(() => {
     if (data?.data) {
-      notice({
-        stop: "true",
-      });
       setGlobalMapData(data?.data);
-      setSecondSearch("");
+      if (!reLocate) {
+        setReLocate(false);
+      }
       setInput({
         ...input,
         city: data?.data?.city || "--",
@@ -83,11 +101,11 @@ const NewPickupPointModal = () => {
   const [secondSearch, setSecondSearch] = useState("");
   useEffect(() => {
     if (searchData?.data) {
-      notice({
-        stop: "true",
-      });
       setGlobalMapData(searchData?.data);
       setMapData(searchData?.data);
+      if (!reLocate) {
+        setReLocate(false);
+      }
       setInput({
         ...input,
         city: searchData?.data?.city || "--",
@@ -100,31 +118,33 @@ const NewPickupPointModal = () => {
 
   useEffect(() => {
     if (isPending && !data) {
+      setReLocate(null);
       notice({
         text: "Searching...",
         status: "info",
         time: "infinite",
       });
-    } else {
-      notice({
-        stop: "true",
-      });
     }
-  }, [isPending, data]);
+  }, [isPending, data, reLocate]);
 
   useEffect(() => {
-    if (searchPending && !searchData && secondSearch?.length) {
+    if (searchPending && !searchData && secondSearch?.trim()?.length) {
+      setReLocate(null);
       notice({
         text: "Searching...",
         status: "info",
         time: "infinite",
       });
-    } else {
+    }
+    if (reLocate != null && !reLocate) {
       notice({
         stop: "true",
       });
     }
-  }, [searchPending, searchData, secondSearch]);
+  }, [searchPending, searchData, secondSearch, reLocate, secondSearch]);
+
+  // console.log(isFetching, isPending);
+  
 
   const [phone, setPhone] = useState(null);
   const [county, setCountry] = useState(null);
@@ -169,7 +189,7 @@ const NewPickupPointModal = () => {
     data: dataPatch,
     error: errorPatch,
     isPending: patchPending,
-  } = usePatchPickupImage();
+  } = usePostPickupImage();
 
   useEffect(() => {
     if (errorSend?.message) {
@@ -291,6 +311,12 @@ const NewPickupPointModal = () => {
     mutate(input);
   };
 
+  const queryClient = useQueryClient();
+
+  const handleManualCancel = () => {
+    queryClient.cancelQueries({queryKey: ["geosearch", search]})
+  }
+
   return (
     <form onSubmit={handleSubmit} className="modal__form">
       <MapViewLocate
@@ -308,6 +334,12 @@ const NewPickupPointModal = () => {
           value={secondSearch}
           onChange={(e) => {
             setSecondSearch(e.target.value);
+            if (!e.target.value.trim() && !isPending) {
+              notice({
+                stop:"true"
+              })
+              handleManualCancel()
+            }
             if (timeRef.current) {
               clearTimeout(timeRef.current);
               timeRef.current = setTimeout(() => {

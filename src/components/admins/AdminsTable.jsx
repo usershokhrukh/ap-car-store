@@ -97,7 +97,7 @@ const AdminsTable = ({data, adminData}) => {
                       </button>
 
                       <DisableAdmin
-                        text={"Super admin chan not be deleted"}
+                        text={"Super admin can not be deleted"}
                         comp={
                           <button
                             onClick={() => {

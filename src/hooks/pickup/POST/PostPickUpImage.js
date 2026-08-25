@@ -18,7 +18,7 @@ const request = async ({formData, onProgress, id}) => {
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
       throw new Error(
-        error.response.data.message + error.response?.data?.errors?.[0] ||
+        error.response.data.message + `${error.response?.data?.errors?.length ? `${error?.response?.data?.errors?.map((item) => (`${item}`))}` : ""}` ||
           "Could not resolve!",
       );
     }
@@ -26,7 +26,7 @@ const request = async ({formData, onProgress, id}) => {
   }
 };
 
-export const usePatchPickupImage = () => {
+export const usePostPickupImage = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({formData, onProgress, id}) => request({formData, onProgress, id}),

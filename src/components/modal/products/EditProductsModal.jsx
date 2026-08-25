@@ -6,7 +6,8 @@ import {GeneralModal} from "@/context/GeneralModal";
 import {useGetOneProduct} from "@/hooks/products/GetOneProduct";
 import {useEditProducts} from "@/hooks/products/EditProduct";
 import ProductFormSkeleton from "../ModalLoading";
-import { useGetPickup } from "@/hooks/pickup/GET/GetPickup";
+import {useGetPickup} from "@/hooks/pickup/GET/GetPickup";
+import {ModalDropDown} from "@/context/ModalDropDown";
 
 const EditProductsModal = ({id: productId}) => {
   const {data, isPending, error} = useGetCategories();
@@ -39,7 +40,7 @@ const EditProductsModal = ({id: productId}) => {
         price: oneProductData?.data?.price,
         stock: oneProductData?.data?.stock,
         image: oneProductData?.data?.image,
-        pickupPointId: oneProductData?.data?.pickupPointId
+        pickupPointId: oneProductData?.data?.pickupPointId,
       });
       setCategoryValue(oneProductData?.data?.category?.name);
       setPickUpValue(oneProductData?.data?.pickupPoint?.name);
@@ -52,10 +53,6 @@ const EditProductsModal = ({id: productId}) => {
       [e.target.name]: Number(e.target.value) || e.target.value,
     });
   };
-
-  useEffect(() => {
-    setOpenCategory(false);
-  }, [categoryValue]);
 
   useEffect(() => {
     if (error?.message) {
@@ -80,31 +77,6 @@ const EditProductsModal = ({id: productId}) => {
       route.refresh();
     }
   }, [oneProductError]);
-
-  const dropRef = useRef(null);
-  const dropHeightRef = useRef(null);
-  const [dropDownPosition, setDropDownPosition] = useState("bottom");
-  useEffect(() => {
-    if (!openCategory || !dropRef.current) return;
-    const checkSpace = () => {
-      const rect = dropRef?.current?.getBoundingClientRect();
-      const viewPointHeight = window.innerHeight;
-      const dropHeight = 250;
-      if (viewPointHeight - rect?.bottom < dropHeight && rect?.top > dropHeight) {
-        setDropDownPosition("top");
-      } else {
-        setDropDownPosition("bottom");
-      }
-    };
-    checkSpace();
-    window.addEventListener("scroll", checkSpace);
-    window.addEventListener("resize", checkSpace);
-
-    return () => {
-      window.addEventListener("scroll", checkSpace);
-      window.addEventListener("resize", checkSpace);
-    };
-  }, [openCategory]);
 
   const {
     mutate,
@@ -164,41 +136,28 @@ const EditProductsModal = ({id: productId}) => {
     }
   }, [postData, postError, postPending]);
 
-  const [openPickUp, setOpenPickUp] = useState(false);
-  const dropRefPickUp = useRef(null);
-  const dropHeightRefPickUp = useRef(null);
-  const [dropDownPositionPickUp, setDropDownPositionPickUp] =
-    useState("bottom");
+  const {setCloseDrop, closeDrop, setCompDrop, compDrop} =
+    useContext(ModalDropDown);
   useEffect(() => {
-    if (!openPickUp || !dropRefPickUp.current) return;
-    const checkSpace = () => {
-      const rect = dropRefPickUp.current?.getBoundingClientRect();
-      const viewPointHeight = window.innerHeight;
-      const dropHeight = 250;
-      if (viewPointHeight - rect?.bottom < dropHeight && rect?.top > dropHeight) {
-        setDropDownPositionPickUp("top");
-      } else {
-        setDropDownPositionPickUp("bottom");
-      }
-    };
-    checkSpace();
-    window.addEventListener("scroll", checkSpace);
-    window.addEventListener("resize", checkSpace);
-
-    return () => {
-      window.addEventListener("scroll", checkSpace);
-      window.addEventListener("resize", checkSpace);
-    };
-  }, [openPickUp]);
-
-  useEffect(() => {
-    setOpenPickUp(false);
+    setCloseDrop(false);
   }, [pickUpValue]);
+  useEffect(() => {
+    setCloseDrop(false);
+  }, [categoryValue]);
+
+  const [totalPickUp, setTotalPickUp] = useState(null);
+
   const {
     data: pickUpData,
     error: pickUpError,
     isPending: pickUpPending,
-  } = useGetPickup();
+  } = useGetPickup(`${totalPickUp ? `?limit=${totalPickUp + 1}` : ""}`);
+
+  useEffect(() => {
+    if (pickUpData) {
+      setTotalPickUp(pickUpData?.data?.meta?.total);
+    }
+  }, [pickUpData]);
 
   useEffect(() => {
     if (pickUpError?.message) {
@@ -260,8 +219,31 @@ const EditProductsModal = ({id: productId}) => {
               <span>Category: </span>
               <span className="products__b-pag-filter-select modal__select-wrap">
                 <span
-                  ref={dropRef}
-                  onClick={() => setOpenCategory(!openCategory)}
+                  onClick={() => {
+                    setCloseDrop(true);
+                    setCompDrop(
+                      <>
+                        <span className={`products__b-pag-filter-options`}>
+                          {data?.data?.items?.map(({id, name}) => (
+                            <span
+                              key={id}
+                              onClick={() => {
+                                setInput({
+                                  ...input,
+                                  categoryId: id,
+                                });
+                                setCategoryValue(name);
+                                setCloseDrop(false);
+                              }}
+                              className="products__b-pag-filter-option"
+                            >
+                              {name}
+                            </span>
+                          ))}
+                        </span>
+                      </>,
+                    );
+                  }}
                   className="products__b-pag-filter-choosed modal__select-choosed"
                 >
                   {categoryValue || "--"}
@@ -275,38 +257,50 @@ const EditProductsModal = ({id: productId}) => {
                     </svg>
                   </span>
                 </span>
-                {openCategory ? (
-                  <>
-                    <span
-                      ref={dropHeightRef}
-                      className={`products__b-pag-filter-options modal__options modal__options-${dropDownPosition}`}
-                    >
-                      {data?.data?.items?.map(({id, name}) => (
-                        <span
-                          key={id}
-                          onClick={() => {
-                            setInput({
-                              ...input,
-                              categoryId: id,
-                            });
-                            setCategoryValue(name);
-                          }}
-                          className="products__b-pag-filter-option"
-                        >
-                          {name}
-                        </span>
-                      ))}
-                    </span>
-                  </>
-                ) : null}
               </span>
             </span>
             <span className="products__b-pag-lselect products__b-pag-filter-lselect modal__select">
               <span>Pickup point: </span>
               <span className="products__b-pag-filter-select modal__select-wrap">
                 <span
-                  ref={dropRefPickUp}
-                  onClick={() => setOpenPickUp(!openPickUp)}
+                  onClick={() => {
+                    setCloseDrop(true);
+                    setCompDrop(
+                      <>
+                        <span className={`products__b-pag-filter-options`}>
+                          <span
+                            onClick={() => {
+                              setInput({
+                                ...input,
+                                pickupPointId: null,
+                              });
+                              setPickUpValue(null);
+                              setCloseDrop(false);
+                            }}
+                            className="products__b-pag-filter-option"
+                          >
+                            --
+                          </span>
+                          {pickUpData?.data?.items?.map(({id, name}) => (
+                            <span
+                              key={id}
+                              onClick={() => {
+                                setInput({
+                                  ...input,
+                                  pickupPointId: id,
+                                });
+                                setPickUpValue(name);
+                                setCloseDrop(false);
+                              }}
+                              className="products__b-pag-filter-option"
+                            >
+                              {name}
+                            </span>
+                          ))}
+                        </span>
+                      </>,
+                    );
+                  }}
                   className="products__b-pag-filter-choosed modal__select-choosed"
                 >
                   {pickUpValue || "--"}
@@ -320,42 +314,6 @@ const EditProductsModal = ({id: productId}) => {
                     </svg>
                   </span>
                 </span>
-                {openPickUp ? (
-                  <>
-                    <span
-                      ref={dropHeightRefPickUp}
-                      className={`products__b-pag-filter-options modal__options modal__options-${dropDownPositionPickUp}`}
-                    >
-                      <span
-                          onClick={() => {
-                            setInput({
-                              ...input,
-                              pickupPointId: null,
-                            });
-                            setPickUpValue(null);
-                          }}
-                          className="products__b-pag-filter-option"
-                        >
-                          --
-                        </span>
-                      {pickUpData?.data?.items?.map(({id, name}) => (
-                        <span
-                          key={id}
-                          onClick={() => {
-                            setInput({
-                              ...input,
-                              pickupPointId: id,
-                            });
-                            setPickUpValue(name);
-                          }}
-                          className="products__b-pag-filter-option"
-                        >
-                          {name}
-                        </span>
-                      ))}
-                    </span>
-                  </>
-                ) : null}
               </span>
             </span>
             <button

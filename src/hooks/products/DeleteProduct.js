@@ -8,7 +8,7 @@ export const request = async (id) => {
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
       throw new Error(
-        error.response.data.message + error.response?.data?.errors?.[0] ||
+        error.response.data.message + `${error.response?.data?.errors?.length ? `${error?.response?.data?.errors?.map((item) => (`${item}`))}` : ""}` ||
           "Could not resolve!",
       );
     }

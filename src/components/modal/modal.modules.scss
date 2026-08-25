@@ -7,15 +7,52 @@
   top: 0px;
   left: 0px;
   width: 100%;
-  z-index: 110;
+  z-index: 11;
   height: 100vh;
-  // background-color: rgb(from var(--app-black) r g b / 0.253);
   backdrop-filter: blur(2px);
   padding: 30px 0px;
 
-  &__center {
+  &__drop-wr {
+    @include display();
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    z-index: 12;
+    background-color: rgba(0, 0, 0, 0.466);
+    backdrop-filter: blur(2px);
+  }
+
+  &__drop-center {
+    @include display();
+    flex-direction: column;
+    align-items: end;
     position: relative;
-    // padding: 0px 30px 30px 30px;
+    border-radius: 12px;
+    background-color: var(--app-sidebar-300);
+    height: 90vh;
+    max-height: fit-content;
+    overflow: auto;
+    justify-content: start;
+
+    &-box {
+      @include display();
+      justify-content: end;
+      position: sticky;
+      top: 0px;
+      padding: 3px;
+      background-color: var(--app-sidebar-300);
+      width: 100%;
+    }
+  }
+
+  &__drop-content {
+    padding: 20px;
+    padding-top: 0px;
+    max-height: 400px;
+  }
+  &__center {
     background-color: var(--app-sidebar);
     border-radius: 10px;
     box-shadow: 0px 0px 30px -1px rgb(from var(--app-black) r g b / 0.7);
@@ -48,7 +85,7 @@
 
   &__form {
     @include display();
-    position: relative;
+    // position: relative;
     z-index: 1 !important;
     flex-direction: column;
     max-width: 500px;
@@ -92,24 +129,6 @@
   &__select-choosed {
     justify-content: end !important;
     max-width: fit-content !important;
-  }
-
-  &__options {
-    @include display();
-    position: absolute !important;
-    justify-content: start !important;
-    overflow: auto;
-    gap: 0px !important;
-    max-height: 250px;
-
-    &-top {
-      top: auto !important;
-      bottom: calc(100% + 6px) !important;
-    }
-
-    &-bottom {
-      top: calc(100% + 6px) !important;
-    }
   }
 
   &__submit {
@@ -162,7 +181,6 @@
     color: var(--app-text);
   }
 
-
   &__f-bigbox {
     @include display();
     flex-direction: column;
@@ -187,12 +205,12 @@
     @include inter();
     font-size: 14px;
     font-weight: 300;
-    color: var(--secondary-text)
+    color: var(--secondary-text);
   }
 
   &__f-bg-center {
     @include display();
-    width: 100%; 
+    width: 100%;
     flex-direction: column;
     align-items: start;
     gap: 10px;
@@ -212,7 +230,7 @@
     @include display();
     width: 100%;
     gap: 10px;
-    flex-wrap: wrap
+    flex-wrap: wrap;
   }
 
   &__f-bg-t-wr {
@@ -229,7 +247,7 @@
     text-align: center;
     font-size: 14px;
     font-weight: 300;
-    color: var(--secondary-text)
+    color: var(--secondary-text);
   }
 
   &__f-bg-bottom {
@@ -239,7 +257,7 @@
     gap: 10px;
   }
 
-  &__f-bg-info-box{
+  &__f-bg-info-box {
     @include display();
     flex-direction: column;
     align-items: start;
@@ -254,7 +272,7 @@
     @include inter();
     font-size: 18px;
     font-weight: 500;
-    color: var(--app-text)
+    color: var(--app-text);
   }
 
   &__f-text-sub {
@@ -363,9 +381,6 @@
   margin-top: 10px;
 }
 
-
-
-
 .image-uploader {
   width: 100%;
   border-radius: 12px;
@@ -373,11 +388,13 @@
 
   &__dropzone {
     width: 100%;
-    height: 150px; 
+    height: 150px;
     border: 2px dashed var(--app-border);
     border-radius: 8px;
     cursor: pointer;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
     @include display();
     flex-direction: column;
 
