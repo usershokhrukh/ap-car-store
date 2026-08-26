@@ -185,7 +185,7 @@ const EditProductsModal = ({id: productId}) => {
       (!data && isPending && !closeDrop)
     ) {
       setCategoryValue("loading...");
-    } else if (oneProductData) {
+    } else if (oneProductData && !closeDrop) {
       setCategoryValue(oneProductData?.data?.category?.name);
     }
   }, [oneProductData, oneProductPending, data, isPending]);
@@ -196,7 +196,7 @@ const EditProductsModal = ({id: productId}) => {
       (!oneProductData && oneProductPending)
     ) {
       setPickUpValue("loading...");
-    } else if (oneProductData?.data?.pickupPoint?.name) {
+    } else if (oneProductData?.data?.pickupPoint?.name && !closeDrop) {
       setPickUpValue(oneProductData?.data?.pickupPoint?.name);
     } else {
       setPickUpValue(null);

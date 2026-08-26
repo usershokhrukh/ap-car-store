@@ -28,70 +28,6 @@ const NewProductsModal = () => {
     });
   };
 
-  useEffect(() => {
-    if (error?.message) {
-      notice({
-        text: error?.message,
-        time: "infinite",
-        status: "error",
-        close: " true",
-      });
-      setCategoryValue("error");
-      route.refresh();
-    }
-  }, [error]);
-
-  // const dropRef = useRef(null);
-  // const dropHeightRef = useRef(null);
-  // const [dropDownPosition, setDropDownPosition] = useState("bottom");
-  // useEffect(() => {
-  //   if (!openCategory || !dropRef.current) return;
-  //   const checkSpace = () => {
-  //     const rect = dropRef?.current?.getBoundingClientRect();
-  //     const viewPointHeight = window.innerHeight;
-  //     const dropHeight = 250;
-  //     if (viewPointHeight - rect?.bottom < dropHeight && rect?.top > dropHeight) {
-  //       setDropDownPosition("top");
-  //     } else {
-  //       setDropDownPosition("bottom");
-  //     }
-  //   };
-  //   checkSpace();
-  //   window.addEventListener("scroll", checkSpace);
-  //   window.addEventListener("resize", checkSpace);
-
-  //   return () => {
-  //     window.addEventListener("scroll", checkSpace);
-  //     window.addEventListener("resize", checkSpace);
-  //   };
-  // }, [openCategory]);
-
-  // const [openPickUp, setOpenPickUp] = useState(false);
-  // const dropRefPickUp = useRef(null);
-  // const dropHeightRefPickUp = useRef(null);
-  // const [dropDownPositionPickUp, setDropDownPositionPickUp] =
-  //   useState("bottom");
-  // useEffect(() => {
-  //   if (!openPickUp || !dropRefPickUp.current) return;
-  //   const checkSpace = () => {
-  //     const rect = dropRefPickUp.current?.getBoundingClientRect();
-  //     const viewPointHeight = window.innerHeight;
-  //     const dropHeight = 250;
-  //     if (viewPointHeight - rect?.bottom < dropHeight && rect?.top > dropHeight) {
-  //       setDropDownPositionPickUp("top");
-  //     } else {
-  //       setDropDownPositionPickUp("bottom");
-  //     }
-  //   };
-  //   checkSpace();
-  //   window.addEventListener("scroll", checkSpace);
-  //   window.addEventListener("resize", checkSpace);
-
-  //   return () => {
-  //     window.addEventListener("scroll", checkSpace);
-  //     window.addEventListener("resize", checkSpace);
-  //   };
-  // }, [openPickUp]);
 
   const [categoryValue, setCategoryValue] = useState("");
   const [pickUpValue, setPickUpValue] = useState("");
@@ -111,6 +47,20 @@ const NewProductsModal = () => {
     error: pickUpError,
     isPending: pickUpPending,
   } = useGetPickup(`?limit=10${pickUpPage ? `&page=${pickUpPage}` : ""} `);
+
+
+    useEffect(() => {
+    if (error?.message) {
+      notice({
+        text: error?.message,
+        time: "infinite",
+        status: "error",
+        close: " true",
+      });
+      setCategoryValue("error");
+      route.refresh();
+    }
+  }, [error]);
 
   useEffect(() => {
     if (pickUpError?.message) {
