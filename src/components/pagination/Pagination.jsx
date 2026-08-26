@@ -16,6 +16,7 @@ const Pagination = ({
   search,
   setSearch,
   setQueryParams,
+  hasFilter, hasSearch
 }) => {
   const [openLimit, setOpenLimit] = useState(false);
   const [preSearchPage, setPreSearchPage] = useState(1);
@@ -115,14 +116,17 @@ const Pagination = ({
       <div className="products__b-pag">
         <div className="products__b-pag-left">
           <form onSubmit={handleSearchSubmit}>
-            <input
+            {
+              hasSearch != "false" ? <input
               name="search"
               type="search"
               onChange={handleSearchChange}
               className="products__b-pag-search"
               placeholder="Search..."
               value={search}
-            />
+            /> : null
+            }
+            
           </form>
           <div className="products__b-pag-limit">
             <button onClick={() => setOpenLimit(!openLimit)} className="products__b-pag-lbutton">
@@ -143,7 +147,7 @@ const Pagination = ({
               </div>
             )}
           </div>
-          <div className="products__b-pag-limit">
+          {hasFilter != "false" ?<div className="products__b-pag-limit">
             <button ref={buttonRef} onClick={() => setOpenFilter(!openFilter)} className="products__b-pag-lbutton">
               <span className="products__b-pag-span-mini">
                 <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="currentColor">
@@ -162,7 +166,8 @@ const Pagination = ({
               </div>,
               document.getElementById("dropdown-portal-root")
             )}
-          </div>
+          </div> : null}
+          
         </div>
         <div className="products__b-pag-right">
           <button onClick={() => handlePageChange(page - 1)} disabled={!hasPrevPage} className={`products__b-pag-rbuttons ${hasPrevPage ? "" : "products__b-pag-rbuttons-disable"}`}>
