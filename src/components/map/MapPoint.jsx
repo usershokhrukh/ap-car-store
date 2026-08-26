@@ -31,8 +31,10 @@ function MapController({center}) {
       map?.closePopup();
 
       setTimeout(() => {
-        map?.setView(center, map.getZoom(), {animate: true});
-        map?.panTo(center, {animate: true});
+        if (map) {
+          map?.setView(center, map.getZoom(), {animate: true});
+          map?.panTo(center, {animate: true});
+        }
       }, 50);
     }
   }, [center, map]);
@@ -51,7 +53,12 @@ function MapInteractionHandlers({onLocationSelect}) {
   return null;
 }
 
-export default function ProductMapLocate({data, onLocationChange, mapData, mapClass}) {
+export default function ProductMapLocate({
+  data,
+  onLocationChange,
+  mapData,
+  mapClass,
+}) {
   const markerRef = useRef(null);
   const position = [mapData?.latitude, mapData?.longitude];
 
@@ -149,9 +156,13 @@ export default function ProductMapLocate({data, onLocationChange, mapData, mapCl
               <div className="map__pop-box">
                 <strong>{data?.city}</strong>
                 {data?.address ? <p>Address: {data?.address}</p> : null}
-                {data?.suggestedName ? <p>Suggested name: {data?.suggestedName}</p> : null}
+                {data?.suggestedName ? (
+                  <p>Suggested name: {data?.suggestedName}</p>
+                ) : null}
                 {data?.displayName ? <p>Name: {data?.displayName}</p> : null}
-                {data?.pickupPointsCount ? <p>Pickup point count: {data?.pickupPointsCount}</p> : null}
+                {data?.pickupPointsCount ? (
+                  <p>Pickup point count: {data?.pickupPointsCount}</p>
+                ) : null}
                 {data?.latitude ? <p>latitude: {data?.latitude}</p> : null}
                 {data?.longitude ? <p>longitude: {data?.longitude}</p> : null}
               </div>

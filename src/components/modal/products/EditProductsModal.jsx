@@ -10,7 +10,10 @@ import {useGetPickup} from "@/hooks/pickup/GET/GetPickup";
 import {ModalDropDown} from "@/context/ModalDropDown";
 
 const EditProductsModal = ({id: productId}) => {
-  const {data, isPending, error} = useGetCategories();
+  const [categoriesPage, setCategoriesPage] = useState(null);
+  const {data, isPending, error} = useGetCategories(
+    `?isActive=true&limit=10${categoriesPage ? `&page=${categoriesPage}` : ""}`,
+  );
   const [openCategory, setOpenCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");
   const [pickUpValue, setPickUpValue] = useState("");
@@ -63,7 +66,7 @@ const EditProductsModal = ({id: productId}) => {
         close: " true",
       });
       route.refresh();
-      setCategoryValue("error")
+      setCategoryValue("error");
     }
   }, [error]);
 
@@ -75,7 +78,7 @@ const EditProductsModal = ({id: productId}) => {
         status: "error",
         close: " true",
       });
-      setCategoryValue("error")
+      setCategoryValue("error");
       route.refresh();
     }
   }, [oneProductError]);
@@ -138,7 +141,7 @@ const EditProductsModal = ({id: productId}) => {
     }
   }, [postData, postError, postPending]);
 
-  const {setCloseDrop, closeDrop, setCompDrop, compDrop} =
+  const {setCloseDrop, closeDrop, setCompDrop, compDrop, setPag} =
     useContext(ModalDropDown);
   useEffect(() => {
     setCloseDrop(false);
@@ -147,19 +150,12 @@ const EditProductsModal = ({id: productId}) => {
     setCloseDrop(false);
   }, [categoryValue]);
 
-  const [totalPickUp, setTotalPickUp] = useState(null);
-
+  const [pickUpPage, setPickUpPage] = useState(null);
   const {
     data: pickUpData,
     error: pickUpError,
     isPending: pickUpPending,
-  } = useGetPickup(`${totalPickUp ? `?limit=${totalPickUp + 1}` : ""}`);
-
-  useEffect(() => {
-    if (pickUpData) {
-      setTotalPickUp(pickUpData?.data?.meta?.total);
-    }
-  }, [pickUpData]);
+  } = useGetPickup(`?limit=10${pickUpPage ? `&page=${pickUpPage}` : ""} `);
 
   useEffect(() => {
     if (pickUpError?.message) {
@@ -168,34 +164,232 @@ const EditProductsModal = ({id: productId}) => {
         time: 3000,
         status: "error",
       });
-      setPickUpValue("error")
+      setPickUpValue("error");
     }
   }, [pickUpError]);
 
   useEffect(() => {
-    if (data && oneProductData) {
-      setCategoryValue(oneProductData?.data?.category?.name || null);
+    if (oneProductData) {
+      setCategoryValue(oneProductData?.data?.category?.name);
+      if (oneProductData?.data?.pickupPoint?.name) {
+        setPickUpValue(oneProductData?.data?.pickupPoint?.name);
+      } else {
+        setPickUpValue(null);
+      }
     }
-    if (pickUpData) {
+  }, [oneProductData]);
+
+  useEffect(() => {
+    if (
+      (!oneProductData && oneProductPending) ||
+      (!data && isPending && !closeDrop)
+    ) {
+      setCategoryValue("loading...");
+    } else if (oneProductData) {
+      setCategoryValue(oneProductData?.data?.category?.name);
+    }
+  }, [oneProductData, oneProductPending, data, isPending]);
+
+  useEffect(() => {
+    if (
+      (!pickUpData && pickUpPending && !closeDrop) ||
+      (!oneProductData && oneProductPending)
+    ) {
+      setPickUpValue("loading...");
+    } else if (oneProductData?.data?.pickupPoint?.name) {
+      setPickUpValue(oneProductData?.data?.pickupPoint?.name);
+    } else {
       setPickUpValue(null);
     }
-  }, [data, pickUpData, oneProductData]);
+  }, [pickUpData, pickUpPending, oneProductData, oneProductPending]);
 
   useEffect(() => {
-    if (!pickUpData && pickUpPending) {
-      setPickUpValue("loading...");
+    if (!data && closeDrop) {
+      setCompDrop(
+        <>
+          {compDrop}
+          <span className="modal__drop-b-pag-total">loading...</span>
+        </>,
+      );
     }
-  }, [pickUpPending, pickUpData]);
+  }, [data]);
 
   useEffect(() => {
-    if ((!data && isPending) || (!oneProductData && oneProductPending)) {
-      setCategoryValue("loading...");
+    if (!pickUpData && closeDrop) {
+      setCompDrop(
+        <>
+          {compDrop}
+          <span className="modal__drop-b-pag-total">loading...</span>
+        </>,
+      );
     }
-  }, [isPending, data, oneProductData, oneProductPending]);
+  }, [pickUpData]);
+
+  useEffect(() => {
+    if (data) {
+      setCategoriesPage(data?.data?.meta?.page || 1);
+      setCompDrop(
+        <>
+          <span className={`products__b-pag-filter-options`}>
+            {data?.data?.items?.map(({id, name}) => (
+              <span
+                key={id}
+                onClick={() => {
+                  setInput({
+                    ...input,
+                    categoryId: id,
+                  });
+                  setCategoryValue(name);
+                  setCloseDrop(false);
+                }}
+                className="products__b-pag-filter-option"
+              >
+                {name}
+              </span>
+            ))}
+          </span>
+        </>,
+      );
+      setPag(
+        <>
+          <div className="modal__drop-bottom-pag">
+            <span
+              onClick={() => {
+                if (data?.data?.meta?.page - 1 > 0) {
+                  setCategoriesPage(data?.data?.meta?.page - 1);
+                }
+              }}
+              className="modal__drop-b-pag-span"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M8 12L14 6V18L8 12Z"></path>
+              </svg>
+            </span>
+
+            <span className="modal__drop-b-pag-total">
+              {data?.data?.meta?.page}/{data?.data?.meta?.totalPages}
+            </span>
+
+            <span
+              onClick={() => {
+                if (
+                  data?.data?.meta?.page + 1 <=
+                  data?.data?.meta?.totalPages
+                ) {
+                  setCategoriesPage(data?.data?.meta?.page + 1);
+                }
+              }}
+              className="modal__drop-b-pag-span"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M16 12L10 18V6L16 12Z"></path>
+              </svg>
+            </span>
+          </div>
+        </>,
+      );
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (pickUpData) {
+      setPickUpPage(pickUpData?.data?.meta?.page || 1);
+      setCompDrop(
+        <>
+          <span className={`products__b-pag-filter-options`}>
+            <span
+              onClick={() => {
+                setInput({
+                  ...input,
+                  pickupPointId: null,
+                });
+                setPickUpValue(null);
+                setCloseDrop(false);
+              }}
+              className="products__b-pag-filter-option"
+            >
+              --
+            </span>
+            {pickUpData?.data?.items?.map(({id, name}) => (
+              <span
+                key={id}
+                onClick={() => {
+                  setInput({
+                    ...input,
+                    categoryId: id,
+                  });
+                  setPickUpValue(name);
+                  setCloseDrop(false);
+                }}
+                className="products__b-pag-filter-option"
+              >
+                {name}
+              </span>
+            ))}
+          </span>
+        </>,
+      );
+      setPag(
+        <>
+          <div className="modal__drop-bottom-pag">
+            <span
+              onClick={() => {
+                if (pickUpData?.data?.meta?.page - 1 > 0) {
+                  setPickUpPage(pickUpData?.data?.meta?.page - 1);
+                }
+              }}
+              className="modal__drop-b-pag-span"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M8 12L14 6V18L8 12Z"></path>
+              </svg>
+            </span>
+
+            <span className="modal__drop-b-pag-total">
+              {pickUpData?.data?.meta?.page}/
+              {pickUpData?.data?.meta?.totalPages}
+            </span>
+
+            <span
+              onClick={() => {
+                if (
+                  pickUpData?.data?.meta?.page + 1 <=
+                  pickUpData?.data?.meta?.totalPages
+                ) {
+                  setPickUpPage(pickUpData?.data?.meta?.page + 1);
+                }
+              }}
+              className="modal__drop-b-pag-span"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M16 12L10 18V6L16 12Z"></path>
+              </svg>
+            </span>
+          </div>
+        </>,
+      );
+    }
+  }, [pickUpData]);
 
   return (
     <>
-      {data && !isPending ? (
+      {oneProductData && !oneProductPending ? (
         <>
           <form onSubmit={handleSubmit} className="modal__form">
             <input
@@ -268,6 +462,54 @@ const EditProductsModal = ({id: productId}) => {
                           </span>
                         </>,
                       );
+
+                      setPag(
+                        <>
+                          <div className="modal__drop-bottom-pag">
+                            <span
+                              onClick={() => {
+                                if (data?.data?.meta?.page - 1 > 0) {
+                                  setCategoriesPage(data?.data?.meta?.page - 1);
+                                }
+                              }}
+                              className="modal__drop-b-pag-span"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                              >
+                                <path d="M8 12L14 6V18L8 12Z"></path>
+                              </svg>
+                            </span>
+
+                            <span className="modal__drop-b-pag-total">
+                              {data?.data?.meta?.page}/
+                              {data?.data?.meta?.totalPages}
+                            </span>
+
+                            <span
+                              onClick={() => {
+                                if (
+                                  data?.data?.meta?.page + 1 <=
+                                  data?.data?.meta?.totalPages
+                                ) {
+                                  setCategoriesPage(data?.data?.meta?.page + 1);
+                                }
+                              }}
+                              className="modal__drop-b-pag-span"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                              >
+                                <path d="M16 12L10 18V6L16 12Z"></path>
+                              </svg>
+                            </span>
+                          </div>
+                        </>,
+                      );
                     }
                   }}
                   className="products__b-pag-filter-choosed modal__select-choosed"
@@ -327,6 +569,58 @@ const EditProductsModal = ({id: productId}) => {
                           </span>
                         </>,
                       );
+
+                      setPag(
+                        <>
+                          <div className="modal__drop-bottom-pag">
+                            <span
+                              onClick={() => {
+                                if (pickUpData?.data?.meta?.page - 1 > 0) {
+                                  setPickUpPage(
+                                    pickUpData?.data?.meta?.page - 1,
+                                  );
+                                }
+                              }}
+                              className="modal__drop-b-pag-span"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                              >
+                                <path d="M8 12L14 6V18L8 12Z"></path>
+                              </svg>
+                            </span>
+
+                            <span className="modal__drop-b-pag-total">
+                              {pickUpData?.data?.meta?.page}/
+                              {pickUpData?.data?.meta?.totalPages}
+                            </span>
+
+                            <span
+                              onClick={() => {
+                                if (
+                                  pickUpData?.data?.meta?.page + 1 <=
+                                  pickUpData?.data?.meta?.totalPages
+                                ) {
+                                  setPickUpPage(
+                                    pickUpData?.data?.meta?.page + 1,
+                                  );
+                                }
+                              }}
+                              className="modal__drop-b-pag-span"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                              >
+                                <path d="M16 12L10 18V6L16 12Z"></path>
+                              </svg>
+                            </span>
+                          </div>
+                        </>,
+                      );
                     }
                   }}
                   className="products__b-pag-filter-choosed modal__select-choosed"
@@ -356,7 +650,7 @@ const EditProductsModal = ({id: productId}) => {
             </button>
           </form>
         </>
-      ) : isPending ? (
+      ) : oneProductPending ? (
         <form className="modal__form">
           <ProductFormSkeleton />
         </form>

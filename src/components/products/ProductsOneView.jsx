@@ -230,7 +230,7 @@ const ProductsOneView = () => {
   useEffect(() => {
     setIsErrorPickUp(false);
     setIsError(false);
-  }, [data]);
+  }, [data]);  
   
   return (
     <div className="products products-view container">
@@ -442,7 +442,7 @@ const ProductsOneView = () => {
             {data?.data?.pickupPoint ? (
               <div className="products-view__map">
                 <span className="products-view__map-self">
-                  <MapView data={data?.data?.pickupPoint} />{" "}
+                  <MapView data={data?.data?.pickupPoint} />
                 </span>
                 <div className="products-view__map-list">
                   {!isErrorPickup ? (
