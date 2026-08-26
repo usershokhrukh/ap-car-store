@@ -799,6 +799,11 @@
     gap: 16px;
   }
 
+  &__header-right {
+    @include display();
+    gap: 10px;
+  }
+
   /* --- LEFT CONTROLS GROUP --- */
   &__controls {
     display: flex;
@@ -823,6 +828,11 @@
     width: 60px;
     height: 38px;
     // border-radius: 8px;
+  }
+
+  &__nearby {
+    width: 90px;
+    height: 35px;
   }
 
   /* --- RIGHT PAGINATION GROUP --- */

@@ -9,10 +9,10 @@ import {useRouter} from "next/navigation";
 import PaginationGeneral from "../pagination/PaginationGeneral";
 import PickUpPointsPaginationProperties from "./PickUpPointsPaginationProperties";
 import PickupPointsTable from "./PickupPointsTable";
-import ProductsSkeleton from "../products/ProductsLoading";
 import NotFound from "../notfound/NotFound";
 import NewPickupPointModal from "../modal/pickup/NewPickupPointModal";
 import PickupNearby from "./PickupNearby";
+import PickupPointSkeleton from "./PickupPointsSkeleton";
 
 const PickupPoints = () => {
   const localStorageName = "pickupPointsLimit";
@@ -120,7 +120,7 @@ const PickupPoints = () => {
           
         </>
       ) : isPending ? (
-        <ProductsSkeleton />
+        <PickupPointSkeleton />
       ) : (
         <NotFound />
       )}
