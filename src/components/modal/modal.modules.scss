@@ -52,6 +52,7 @@
     border-radius: 25px;
     overflow: hidden;
     width: 100%;
+    min-width: 100px;
   }
 
   &__drop-content {
@@ -71,6 +72,43 @@
     overflow: auto;
     width: 100%;
     max-width: 500px
+  }
+
+  &__drop-bottom-pag {
+    @include display();
+    position: sticky;
+    background-color: var(--app-sidebar);
+    border-top: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
+    width: 100%;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding: 4px;
+    gap: 10px;
+    overflow: auto;
+  }
+
+  &__drop-b-pag-span {
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+    background-color: var(--app-sidebar-300);
+    border-radius: 50px;
+    cursor: pointer;
+  }
+
+  &__drop-b-pag-total {
+    @include inter();
+    @include display();
+    justify-content: start;
+    gap: 4px;
+    max-width: 80px;
+    overflow: auto;
+    font-size: 14px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &__center-box {

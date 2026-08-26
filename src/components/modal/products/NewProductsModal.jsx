@@ -8,7 +8,9 @@ import {useGetPickup} from "@/hooks/pickup/GET/GetPickup";
 import {ModalDropDown} from "@/context/ModalDropDown";
 
 const NewProductsModal = () => {
-  const {data, isPending, error} = useGetCategories("?isActive=true");
+  const {setCloseDrop, closeDrop, setCompDrop, compDrop} =
+    useContext(ModalDropDown);
+  const {data, isPending, error} = useGetCategories(`?isActive=true&limit=10`);
   const route = useRouter();
   const {notice} = useNotify();
   const [input, setInput] = useState({
@@ -35,7 +37,7 @@ const NewProductsModal = () => {
         status: "error",
         close: " true",
       });
-      setCategoryValue("error")
+      setCategoryValue("error");
       route.refresh();
     }
   }, [error]);
@@ -92,8 +94,6 @@ const NewProductsModal = () => {
   //   };
   // }, [openPickUp]);
 
-  const {setCloseDrop, closeDrop, setCompDrop, compDrop} =
-    useContext(ModalDropDown);
   const [categoryValue, setCategoryValue] = useState("");
   const [pickUpValue, setPickUpValue] = useState("");
   useEffect(() => {
@@ -102,19 +102,11 @@ const NewProductsModal = () => {
   useEffect(() => {
     setCloseDrop(false);
   }, [categoryValue]);
-  const [totalPickUp, setTotalPickUp] = useState(null);
-
   const {
     data: pickUpData,
     error: pickUpError,
     isPending: pickUpPending,
-  } = useGetPickup(`${totalPickUp ? `?limit=${totalPickUp + 1}` : ""}`);
-
-  useEffect(() => {
-    if (pickUpData) {
-      setTotalPickUp(pickUpData?.data?.meta?.total);
-    }
-  }, [pickUpData]);
+  } = useGetPickup(`?limit=10`);
 
   useEffect(() => {
     if (pickUpError?.message) {
@@ -123,7 +115,7 @@ const NewProductsModal = () => {
         time: 3000,
         status: "error",
       });
-      setPickUpValue("error")
+      setPickUpValue("error");
     }
   }, [pickUpError]);
 
@@ -195,13 +187,35 @@ const NewProductsModal = () => {
   }, [data, pickUpData]);
 
   useEffect(() => {
-    if (!data) {
+    if (!data && !closeDrop) {
       setCategoryValue("loading...");
     }
-    if (!pickUpData) {
+    if (!pickUpData && !closeDrop) {
       setPickUpValue("loading...");
     }
   }, [data, pickUpData]);
+
+  useEffect(() => {
+    if (!data && closeDrop) {
+      setCompDrop(
+        <>
+          {compDrop}
+          <span className="modal__drop-b-pag-total">loading...</span>
+        </>,
+      );
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (!pickUpData && closeDrop) {
+      setCompDrop(
+        <>
+          {compDrop}
+          <span className="modal__drop-b-pag-total">loading...</span>
+        </>,
+      );
+    }
+  }, [pickUpData]);
 
   return (
     <form onSubmit={handleSubmit} className="modal__form">

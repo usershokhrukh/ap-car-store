@@ -7,7 +7,7 @@ const ModalDropDownProvider = ({children}) => {
   const [closeDrop, setCloseDrop] = useState(false);
   const [compDrop, setCompDrop] = useState(null);
 
-  const [meta, setMeta] = useState(null);
+
   return (
     <ModalDropDown.Provider
       value={{closeDrop, setCloseDrop, compDrop, setCompDrop}}
@@ -33,7 +33,29 @@ const ModalDropDownProvider = ({children}) => {
                 </span>
               </div>
 
-              <div className="modal__drop-content">{compDrop}</div>
+              <div className="modal__drop-content">{compDrop}</div><div className="modal__drop-bottom-pag">
+                <span className="modal__drop-b-pag-span">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M8 12L14 6V18L8 12Z"></path>
+                  </svg>
+                </span>
+
+                <span className="modal__drop-b-pag-total">0/0</span>
+
+                <span className="modal__drop-b-pag-span">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M16 12L10 18V6L16 12Z"></path>
+                  </svg>
+                </span>
+              </div>
               
             </div>
           </div>
