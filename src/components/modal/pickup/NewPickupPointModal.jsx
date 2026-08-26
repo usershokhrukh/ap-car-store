@@ -365,18 +365,18 @@ const NewPickupPointModal = () => {
           </span>
         </p>
       </div>
-      <input
+      <div className="modal__f-bg-top">
+
+        <input
         type="text"
-        className="modal__inputs"
+        className="modal__inputs modal__no-inputs"
         placeholder="Name"
         name="name"
         onChange={handleInputs}
         value={input?.name}
       />
-      <div className="modal__f-bigbox">
-        <div className="modal__f-bg-center">
-          <PhoneInputWithCountrySelect
-            className="modal__input-phone"
+                <PhoneInputWithCountrySelect
+            className="modal__input-phone modal__no-inputs"
             placeholder="Phone number"
             onChange={setPhone}
             value={phone}
@@ -386,6 +386,10 @@ const NewPickupPointModal = () => {
             countries={['UZ']}
             international={false}
           />
+      </div>
+      
+      <div className="modal__f-bigbox">
+        <div className="modal__f-bg-center">
           <div className="modal__f-bg-b-time">
             <span className="modal__f-bg-t-wr">
               <span className="modal__bg-b-info">opens at:</span>
