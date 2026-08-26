@@ -7,6 +7,16 @@
   box-sizing: border-box;
 }
 
+.global-svg {
+  width: 18px;
+  height: 18px;
+
+  svg {
+    width: 18px;
+    height: 18px
+  }
+}
+
 .error__span {
   @include display();
   position: relative;

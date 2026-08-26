@@ -4,7 +4,7 @@ import axios from "axios";
 
 const request = async (string) => {
   try {
-    const res = await api.get(`/api/pickup-points/geocode${string || ''}`);
+    const res = await api.get(`/api/pickup-points/nearby${string}`);
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -13,10 +13,10 @@ const request = async (string) => {
     throw new Error(error.message || "Something went wrong!");
   }
 };
-export const useGetGeoCode = (string) => {
+export const useGetPickupNearby = (string) => {
   return useQuery({
-    queryKey: ["geocode", string],
-    queryFn: () =>  request(string),
+    queryKey: ["pickup-nearby", string],
+    queryFn: () => request(string),
     enabled: !!string
   });
 };

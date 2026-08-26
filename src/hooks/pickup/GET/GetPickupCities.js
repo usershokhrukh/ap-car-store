@@ -2,9 +2,9 @@ import { api } from "@/utils/api";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
 
-const request = async (string) => {
+const request = async () => {
   try {
-    const res = await api.get(`/api/pickup-points/geocode${string || ''}`);
+    const res = await api.get(`/api/pickup-points/cities`);
     return res?.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -13,10 +13,9 @@ const request = async (string) => {
     throw new Error(error.message || "Something went wrong!");
   }
 };
-export const useGetGeoCode = (string) => {
+export const useGetPickupCities = () => {
   return useQuery({
-    queryKey: ["geocode", string],
-    queryFn: () =>  request(string),
-    enabled: !!string
+    queryKey: ["pickup-cities"],
+    queryFn: request,
   });
 };
