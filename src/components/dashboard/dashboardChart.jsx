@@ -14,7 +14,7 @@ const dataColor = [
   "var(--app-neon-cyan)",
 ];
 
-export default function BookingDistribution({data,title, subtitle}) {
+export default function BookingDistribution({data,title, subtitle, classWr, classCircle}) {
   const [dataResult, setDataResult] = useState(null);
   useEffect(() => {
     if (data?.length) {
@@ -45,8 +45,8 @@ export default function BookingDistribution({data,title, subtitle}) {
         <h2 className="dashboard__chart-title">{title || 'Distribution Total'}</h2>
       </div>
 
-      <div className="dashboard__chart-bottom">
-        <div className="dashboard__chart-left">
+      <div className={`dashboard__chart-bottom ${classWr ? classWr : ""}`}>
+        <div className={`dashboard__chart-left ${classCircle ? classCircle : ""}`}>
           <ResponsiveContainer width="100%" aspect={1}>
             <PieChart>
               <Pie

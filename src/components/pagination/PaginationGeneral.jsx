@@ -9,6 +9,7 @@ const PaginationGeneral = ({
   listAct,
   setSearchParams,
   comp,
+  hasFilter, hasSearch
 }) => {
   const [openFilter, setOpenFilter] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -82,6 +83,8 @@ const PaginationGeneral = ({
       search={search}
       setSearch={setSearch}
       setQueryParams={setQueryParams}
+      hasFilter={hasFilter ? hasFilter : ""}
+      hasSearch={hasSearch ? hasSearch : ""}
       comp={
         Comp ? (
           <Comp
