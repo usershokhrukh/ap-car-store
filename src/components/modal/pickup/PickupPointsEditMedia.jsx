@@ -45,13 +45,14 @@ const PickupPointsEditMedia = ({id}) => {
     }
   }, [isSending, videoPending]);
   const processVideo = (file) => {
-    if ((!file || !file.type.startsWith("video/")) && !videoPending) return;
+    if (!file || (!file.type.startsWith("video/") && !videoPending)) return;
     setVideo(file);
-    setPreviewVideo(URL.createObjectURL(file));
+    setPreviewVideo(URL?.createObjectURL(file));
+    setVideo(file);
+    setPreviewVideo(file);
   };
 
   const handleInputVideoChange = (e) => processVideo(e.target.files[0]);
-
 
   useEffect(() => {
     if (previewVideo && videoRef.current && !videoPending) {
@@ -167,7 +168,6 @@ const PickupPointsEditMedia = ({id}) => {
   };
 
   const handleInputImageChange = (e) => processImage(e.target.files[0]);
-
 
   useEffect(() => {
     if (previewImage && imageRef.current && !imagePending) {

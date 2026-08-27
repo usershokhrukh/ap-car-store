@@ -11,6 +11,14 @@
   position: relative;
   z-index: 0;
 
+
+  &__top {
+    width: 100%;
+    @include display();
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
   &__main {
     @include display();
     gap: 10px;
@@ -252,7 +260,7 @@
   &__modal {
     @include display();
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     padding: 0px 10px 10px 10px;
     gap: 13px;
     // padding: 0px 20px 20px 20px;

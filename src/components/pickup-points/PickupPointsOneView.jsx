@@ -17,7 +17,7 @@ import ProductsTable from "../products/ProductsTable";
 import SalonWorkspaceSkeleton from "./PickupOneSkeleton";
 import NotFound from "../notfound/NotFound";
 import {usePatchStatusPickup} from "@/hooks/pickup/PATCH/PatchPickUpStatus";
-import { GeneralModal } from "@/context/GeneralModal";
+import {GeneralModal} from "@/context/GeneralModal";
 import PickupPointsEditMedia from "../modal/pickup/PickupPointsEditMedia";
 
 const PickupPointsOneView = () => {
@@ -190,20 +190,32 @@ const PickupPointsOneView = () => {
     }
   };
 
-  const { setCloseModal, setCompModal} = useContext(GeneralModal)
+  const {setCloseModal, setCompModal} = useContext(GeneralModal);
 
   useEffect(() => {
-    if(onePickupData && videoRef.current) {
-      videoRef.current.load()
+    if (onePickupData && videoRef.current) {
+      videoRef.current.load();
     }
-  }, [onePickupData])
+  }, [onePickupData]);
 
   return (
     <div className="pickup-one container">
       <>
         {onePickupData && !onePickupPending ? (
           <>
-            <div className="pickup-points__top">
+            <div className="pickup-one__top">
+              <span
+                onClick={() => route.back()}
+                className="products__view-back"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path>
+                </svg>
+              </span>
               <div className="pickup-points__t-box">
                 <h2 className="pickup-points__title">Pickup Point</h2>
                 <p className="pickup-points__tit-sub">
@@ -300,12 +312,23 @@ const PickupPointsOneView = () => {
                   </div>
 
                   <div className="pickup-one__mlt-v-bottom">
-                    <button onClick={() => {
-                      setCloseModal(true)
-                      setCompModal(<PickupPointsEditMedia id={id}/>)
-                    }} className="pickup-one__mlt-vb-buttons">
+                    <button
+                      onClick={() => {
+                        setCloseModal(true);
+                        setCompModal(<PickupPointsEditMedia id={id} />);
+                      }}
+                      className="pickup-one__mlt-vb-buttons"
+                    >
                       Edit Media
-                      <span className="global-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 19V5H9.58579L11.5858 7H20V19H4ZM21 5H12.4142L10.4142 3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V6C22 5.44772 21.5523 5 21 5ZM15.0008 12.667L10.1219 9.41435C10.0562 9.37054 9.979 9.34717 9.9 9.34717C9.6791 9.34717 9.5 9.52625 9.5 9.74717V16.2524C9.5 16.3314 9.5234 16.4086 9.5672 16.4743C9.6897 16.6581 9.9381 16.7078 10.1219 16.5852L15.0008 13.3326C15.0447 13.3033 15.0824 13.2656 15.1117 13.2217C15.2343 13.0379 15.1846 12.7895 15.0008 12.667Z"></path></svg></span>
+                      <span className="global-svg">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path d="M4 19V5H9.58579L11.5858 7H20V19H4ZM21 5H12.4142L10.4142 3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V6C22 5.44772 21.5523 5 21 5ZM15.0008 12.667L10.1219 9.41435C10.0562 9.37054 9.979 9.34717 9.9 9.34717C9.6791 9.34717 9.5 9.52625 9.5 9.74717V16.2524C9.5 16.3314 9.5234 16.4086 9.5672 16.4743C9.6897 16.6581 9.9381 16.7078 10.1219 16.5852L15.0008 13.3326C15.0447 13.3033 15.0824 13.2656 15.1117 13.2217C15.2343 13.0379 15.1846 12.7895 15.0008 12.667Z"></path>
+                        </svg>
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -455,10 +478,12 @@ const PickupPointsOneView = () => {
               <span className="products__tit-sub">
                 There are not products for this filter
               </span>
-            ) : !isPending ? (
+            ) : !isPending && !data?.data?.items ? (
               <span className="products__tit-sub">
                 This pickup point does not have products
               </span>
+            ) : isPending ? (
+              <span className="products__tit-sub">loading...</span>
             ) : (
               <span className="products__tit-sub">
                 Could not get products for this pickup point!
