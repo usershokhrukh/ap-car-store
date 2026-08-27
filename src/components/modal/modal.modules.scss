@@ -10,7 +10,7 @@
   z-index: 11;
   height: 100vh;
   backdrop-filter: blur(2px);
-  padding: 30px 0px;
+  padding: 50px 0px;
 
   &__drop-wr {
     @include display();
@@ -41,7 +41,7 @@
       justify-content: end;
       position: sticky;
       top: 0px;
-      padding: 3px;
+      padding: 5px;
       background-color: var(--app-sidebar-300);
       width: 100%;
     }
@@ -52,8 +52,8 @@
     border-radius: 25px;
     overflow: hidden;
     width: 100%;
-    min-width: 100px;
-    padding: 10px;
+    min-width: 200px;
+    padding: 14px;
   }
 
   &__drop-content {
@@ -61,7 +61,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    padding: 20px;
+    padding: 25px;
     padding-top: 0px;
     max-height: 400px;
   }
@@ -88,15 +88,15 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
-    padding: 4px;
-    gap: 10px;
+    padding: 8px;
+    gap: 14px;
     overflow: auto;
   }
 
   &__drop-b-pag-span {
-    width: 30px;
-    height: 30px;
-    padding: 4px;
+    width: 35px;
+    height: 35px;
+    padding: 8px;
     background-color: var(--app-sidebar-300);
     border-radius: 50px;
     cursor: pointer;
@@ -106,10 +106,10 @@
     @include inter();
     @include display();
     justify-content: start;
-    gap: 4px;
+    gap: 6px;
     max-width: 80px;
     overflow: auto;
-    font-size: 14px;
+    font-size: 16px;
 
     &::-webkit-scrollbar {
       display: none;
@@ -120,10 +120,10 @@
     @include display();
     width: 100%;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 14px;
     flex-direction: column;
     align-items: end;
-    padding: 10px;
+    padding: 15px;
     border-radius: 12px;
     border: 1px solid rgb(from var(--app-light-blue) r g b / 0.3);
   }
@@ -134,7 +134,7 @@
     justify-content: end;
     top: 0px;
     z-index: 2;
-    padding: 10px;
+    padding: 15px;
     width: 100%;
     background-color: var(--app-sidebar);
   }
@@ -144,7 +144,7 @@
       width: 16px;
       height: 16px;
     }
-    padding: 3px;
+    padding: 8px;
     color: var(--app-text);
     cursor: pointer;
     z-index: 2;
@@ -156,19 +156,19 @@
     z-index: 1 !important;
     flex-direction: column;
     // max-width: 500px;
-    gap: 10px;
+    gap: 14px;
     width: 100%;
     justify-content: start;
     align-items: start;
-    padding: 0px 20px 20px 20px;
+    padding: 0px 30px 30px 30px;
     border-radius: 20px;
   }
 
   &__inputs {
     @include inter();
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
     min-width: 0px !important;
     border: none;
@@ -180,7 +180,7 @@
 
   &__f-title {
     @include inter();
-    font-size: 16px;
+    font-size: 18px;
     color: var(--app-text);
     font-weight: 300;
   }
@@ -210,7 +210,7 @@
   &__f-box-row {
     @include display();
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 14px;
     overflow: auto;
     width: 100%;
 
@@ -219,15 +219,15 @@
   &__bg-box-top {
     @include display();
     justify-content: space-between;
-    gap: 10px;
+    gap: 14px;
     width: 100%;
     flex-wrap: wrap
   }
 
   &__f-stop {
     @include inter();
-    font-size: 13px;
-    padding: 5px 8px;
+    font-size: 15px;
+    padding: 8px 12px;
     border-radius: 12px;
     border: none;
     outline: none;
@@ -237,9 +237,9 @@
 
   &__submit {
     @include display();
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
-    padding: 6px;
+    padding: 8px;
     border-radius: 10px;
     border: none;
     cursor: pointer;
@@ -261,15 +261,15 @@
   &__title {
     @include inter();
     @include display();
-    font-size: 15px;
-    padding-top: 5px;
+    font-size: 17px;
+    // padding-top: 10px;
     color: var(--app-text);
   }
 
   &__form-drop {
     @include display();
-    min-width: 250px;
-    min-height: 150px;
+    min-width: 300px;
+    min-height: 220px;
     border-radius: 12px;
     border: 2px dashed rgb(from var(--app-text) r g b /0.5);
     background-color: var(--app-sidebar-300);
@@ -287,14 +287,14 @@
     @include display();
     flex-direction: column;
     width: 100%;
-    gap: 20px;
+    gap: 24px;
   }
 
   &__f-bg-top {
     @include display();
     // white-space: nowrap;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 14px;
     width: 100%;
     justify-content: start;
   }
@@ -308,7 +308,7 @@
 
   &__f-text {
     @include inter();
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 300;
     color: var(--secondary-text);
   }
@@ -318,7 +318,7 @@
     width: 100%;
     flex-direction: column;
     align-items: start;
-    gap: 10px;
+    gap: 14px;
   }
 
   &__f-map {
@@ -334,7 +334,7 @@
   &__f-bg-b-time {
     @include display();
     width: 100%;
-    gap: 10px;
+    gap: 14px;
     flex-wrap: wrap;
   }
 
@@ -350,7 +350,7 @@
     @include display();
     flex-direction: column;
     align-items: start;
-    gap: 5px;
+    gap: 9px;
     word-break: break-all;
     flex-grow: 1
   }
@@ -359,7 +359,7 @@
     @include display();
     @include inter();
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 300;
     color: var(--secondary-text);
   }
@@ -368,14 +368,14 @@
     @include display();
     flex-direction: column;
     width: 100%;
-    gap: 10px;
+    gap: 14px;
   }
 
   &__f-bg-info-box {
     @include display();
     flex-direction: column;
     align-items: start;
-    padding: 15px;
+    padding: 20px;
     border-radius: 15px;
     // background-color: rgb(from var(--app-cyan) r g b/ 0.2);
     background: var(--app-yellow);
@@ -385,19 +385,19 @@
       rgb(from var(--app-orange) r g b / 0.2) 100%
     );
     width: 100%;
-    gap: 5px;
+    gap: 9px;
   }
 
   &__f-text-high {
     @include inter();
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     color: var(--app-text);
   }
 
   &__f-text-sub {
     @include inter();
-    font-size: 16px;
+    font-size: 18px;
     color: var(--app-text);
     font-weight: 400;
   }
@@ -410,7 +410,7 @@
   &__f-box-left {
     @include display();
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
     align-items: start;
     // flex-grow: 1;
     width: 100%;
@@ -419,8 +419,8 @@
   &__button {
     @include display();
     @include inter();
-    gap: 4px;
-    padding: 5px 10px;
+    gap: 8px;
+    padding: 10px 15px;
     border-radius: 12px;
     border: none;
     outline: none;
@@ -538,7 +538,7 @@
 
 .PhoneInputInput {
   @include inter();
-  font-size: 14px;
+  font-size: 16px;
   width: 100%;
   padding: 10px;
   border-radius: 10px;
@@ -598,7 +598,7 @@
     border-radius: 4px;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1;
     transition: opacity 0.2s ease;
 
@@ -611,7 +611,7 @@
     @include inter();
     color: var(--secondary-text);
     margin: 0;
-    font-size: 16px;
+    font-size: 18px;
     user-select: none;
   }
 }

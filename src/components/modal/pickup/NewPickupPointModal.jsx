@@ -185,7 +185,23 @@ const NewPickupPointModal = () => {
     data: dataPatch,
     error: errorPatch,
     isPending: patchPending,
+    isSendingImage,
+    forceCancelImageUpload,
   } = usePostPickupImage();
+
+  useEffect(() => {
+    if (patchPending) {
+      if (!isSendingImage) {
+        notice({
+          text: `Video is not actively sending, please try again!`,
+          status: "error",
+          time: 5000,
+        });
+        forceCancelImageUpload();
+        setModalStopped(false);
+      }
+    }
+  }, [isSendingImage, patchPending]);
 
   useEffect(() => {
     if (errorSend?.message) {
