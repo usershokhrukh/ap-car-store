@@ -52,7 +52,7 @@ const PickupPointsEditMedia = ({id}) => {
       return notice({
         text: "To change the video please upload the new one!",
         status: "error",
-        time: 300,
+        time: 3000,
       });
 
     const formData = new FormData();
@@ -144,7 +144,7 @@ const PickupPointsEditMedia = ({id}) => {
       return notice({
         text: "To change the image please upload the new one!",
         status: "error",
-        time: 300,
+        time: 3000,
       });
 
     const formData = new FormData();
