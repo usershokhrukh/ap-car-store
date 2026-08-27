@@ -5,7 +5,7 @@ import "./pickup-points.modules.scss";
 import "../products/products.modules.scss";
 import "../products/one-product.modules.scss";
 import "../dashboard/dashboard.modules.scss";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {useGetOnePickup} from "@/hooks/pickup/GET/GetOnePickup";
 import BookingDistribution from "../dashboard/dashboardChart";
 import {useGetPickup} from "@/hooks/pickup/GET/GetPickup";
@@ -17,6 +17,8 @@ import ProductsTable from "../products/ProductsTable";
 import SalonWorkspaceSkeleton from "./PickupOneSkeleton";
 import NotFound from "../notfound/NotFound";
 import {usePatchStatusPickup} from "@/hooks/pickup/PATCH/PatchPickUpStatus";
+import { GeneralModal } from "@/context/GeneralModal";
+import PickupPointsEditMedia from "../modal/pickup/PickupPointsEditMedia";
 
 const PickupPointsOneView = () => {
   const {id} = useParams();
@@ -189,6 +191,8 @@ const PickupPointsOneView = () => {
     }
   };
 
+  const { setCloseModal, setCompModal} = useContext(GeneralModal)
+
   return (
     <div className="pickup-one container">
       <>
@@ -291,7 +295,10 @@ const PickupPointsOneView = () => {
                   </div>
 
                   <div className="pickup-one__mlt-v-bottom">
-                    <button className="pickup-one__mlt-vb-buttons">
+                    <button onClick={() => {
+                      setCloseModal(true)
+                      setCompModal(<PickupPointsEditMedia id={id}/>)
+                    }} className="pickup-one__mlt-vb-buttons">
                       Edit Media
                       <span className="global-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 19V5H9.58579L11.5858 7H20V19H4ZM21 5H12.4142L10.4142 3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V6C22 5.44772 21.5523 5 21 5ZM15.0008 12.667L10.1219 9.41435C10.0562 9.37054 9.979 9.34717 9.9 9.34717C9.6791 9.34717 9.5 9.52625 9.5 9.74717V16.2524C9.5 16.3314 9.5234 16.4086 9.5672 16.4743C9.6897 16.6581 9.9381 16.7078 10.1219 16.5852L15.0008 13.3326C15.0447 13.3033 15.0824 13.2656 15.1117 13.2217C15.2343 13.0379 15.1846 12.7895 15.0008 12.667Z"></path></svg></span>
                     </button>

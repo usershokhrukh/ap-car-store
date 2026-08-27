@@ -10,7 +10,7 @@ import {isValidNumber} from "libphonenumber-js";
 import {usePostPickup} from "@/hooks/pickup/POST/PostPickUp";
 import {GeneralModal} from "@/context/GeneralModal";
 import {usePostPickupImage} from "@/hooks/pickup/POST/PostPickUpImage";
-import { useQueryClient } from "@tanstack/react-query";
+import {useQueryClient} from "@tanstack/react-query";
 
 const NewPickupPointModal = () => {
   const {notice} = useNotify();
@@ -37,7 +37,7 @@ const NewPickupPointModal = () => {
     data: searchData,
     error: searchError,
     isPending: searchPending,
-    isFetching
+    isFetching,
   } = useGetGeoSearch(`${search.trim() ? `?q=${search}` : ""}`);
   const {data, error, isPending} = useGetGeoCode(searchGeo);
 
@@ -142,7 +142,6 @@ const NewPickupPointModal = () => {
       });
     }
   }, [searchPending, searchData, secondSearch, reLocate, secondSearch]);
-  
 
   const [phone, setPhone] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -311,8 +310,8 @@ const NewPickupPointModal = () => {
   const queryClient = useQueryClient();
 
   const handleManualCancel = () => {
-    queryClient.cancelQueries({queryKey: ["geosearch", search]})
-  }
+    queryClient.cancelQueries({queryKey: ["geosearch", search]});
+  };
 
   return (
     <form onSubmit={handleSubmit} className="modal__form">
@@ -333,9 +332,9 @@ const NewPickupPointModal = () => {
             setSecondSearch(e.target.value);
             if (!e.target.value.trim() && !isPending) {
               notice({
-                stop:"true"
-              })
-              handleManualCancel()
+                stop: "true",
+              });
+              handleManualCancel();
             }
             if (timeRef.current) {
               clearTimeout(timeRef.current);
@@ -366,28 +365,27 @@ const NewPickupPointModal = () => {
         </p>
       </div>
       <div className="modal__f-bg-top">
-
         <input
-        type="text"
-        className="modal__inputs modal__no-inputs"
-        placeholder="Name"
-        name="name"
-        onChange={handleInputs}
-        value={input?.name}
-      />
-                <PhoneInputWithCountrySelect
-            className="modal__input-phone modal__no-inputs"
-            placeholder="Phone number"
-            onChange={setPhone}
-            value={phone}
-            limitMaxLength
-            required
-            defaultCountry="UZ"
-            countries={['UZ']}
-            international={false}
-          />
+          type="text"
+          className="modal__inputs modal__no-inputs"
+          placeholder="Name"
+          name="name"
+          onChange={handleInputs}
+          value={input?.name}
+        />
+        <PhoneInputWithCountrySelect
+          className="modal__input-phone modal__no-inputs"
+          placeholder="Phone number"
+          onChange={setPhone}
+          value={phone}
+          limitMaxLength
+          required
+          defaultCountry="UZ"
+          countries={["UZ"]}
+          international={false}
+        />
       </div>
-      
+
       <div className="modal__f-bigbox">
         <div className="modal__f-bg-center">
           <div className="modal__f-bg-b-time">
