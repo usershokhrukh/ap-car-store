@@ -17,6 +17,12 @@
   }
 }
 
+.global-text-sub {
+  @include inter();
+  font-size: 14px;
+  color: var(--secondary-text)
+}
+
 .error__span {
   @include display();
   position: relative;

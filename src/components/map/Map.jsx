@@ -45,7 +45,7 @@ export default function ProductMap({data: mapData}) {
   const {
     data: location,
     error,
-    isPending,
+    isFetching,
   } = useGetGeoSearch(`${search ? `?q=${search}` : ""}`);
 
   useEffect(() => {
@@ -100,6 +100,7 @@ export default function ProductMap({data: mapData}) {
       });
     }
   }, [isError]);
+  
 
   return (
     <div className="map__wrapper">
@@ -144,10 +145,10 @@ export default function ProductMap({data: mapData}) {
             </Marker>
           </MapContainer>
         </>
-      ) : isPending ? (
-        <>Loading...</>
+      ) : isFetching ? (
+        <p className="global-text-sub">Loading...</p>
       ) : (
-        <>The location has not any properties to identify, could not get map!</>
+        <p className="global-text-sub">The location has not any properties to identify, could not get map!</p>
       )}
     </div>
   );
