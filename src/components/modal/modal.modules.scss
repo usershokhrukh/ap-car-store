@@ -266,6 +266,23 @@
     color: var(--app-text);
   }
 
+  &__form-drop {
+    @include display();
+    min-width: 250px;
+    min-height: 150px;
+    border-radius: 12px;
+    border: 2px dashed rgb(from var(--app-text) r g b /0.5);
+    background-color: var(--app-sidebar-300);
+    cursor: pointer;
+
+    object-fit: contain;
+    &-dragging {
+      border: 2px dashed rgb(from var(--app-light-blue) r g b / 1);
+    background-color: rgb(from var(--app-light-blue) r g b / 0.3);
+    }
+
+  }
+
   &__f-bigbox {
     @include display();
     flex-direction: column;
