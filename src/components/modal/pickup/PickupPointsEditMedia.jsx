@@ -4,7 +4,7 @@ import {useNotify} from "@/hooks/useNotify";
 import {usePostPickupVideo} from "@/hooks/pickup/POST/PostPickUpVideo";
 import {useRouter} from "next/navigation";
 import {GeneralModal} from "@/context/GeneralModal";
-import { usePostPickupImage } from "@/hooks/pickup/POST/PostPickUpImage";
+import {usePostPickupImage} from "@/hooks/pickup/POST/PostPickUpImage";
 
 const PickupPointsEditMedia = ({id}) => {
   const [isMedia, setIsMedia] = useState(true);
@@ -21,17 +21,37 @@ const PickupPointsEditMedia = ({id}) => {
     error: videoError,
     isPending: videoPending,
     data: videoSuccess,
+    isSending,
+    forceCancelUpload,
   } = usePostPickupVideo();
+
   const handleVideoClick = () => {
-    if(!videoPending) {
+    if (!videoPending) {
       videoInputRef.current.click();
     }
   };
+
+  useEffect(() => {
+    if (videoPending) {
+      if (!isSending) {
+        notice({
+          text: `Video is not actively sending, please try again!`,
+          status: "error",
+          time: 5000,
+        });
+        forceCancelUpload();
+        setModalStopped(false);
+      }
+    }
+  }, [isSending, videoPending]);
   const processVideo = (file) => {
     if ((!file || !file.type.startsWith("video/")) && !videoPending) return;
     setVideo(file);
     setPreviewVideo(URL.createObjectURL(file));
   };
+
+  const handleInputVideoChange = (e) => processVideo(e.target.files[0]);
+
 
   useEffect(() => {
     if (previewVideo && videoRef.current && !videoPending) {
@@ -54,34 +74,40 @@ const PickupPointsEditMedia = ({id}) => {
         status: "error",
         time: 3000,
       });
-
-    const formData = new FormData();
-    formData.append("video", video);
-
-    notice({
-      text: "Adding video...",
-      status: "info",
-      time: "infinite",
-    });
-    setModalStopped(true);
-
-    videoPost({
-      id,
-      formData,
-      onProgress: (percent) => {
-        notice({
-          text: `Video processing... ${percent}%`,
-          status: "info",
-          time: "infinite",
-        });
-      },
-    });
+    if (navigator.onLine) {
+      const formData = new FormData();
+      formData.append("video", video);
+      notice({
+        text: "Adding video...",
+        status: "info",
+        time: "infinite",
+      });
+      setModalStopped(true);
+      videoPost({
+        id,
+        formData,
+        onProgress: (percent) => {
+          notice({
+            text: `Video processing... ${percent}%`,
+            status: "info",
+            time: "infinite",
+          });
+          route?.refresh();
+        },
+      });
+    } else {
+      notice({
+        text: "Please check your internet connection!",
+        status: "info",
+        time: 5000,
+      });
+    }
   };
 
   useEffect(() => {
     if (videoSuccess && !videoPending) {
       notice({
-        text: "Successfully uploaded!",
+        text: videoSuccess?.message || "Successfully uploaded!",
         status: "success",
         time: 3000,
       });
@@ -101,10 +127,8 @@ const PickupPointsEditMedia = ({id}) => {
       route.refresh();
     }
   }, [videoError]);
-  
 
-
-    const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null);
   const imageInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState(null);
   const imageRef = useRef(null);
@@ -114,17 +138,36 @@ const PickupPointsEditMedia = ({id}) => {
     error: imageError,
     isPending: imagePending,
     data: imageSuccess,
+    isSendingImage,
+    forceCancelImageUpload,
   } = usePostPickupImage();
   const handleImageClick = () => {
-    if(!imagePending) {
+    if (!imagePending) {
       imageInputRef.current.click();
     }
   };
+
+  useEffect(() => {
+    if (imagePending) {
+      if (!isSendingImage) {
+        notice({
+          text: `Video is not actively sending, please try again!`,
+          status: "error",
+          time: 5000,
+        });
+        forceCancelImageUpload();
+        setModalStopped(false);
+      }
+    }
+  }, [isSendingImage, imagePending]);
   const processImage = (file) => {
     if ((!file || !file.type.startsWith("image/")) && !imagePending) return;
     setImage(file);
     setPreviewImage(URL.createObjectURL(file));
   };
+
+  const handleInputImageChange = (e) => processImage(e.target.files[0]);
+
 
   useEffect(() => {
     if (previewImage && imageRef.current && !imagePending) {
@@ -173,7 +216,7 @@ const PickupPointsEditMedia = ({id}) => {
   useEffect(() => {
     if (imageSuccess && !imagePending) {
       notice({
-        text: "Successfully uploaded!",
+        text: imageSuccess?.message || "Successfully uploaded!",
         status: "success",
         time: 3000,
       });
@@ -193,8 +236,8 @@ const PickupPointsEditMedia = ({id}) => {
       route.refresh();
     }
   }, [imageError]);
-  
-    return (
+
+  return (
     <div className="pickup-one__modal">
       <ul className="pickup-one__modal-ul">
         <li
@@ -249,6 +292,7 @@ const PickupPointsEditMedia = ({id}) => {
               ref={videoInputRef}
               type="file"
               accept="video/*"
+              onChange={handleInputVideoChange}
             />
             {!previewVideo ? (
               <p className="modal__bg-b-info">Click or Drop your Video</p>
@@ -260,7 +304,7 @@ const PickupPointsEditMedia = ({id}) => {
                 playsInline
                 controls={false}
                 width={300}
-                height={200}
+                height={220}
               >
                 <source src={previewVideo} />
               </video>
@@ -295,12 +339,12 @@ const PickupPointsEditMedia = ({id}) => {
               ref={imageInputRef}
               type="file"
               accept="image/*"
+              onChange={handleInputImageChange}
             />
             {!previewImage ? (
               <p className="modal__bg-b-info">Click or Drop your Image</p>
             ) : (
-              
-              <img src={previewImage} width={300} height={200} alt="" />
+              <img src={previewImage} width={300} height={220} alt="" />
             )}
           </div>
           <button

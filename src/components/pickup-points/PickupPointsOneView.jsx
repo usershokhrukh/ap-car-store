@@ -165,7 +165,6 @@ const PickupPointsOneView = () => {
   };
   const [maximized, setMaximized] = useState(false);
 
-  // Simple toggle for fullscreen using standard element detection
   const handleMaximize = () => {
     if (!containerRef.current) return;
 
@@ -192,6 +191,12 @@ const PickupPointsOneView = () => {
   };
 
   const { setCloseModal, setCompModal} = useContext(GeneralModal)
+
+  useEffect(() => {
+    if(onePickupData && videoRef.current) {
+      videoRef.current.load()
+    }
+  }, [onePickupData])
 
   return (
     <div className="pickup-one container">

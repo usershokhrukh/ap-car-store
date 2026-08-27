@@ -30,12 +30,10 @@ function MapController({center}) {
       map?.invalidateSize();
       map?.closePopup();
 
-      setTimeout(() => {
-        if (map) {
-          map?.setView(center, map.getZoom(), {animate: true});
-          map?.panTo(center, {animate: true});
-        }
-      }, 50);
+      if (map) {
+        map?.setView(center, map.getZoom(), {animate: true});
+        map?.panTo(center, {animate: true});
+      }
     }
   }, [center, map]);
 
