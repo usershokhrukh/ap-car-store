@@ -25,9 +25,7 @@ const request = async ({
       cancelToken: cancelToken,
     });
     return res?.data;
-  } catch (error) {
-    console.log(error);
-    
+  } catch (error) {    
     if (axios.isAxiosError(error) && error.response?.data) {
       throw new Error(
         error.response.data.message +
@@ -36,7 +34,11 @@ const request = async ({
       );
     }
     if (axios.isCancel(error)) {
-      throw new Error("Upload progress stopped due to the network error!");
+      if(error?.message == "info") {
+        return
+      }else{
+        throw new Error(error?.message || "Upload progress stopped due to the network error!");
+      }
     }
     throw new Error(error.message || "Something went wrong!");
   }
@@ -95,9 +97,9 @@ export const usePostPickupVideo = () => {
     },
   });
 
-  const forceCancelUpload = () => {
-    if (cancelTokenSourceRef.current) {
-      cancelTokenSourceRef.current.cancel();
+  const forceCancelUpload = (text) => {
+    if (cancelTokenSourceRef.current) {      
+      cancelTokenSourceRef.current.cancel(text || "Upload progress stopped due to the network error!");
     }
     stopMonitoring();
   };

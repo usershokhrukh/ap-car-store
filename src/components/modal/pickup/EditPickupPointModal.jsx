@@ -184,7 +184,8 @@ const EditPickupPointModal = ({id}) => {
 
   const removeImage = (e) => {
     e.stopPropagation();
-    setPreview(null);
+    e.preventDefault();
+    setPreview(onePickup?.data?.image || onePickup?.data?.imageUrl);
     setImage(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -397,9 +398,42 @@ const EditPickupPointModal = ({id}) => {
     }
   }, [onePickup, pendingOnePickup]);
 
+  const handleRemovePickupImage = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setModalStopped(true);
+    notice({
+      text: "Deleting image...",
+      status: "info",
+      time: "infinite",
+    });
+    deleteImage(id);
+  };
+
+  useEffect(() => {
+    if (deleteImageError?.message) {
+      notice({
+        text: deleteImageError?.message,
+        time: 3000,
+        status: "error",
+      });
+      setModalStopped(false);
+    }
+  }, [deleteImageError]);
+
+  useEffect(() => {
+    if (deleteImageData && !deleteImagePending) {
+      notice({
+        text: deleteImageData?.message,
+        status:"success",
+        time:3000
+      })
+      setModalStopped(false)
+    }
+  }, [deleteImageData, deleteImagePending]);
   return (
     <form onSubmit={handleSubmit} className="modal__form">
-      {sendPending  || patchPending ? (
+      {sendPending || deleteImagePending || patchPending ? (
         <div className="modal__form-hide"></div>
       ) : null}
 
@@ -530,9 +564,30 @@ const EditPickupPointModal = ({id}) => {
                 <button
                   onClick={removeImage}
                   className="image-uploader__remove-btn"
-                  aria-label="Remove image"
                 >
                   ✕
+                </button>
+              </div>
+            ) : !image && preview ? (
+              <div className="image-uploader__preview-wrapper">
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="image-uploader__preview-image"
+                />
+                <button
+                  onClick={handleRemovePickupImage}
+                  className="image-uploader__remove-btn"
+                >
+                  <span className="global-svg">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
+                    </svg>
+                  </span>
                 </button>
               </div>
             ) : (
@@ -543,7 +598,7 @@ const EditPickupPointModal = ({id}) => {
           </div>
         </div>
       </div>
-      <button className="modal__submit">Create Point</button>
+      <button className="modal__submit">Edit Point</button>
     </form>
   );
 };
