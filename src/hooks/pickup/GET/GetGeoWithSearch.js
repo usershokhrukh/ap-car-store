@@ -16,7 +16,7 @@ const request = async (string) => {
 export const useGetGeoSearch = (string) => {
   return useQuery({
     queryKey: ["geosearch", string],
+    enabled: !!string,
     queryFn: () =>  request(string),
-    enabled: !!string
   });
 };

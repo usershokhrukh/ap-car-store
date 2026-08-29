@@ -19,6 +19,7 @@ import NotFound from "../notfound/NotFound";
 import {usePatchStatusPickup} from "@/hooks/pickup/PATCH/PatchPickUpStatus";
 import {GeneralModal} from "@/context/GeneralModal";
 import PickupPointsEditMedia from "../modal/pickup/PickupPointsEditMedia";
+import PickupPointsEditLocation from "../modal/pickup/PickupPointsEditLocation";
 
 const PickupPointsOneView = () => {
   const {id} = useParams();
@@ -350,7 +351,6 @@ const PickupPointsOneView = () => {
               </div>
               <div className="pickup-one__m-right">
                 <div className="pickup-one__mr-map">
-                  {" "}
                   {onePickupData?.data ? (
                     <MapView data={onePickupData?.data} />
                   ) : null}
@@ -377,7 +377,10 @@ const PickupPointsOneView = () => {
                   </div>
 
                   <div className="pickup-one__mrbot-right">
-                    <button className="pickup-one__mbh-button">
+                    <button onClick={() => {
+                      setCloseModal(true)
+                      setCompModal(<PickupPointsEditLocation id={id}/>)
+                    }} className="pickup-one__mbh-button">
                       Edit Location
                     </button>
                     <div className="pickup-one__mbh-box">
