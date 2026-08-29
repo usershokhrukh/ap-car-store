@@ -48,8 +48,6 @@ const PickupPointsEditMedia = ({id}) => {
     if (!file || (!file.type.startsWith("video/") && !videoPending)) return;
     setVideo(file);
     setPreviewVideo(URL?.createObjectURL(file));
-    setVideo(file);
-    setPreviewVideo(file);
   };
 
   const handleInputVideoChange = (e) => processVideo(e.target.files[0]);

@@ -16,23 +16,23 @@ const svgIcon = L.divIcon({
   popupAnchor: [0, -35],
 });
 
-// function ChangeMapView({center}) {
-//   const map = useMap();
-//   useEffect(() => {
-//     if (center && center[0] && center[1]) {
-//       map?.invalidateSize();
-//       map?.closePopup();
+function ChangeMapView({center}) {
+  const map = useMap();
+  useEffect(() => {
+    if (center && center[0] && center[1]) {
+      map?.invalidateSize();
+      map?.closePopup();
 
-//       setTimeout(() => {
-//         if (map) {
-//           map?.setView(center, map.getZoom(), {animate: true});
-//           map?.panTo(center, {animate: true});
-//         }
-//       }, 50);
-//     }
-//   }, [center, map]);
-//   return null;
-// }
+      // setTimeout(() => {
+        if (map) {
+          map?.setView(center, map.getZoom(), {animate: true});
+          map?.panTo(center, {animate: true});
+        }
+      // }, 50);
+    }
+  }, [center, map]);
+  return null;
+}
 
 export default function ProductMap({data: mapData}) {
   const [data, setData] = useState(null);
@@ -128,7 +128,7 @@ export default function ProductMap({data: mapData}) {
               maxZoom={20}
             />
 
-            {/* <ChangeMapView center={position} /> */}
+            <ChangeMapView center={position} />
 
             <Marker position={position} icon={svgIcon}>
               <Popup disableAutoPan={true}>

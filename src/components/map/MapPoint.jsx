@@ -24,7 +24,6 @@ const svgIcon = L.divIcon({
 
 function MapController({center}) {
   const map = useMap();
-
   useEffect(() => {
     if (center && center[0] && center[1]) {
       map?.invalidateSize();
@@ -163,6 +162,28 @@ export default function ProductMapLocate({
                 ) : null}
                 {data?.latitude ? <p>latitude: {data?.latitude}</p> : null}
                 {data?.longitude ? <p>longitude: {data?.longitude}</p> : null}
+              </div>
+            </Popup>
+          ) : mapData ? (
+            <Popup disableAutoPan={true}>
+              <div className="map__pop-box">
+                <strong>{mapData?.city}</strong>
+                {mapData?.address ? <p>Address: {mapData?.address}</p> : null}
+                {mapData?.suggestedName ? (
+                  <p>Suggested name: {mapData?.suggestedName}</p>
+                ) : null}
+                {mapData?.displayName ? (
+                  <p>Name: {mapData?.displayName}</p>
+                ) : null}
+                {mapData?.pickupPointsCount ? (
+                  <p>Pickup point count: {mapData?.pickupPointsCount}</p>
+                ) : null}
+                {mapData?.latitude ? (
+                  <p>latitude: {mapData?.latitude}</p>
+                ) : null}
+                {mapData?.longitude ? (
+                  <p>longitude: {mapData?.longitude}</p>
+                ) : null}
               </div>
             </Popup>
           ) : null}

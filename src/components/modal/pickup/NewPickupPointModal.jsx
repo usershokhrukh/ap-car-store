@@ -37,8 +37,8 @@ const NewPickupPointModal = () => {
     data: searchData,
     error: searchError,
     isPending: searchPending,
-    isFetching,
   } = useGetGeoSearch(`${search.trim() ? `?q=${search}` : ""}`);
+  
   const {data, error, isPending} = useGetGeoCode(searchGeo);
 
   const [reLocate, setReLocate] = useState(false);
@@ -118,7 +118,7 @@ const NewPickupPointModal = () => {
 
   useEffect(() => {
     if (isPending && !data) {
-      setReLocate(null);
+      setReLocate(null);      
       notice({
         text: "Searching...",
         status: "info",
@@ -129,19 +129,19 @@ const NewPickupPointModal = () => {
 
   useEffect(() => {
     if (searchPending && !searchData && secondSearch?.trim()?.length) {
-      setReLocate(null);
+      setReLocate(null);      
       notice({
         text: "Searching...",
         status: "info",
         time: "infinite",
       });
-    }
+    }    
     if (reLocate != null && !reLocate) {
       notice({
         stop: "true",
       });
     }
-  }, [searchPending, searchData, secondSearch, reLocate, secondSearch]);
+  }, [searchPending, searchData, secondSearch, reLocate]);
 
   const [phone, setPhone] = useState(null);
   const [preview, setPreview] = useState(null);
