@@ -50,12 +50,14 @@ export const usePostPickupVideo = () => {
   const lastActiveTimeRef = useRef(Date.now());
   const monitorIntervalRef = useRef(null);
   const cancelTokenSourceRef = useRef(null);
+  const [canceled, setCanceled] = useState(false);
 
   const stopMonitoring = () => {
     if (monitorIntervalRef.current) {
       clearInterval(monitorIntervalRef.current);
       monitorIntervalRef.current = null;
     }
+    setCanceled(false)
     setIsSending(true);
   };
 
@@ -65,6 +67,7 @@ export const usePostPickupVideo = () => {
       lastActiveTimeRef.current = Date.now();
       cancelTokenSourceRef.current = axios.CancelToken.source();
       setIsSending(true);
+      setCanceled(false)
       const handleBytesMoving = () => {
         lastActiveTimeRef.current = Date.now();
         setIsSending(true);
@@ -108,5 +111,6 @@ export const usePostPickupVideo = () => {
     ...mutation,
     isSending,
     forceCancelUpload,
+    canceled, setCanceled
   };
 };

@@ -21,6 +21,7 @@ const EditPickupPointModal = ({id}) => {
     data: onePickup,
     error: errorOnePickup,
     isPending: pendingOnePickup,
+    isFetching: oneFetching,
   } = useGetOnePickup(id);
   const [input, setInput] = useState({
     name: "",
@@ -43,6 +44,7 @@ const EditPickupPointModal = ({id}) => {
     data: searchData,
     error: searchError,
     isPending: searchPending,
+    isFetching: searchFetching,
   } = useGetGeoSearch(`${search.trim() ? `?q=${search}` : ""}`);
 
   useEffect(() => {
@@ -56,7 +58,12 @@ const EditPickupPointModal = ({id}) => {
     }
   }, [errorOnePickup]);
 
-  const {data, error, isPending} = useGetGeoCode(searchGeo);
+  const {
+    data,
+    error,
+    isPending,
+    isFetching: codeFetching,
+  } = useGetGeoCode(searchGeo);
   const [reLocate, setReLocate] = useState(false);
   useEffect(() => {
     if (error?.message) {
@@ -333,6 +340,7 @@ const EditPickupPointModal = ({id}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     if (!input?.name || !input?.closesAt || !input?.opensAt || !input?.phone)
       return notice({
@@ -425,10 +433,10 @@ const EditPickupPointModal = ({id}) => {
     if (deleteImageData && !deleteImagePending) {
       notice({
         text: deleteImageData?.message,
-        status:"success",
-        time:3000
-      })
-      setModalStopped(false)
+        status: "success",
+        time: 3000,
+      });
+      setModalStopped(false);
     }
   }, [deleteImageData, deleteImagePending]);
   return (
@@ -445,6 +453,11 @@ const EditPickupPointModal = ({id}) => {
       />
       <div className="modal__f-bg-top">
         <input
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
           type="search"
           className="modal__inputs modal__no-inputs "
           placeholder="Search address..."
@@ -488,6 +501,11 @@ const EditPickupPointModal = ({id}) => {
       </div>
       <div className="modal__f-bg-top">
         <input
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
           type="text"
           className="modal__inputs modal__no-inputs"
           placeholder="Name"
@@ -505,6 +523,11 @@ const EditPickupPointModal = ({id}) => {
           defaultCountry="UZ"
           countries={["UZ"]}
           international={false}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
         />
       </div>
 
@@ -514,6 +537,11 @@ const EditPickupPointModal = ({id}) => {
             <span className="modal__f-bg-t-wr">
               <span className="modal__bg-b-info">opens at:</span>
               <input
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                  }
+                }}
                 required
                 name="opensAt"
                 type="time"
@@ -525,6 +553,11 @@ const EditPickupPointModal = ({id}) => {
             <span className="modal__f-bg-t-wr">
               <span className="modal__bg-b-info">closes at:</span>
               <input
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                  }
+                }}
                 required
                 name="closesAt"
                 type="time"
@@ -547,6 +580,11 @@ const EditPickupPointModal = ({id}) => {
             className={`image-uploader__dropzone ${isDragging ? "image-uploader__dropzone--dragging" : ""}`}
           >
             <input
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               type="file"
               ref={fileInputRef}
               onChange={handleInputChange}
@@ -598,7 +636,23 @@ const EditPickupPointModal = ({id}) => {
           </div>
         </div>
       </div>
-      <button className="modal__submit">Edit Point</button>
+      <button
+        type="submit"
+        style={{
+          opacity: `${sendPending || patchPending || deleteImagePending || oneFetching || codeFetching || searchFetching ? 0.5 : 1}`,
+        }}
+        disabled={
+          sendPending ||
+          patchPending ||
+          deleteImagePending ||
+          oneFetching ||
+          codeFetching ||
+          searchFetching
+        }
+        className="modal__submit"
+      >
+        Edit Point
+      </button>
     </form>
   );
 };

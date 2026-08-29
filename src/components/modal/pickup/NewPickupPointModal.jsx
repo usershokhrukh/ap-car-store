@@ -37,9 +37,10 @@ const NewPickupPointModal = () => {
     data: searchData,
     error: searchError,
     isPending: searchPending,
+    isFetching: searchFetching
   } = useGetGeoSearch(`${search.trim() ? `?q=${search}` : ""}`);
   
-  const {data, error, isPending} = useGetGeoCode(searchGeo);
+  const {data, error, isPending, isFetching: codeFetching} = useGetGeoCode(searchGeo);
 
   const [reLocate, setReLocate] = useState(false);
   useEffect(() => {
@@ -472,7 +473,9 @@ const NewPickupPointModal = () => {
           </div>
         </div>
       </div>
-      <button className="modal__submit">Create Point</button>
+      <button style={{
+        opacity: `${searchFetching || patchPending || sendPending || codeFetching ? "0.5" : 1}`
+      }} disabled={searchFetching || patchPending || sendPending || codeFetching} className="modal__submit">Create Point</button>
     </form>
   );
 };

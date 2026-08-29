@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import React, {useContext, useEffect, useRef, useState} from "react";
 
 const PickupPointsEditLocation = ({id}) => {
-  const [searchCoords, setSearchCoords] = useState();
   const [searchValue, setSearchValue] = useState("");
   const [secondSearch, setSecondSearch] = useState("");
   const route = useRouter();
@@ -22,8 +21,9 @@ const PickupPointsEditLocation = ({id}) => {
     data: geoSearch,
     error: geoSearchError,
     isPending: geoSearchPending,
+    isFetching: searchFetching
   } = useGetGeoSearch(`${searchValue?.trim() ? `?q=${searchValue}` : ""}`);
-  const {data, error, isPending} = useGetGeoCode(
+  const {data, error, isPending, isFetching:codeFetching} = useGetGeoCode(
     `${globalMapData?.latitude && globalMapData?.longitude ? `?lat=${globalMapData?.latitude}&lng=${globalMapData?.longitude}` : ""}`,
   );
   const {
@@ -251,9 +251,9 @@ const PickupPointsEditLocation = ({id}) => {
         </p>
       </div>
       <button
-        disabled={isPending || patchPending}
+        disabled={searchFetching || patchPending || codeFetching}
         style={{
-          opacity: `${isPending || patchPending ? 0.5 : 1}`,
+          opacity: `${searchFetching || patchPending || codeFetching ? 0.5 : 1}`,
         }}
         className="modal__submit"
       >

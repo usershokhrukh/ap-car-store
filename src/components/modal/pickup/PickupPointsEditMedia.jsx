@@ -22,6 +22,8 @@ const PickupPointsEditMedia = ({id}) => {
     data: videoSuccess,
     isSending,
     forceCancelUpload,
+    canceled,
+    setCanceled,
   } = usePostPickupVideo();
 
   const handleVideoClick = () => {
@@ -30,6 +32,7 @@ const PickupPointsEditMedia = ({id}) => {
     }
   };
 
+  const {setModalStopped, setCloseModal} = useContext(GeneralModal);
   useEffect(() => {
     if (videoPending) {
       if (!isSending) {
@@ -63,7 +66,6 @@ const PickupPointsEditMedia = ({id}) => {
     processVideo(e.dataTransfer.files[0]);
   };
 
-  const {setModalStopped} = useContext(GeneralModal);
   const handleVideoSubmit = (e) => {
     e.preventDefault();
     if (!video)
@@ -85,12 +87,14 @@ const PickupPointsEditMedia = ({id}) => {
         id,
         formData,
         onProgress: (percent) => {
-          notice({
-            text: `Video processing... ${percent}%`,
-            status: "info",
-            time: "infinite",
-          });
-          route?.refresh();
+          if (!canceled) {
+            notice({
+              text: `Video processing... ${percent}%`,
+              status: "info",
+              time: "infinite",
+            });
+          }
+          route.refresh();
         },
       });
     } else {
@@ -109,8 +113,8 @@ const PickupPointsEditMedia = ({id}) => {
         status: "success",
         time: 3000,
       });
-
       setModalStopped(false);
+      setCloseModal(false)
     }
   }, [videoSuccess, videoPending]);
 
@@ -126,6 +130,15 @@ const PickupPointsEditMedia = ({id}) => {
     }
   }, [videoError]);
 
+  useEffect(() => {
+    if (canceled) {
+      notice({
+        text: "Video canceled!",
+        status: "info",
+        time: 3000,
+      });
+    }
+  }, [canceled]);
   return (
     <div className="pickup-one__modal">
       <form onSubmit={handleVideoSubmit} className="modal__form">
@@ -169,6 +182,7 @@ const PickupPointsEditMedia = ({id}) => {
             onClick={(e) => {
               e.preventDefault();
               forceCancelUpload("info");
+              setCanceled(true);
               notice({
                 text: "Video canceled!",
                 status: "info",

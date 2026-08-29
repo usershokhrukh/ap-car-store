@@ -21,6 +21,8 @@ import {GeneralModal} from "@/context/GeneralModal";
 import PickupPointsEditMedia from "../modal/pickup/PickupPointsEditMedia";
 import PickupPointsEditLocation from "../modal/pickup/PickupPointsEditLocation";
 import EditPickupPointModal from "../modal/pickup/EditPickupPointModal";
+import PickupVideoDeleteConfirm from "./PickupDeleteVideoConfirm";
+import PickupDeleteConfirm from "./PickupPointsDeleteConfirm";
 
 const PickupPointsOneView = () => {
   const {id} = useParams();
@@ -245,7 +247,7 @@ const PickupPointsOneView = () => {
                             onePickupData?.data?.imageUrl
                               ? onePickupData?.data?.imageUrl
                               : onePickupData?.data?.imagePath
-                                ? `https://magnateshop.uz{onePickupData?.data?.imagePath}`
+                                ? `https://magnateshop.uz${onePickupData?.data?.imagePath}`
                                 : ""
                           }
                         >
@@ -254,7 +256,7 @@ const PickupPointsOneView = () => {
                             onError={() => {
                               setIsMediaError(true);
                             }}
-                            src={`${onePickupData?.data?.videoUrl || `https://magnateshop.uz{onePickupData?.data?.videoPath || null}`}`}
+                            src={`${onePickupData?.data?.videoUrl || `${onePickupData?.data?.videoPath ? `https://magnateshop.uz/${onePickupData?.data?.videoPath}` : ""}`}`}
                           />
                         </video>
 
@@ -332,6 +334,26 @@ const PickupPointsOneView = () => {
                         </svg>
                       </span>
                     </button>
+                    {onePickupData?.data?.videoUrl ||
+                    `${onePickupData?.data?.videoPath ? `https://magnateshop.uz/${onePickupData?.data?.videoPath}` : ""}` ? (
+                      <button
+                        onClick={() => {
+                          setCloseModal(true);
+                          setCompModal(<PickupVideoDeleteConfirm id={id} />);
+                        }}
+                        className="products-view__mleft-buttons products-view__mleft-buttons-delete"
+                      >
+                        <span className="products-view__mleft-buttons-span products-view__mleft-buttons-span-delete">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M4 8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8ZM6 10V20H18V10H6ZM9 12H11V18H9V12ZM13 12H15V18H13V12ZM7 5V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V5H22V7H2V5H7ZM9 4V5H15V4H9Z"></path>
+                          </svg>
+                        </span>
+                      </button>
+                    ) : null}
                   </div>
                 </div>
                 {pickupPointData ? (
@@ -378,10 +400,13 @@ const PickupPointsOneView = () => {
                   </div>
 
                   <div className="pickup-one__mrbot-right">
-                    <button onClick={() => {
-                      setCloseModal(true)
-                      setCompModal(<PickupPointsEditLocation id={id}/>)
-                    }} className="pickup-one__mbh-button">
+                    <button
+                      onClick={() => {
+                        setCloseModal(true);
+                        setCompModal(<PickupPointsEditLocation id={id} />);
+                      }}
+                      className="pickup-one__mbh-button"
+                    >
                       Edit Location
                     </button>
                     <div className="pickup-one__mbh-box">
@@ -439,10 +464,13 @@ const PickupPointsOneView = () => {
                         )}
                       </span>
 
-                      <button onClick={() => {
-                        setCloseModal(true)
-                        setCompModal(<EditPickupPointModal id={id}/>)
-                      }} className="products-view__mleft-buttons">
+                      <button
+                        onClick={() => {
+                          setCloseModal(true);
+                          setCompModal(<EditPickupPointModal id={id} />);
+                        }}
+                        className="products-view__mleft-buttons"
+                      >
                         <span className="products-view__mleft-buttons-span">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -454,7 +482,13 @@ const PickupPointsOneView = () => {
                         </span>
                       </button>
 
-                      <button className="products-view__mleft-buttons products-view__mleft-buttons-delete">
+                      <button
+                        onClick={() => {
+                          setCloseModal(true);
+                          setCompModal(<PickupDeleteConfirm id={id} />);
+                        }}
+                        className="products-view__mleft-buttons products-view__mleft-buttons-delete"
+                      >
                         <span className="products-view__mleft-buttons-span products-view__mleft-buttons-span-delete">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

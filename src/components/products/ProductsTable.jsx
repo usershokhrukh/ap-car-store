@@ -53,6 +53,7 @@ const ProductsTable = ({cars}) => {
       route.push(`/products/${id}`)
     }
   };
+  
 
   return (
     <table className="products__table">
@@ -68,7 +69,7 @@ const ProductsTable = ({cars}) => {
       </thead>
       <tbody className="products__t-body">
         {cars?.data?.items?.map(
-          ({image, name, price, stock, categoryId, isActive, id}) => (
+          ({image, name, price, stock, category, isActive, id}) => (
             <tr
             key={`${name} ${id}`}
               onClick={(e) => handleProducts(e, id)}
@@ -90,7 +91,7 @@ const ProductsTable = ({cars}) => {
               <td className="products__t-b-td">
                 <span className="products__t-stock">{stock}</span>
               </td>
-              <td className="products__t-b-td">{categoryId}</td>
+              <td className="products__t-b-td">{category?.name || "no name category"}</td>
               <td
                 onClick={() => handleSwitch(id, isActive)}
                 id="switch"

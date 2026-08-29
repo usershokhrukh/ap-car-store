@@ -135,7 +135,8 @@
     justify-content: end;
     top: 0px;
     z-index: 2;
-    padding: 15px;
+    padding: 0px 15px;
+    padding-top: 15px;
     width: 100%;
     background-color: var(--app-sidebar);
   }
@@ -145,7 +146,7 @@
       width: 16px;
       height: 16px;
     }
-    padding: 8px;
+    // padding: 8px;
     color: var(--app-text);
     cursor: pointer;
     z-index: 2;
@@ -174,7 +175,7 @@
     width: 100%;
     justify-content: start;
     align-items: start;
-    padding: 10px 30px 30px 30px;
+    padding: 10px 30px 10px 30px;
     border-radius: 20px;
   }
 
