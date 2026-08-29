@@ -5,7 +5,6 @@ import {usePathname} from "next/navigation";
 import {GeneralModal} from "@/context/GeneralModal";
 import GeneralModalUI from "./modal/GeneralModalUI";
 import Header from "./header/Header";
-import { useNotify } from "@/hooks/useNotify";
 const AppLayout = ({children}) => {
   const pathname = usePathname();
   const {closeModal} = useContext(GeneralModal);

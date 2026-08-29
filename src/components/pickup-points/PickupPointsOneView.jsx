@@ -20,6 +20,7 @@ import {usePatchStatusPickup} from "@/hooks/pickup/PATCH/PatchPickUpStatus";
 import {GeneralModal} from "@/context/GeneralModal";
 import PickupPointsEditMedia from "../modal/pickup/PickupPointsEditMedia";
 import PickupPointsEditLocation from "../modal/pickup/PickupPointsEditLocation";
+import EditPickupPointModal from "../modal/pickup/EditPickupPointModal";
 
 const PickupPointsOneView = () => {
   const {id} = useParams();
@@ -438,7 +439,10 @@ const PickupPointsOneView = () => {
                         )}
                       </span>
 
-                      <button className="products-view__mleft-buttons">
+                      <button onClick={() => {
+                        setCloseModal(true)
+                        setCompModal(<EditPickupPointModal id={id}/>)
+                      }} className="products-view__mleft-buttons">
                         <span className="products-view__mleft-buttons-span">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
