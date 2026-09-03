@@ -22,6 +22,7 @@ export const usePatchStatusProducts = () => {
       queryClient.invalidateQueries({queryKey: ["dashboard-low-stock"]})
       queryClient.invalidateQueries({queryKey: ["stats"]})
       queryClient.invalidateQueries({queryKey: ["categoriesStats"]})
+      queryClient.invalidateQueries({queryKey: ["pickup-products"]})
     },
   });
 };

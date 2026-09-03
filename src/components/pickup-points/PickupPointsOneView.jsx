@@ -260,7 +260,6 @@ const PickupPointsOneView = () => {
                           />
                         </video>
 
-                        {/* Play button ONLY shows when paused or ended */}
                         {!isPlaying && (
                           <span
                             onClick={togglePlay}
@@ -276,7 +275,6 @@ const PickupPointsOneView = () => {
                           </span>
                         )}
 
-                        {/* Maximize button ALWAYS remains visible */}
                         <button
                           onClick={handleMaximize}
                           className="pickup-one__maximize"
